@@ -16,11 +16,12 @@ const displayResults = async (query) => {
   const res = await fetch(` https://api.tvmaze.com/search/shows?q=${query}`);
   //   Convert the response to json
   const data = await res.json();
+  console.log(data);
   // If there are no results
   const noResults = `
-  <div class="flex flex-col items-center justify-center">
+  <div class="flex flex-col items-center justify-center col-span-5">
   <img src="./imgs/no result search icon.png" alt="" class="h-64 w-64" />
-  <h2 class="mb-3 text-xl font-bold text-thirdAccent">No Result Found</h2>
+  <h2 class="mb-3 text-xl font-bold text-thirdAccent">No Results Found</h2>
   <h3 class="font-semibold text-textColor2 text-center">
     We couldn't find any show matching your search
   </h3>
