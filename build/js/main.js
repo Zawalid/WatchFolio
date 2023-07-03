@@ -79,10 +79,10 @@ const search = (e) => {
   container.classList.add("grid");
   container.classList.remove("hidden");
   // Scroll to the container
+  container.scrollIntoView({ behavior: "smooth" });
   // Display the data
   displayResults(searchInput.value);
-  searchInput.blur();
-  container.scrollIntoView({ behavior: "smooth" });
+  // searchInput.blur();
 };
 //* If the search input is empty
 const nothingToSearch = () => {
