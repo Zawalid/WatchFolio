@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Bona+Nova:wght@700&display=swap"
       rel="stylesheet"
     />
-    <!-- <script defer src="./js/main.js"></script> -->
+    <script defer src="./js/show.js"></script>
   </head>
   <body
     class="relative min-h-screen bg-gradient bg-cover before:absolute before:-z-10 before:h-full before:w-full before:bg-[url('../imgs/1163193.jpg')] before:bg-cover before:bg-no-repeat before:opacity-20 before:blur-[1px]"
@@ -39,224 +39,31 @@
           ></i>
         </div>
       </header>
-
-      <div class="mb-16 mt-9 flex w-full items-center gap-7 max-sm:flex-col">
-        <img
-          src="./imgs/1163193.jpg"
-          alt=""
-          class="w-[300px] rounded-lg shadow-shadow1 max-sm:w-[230px]"
-        />
-        <div class="flex flex-1 flex-col gap-6 max-sm:items-center">
-          <h1
-            class="font-logo text-4xl font-extrabold text-primaryAccent max-sm:text-3xl"
-          >
-            The Witcher
-            <span class="ms-2 font-mono text-lg font-semibold text-textColor"
-              >(2017)</span
-            >
-          </h1>
-          <div class="flex gap-5">
-            <div
-              class="w-fit rounded-lg bg-thirdAccent px-3 text-sm font-semibold text-textColor"
-            >
-              Drama
-            </div>
-            <div
-              class="w-fit rounded-lg bg-thirdAccent px-3 text-sm font-semibold text-textColor"
-            >
-              Action
-            </div>
-            <div
-              class="w-fit rounded-lg bg-thirdAccent px-3 text-sm font-semibold text-textColor"
-            >
-              Fantasy
-            </div>
-          </div>
-          <div
-            class="flex w-fit items-center gap-5 rounded-lg bg-dark bg-opacity-30 px-3 py-1 text-sm font-semibold text-textColor backdrop-blur-sm"
-          >
-            <span>8.2</span>
-            <div class="flex gap-2">
-              <i class="fa-solid fa-star text-primaryAccent"></i>
-              <i class="fa-solid fa-star text-primaryAccent"></i>
-              <i class="fa-solid fa-star text-primaryAccent"></i>
-              <i class="fa-solid fa-star text-primaryAccent"></i>
-              <i class="fa-solid fa-star text-textColor2"></i>
-            </div>
-          </div>
-          <div class="mt-5 flex w-4/6 gap-6 max-sm:w-full max-sm:flex-col">
-            <div
-              class="w-full cursor-pointer rounded-3xl bg-secondaryAccent px-5 py-3 text-center font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80"
-            >
-              I Watched
-            </div>
-            <div
-              class="w-full cursor-pointer rounded-3xl bg-dark px-5 py-3 text-center font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80"
-            >
-              I'm Watching
-            </div>
-            <div
-              class="w-full cursor-pointer rounded-3xl bg-thirdAccent px-5 py-3 text-center font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80"
-            >
-              I Will Watch
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="my-7 flex w-full items-center justify-between max-sm:flex-col max-sm:gap-10"
+    </div>
+    <div
+      class="fixed bottom-0 left-0 z-50 flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-2 backdrop-blur-[6px] sm:hidden"
+    >
+      <a
+        href="index.html"
+        class="active flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
       >
-        <div class="w-[40%] max-sm:w-full">
-          <details open>
-            <summary class="mb-5 text-xl font-bold text-thirdAccent">
-              Storyline
-            </summary>
-            <p class="text-lg font-semibold leading-snug text-textColor2">
-              Based on the best-selling fantasy series, The Witcher is an epic
-              tale of fate and family. Geralt of Rivia, a solitary monster
-              hunter, struggles to find his place in a world where people often
-              prove more wicked than beasts. But when destiny hurtles him toward
-              a powerful sorceress, and a young princess with a dangerous
-              secret, the three must learn to navigate the increasingly volatile
-              Continent together.
-            </p>
-          </details>
-        </div>
-        <div class="w-[40%] max-sm:w-full">
-          <details open>
-            <summary class="mb-5 text-xl font-bold text-thirdAccent">
-              Details
-            </summary>
-            <div class="flex items-center gap-4 text-lg">
-              <span class="font-semibold text-textColor2">Country :</span>
-              <span class="text-textColor">USA</span>
-            </div>
-            <div class="mt-3 flex items-center gap-4 text-lg">
-              <span class="font-semibold text-textColor2">Language :</span>
-              <span class="text-textColor">English</span>
-            </div>
-            <div class="mt-3 flex items-center gap-4 text-lg">
-              <span class="font-semibold text-textColor2">Release Date :</span>
-              <span class="text-textColor">20 December 2019</span>
-            </div>
-            <div class="mt-3 flex items-center gap-4 text-lg">
-              <span class="font-semibold text-textColor2">Status :</span>
-              <span class="text-textColor">Running</span>
-            </div>
-            <div class="mt-3 flex items-center gap-4 text-lg">
-              <span class="font-semibold text-textColor2">Network :</span>
-              <span class="text-textColor">Netflix</span>
-            </div>
-          </details>
-        </div>
-      </div>
-      <div class="mb-8">
-        <details open>
-          <summary class="mb-5 text-xl font-bold text-thirdAccent">
-            Seasons
-          </summary>
-          <div class="flex flex-wrap gap-8 max-sm:justify-center">
-            <a href="#" class="flex flex-col items-center gap-3">
-              <img
-                src="./imgs/1163193.jpg"
-                alt=""
-                class="w-[150px] rounded-lg shadow-shadow1"
-              />
-              <span class="text-lg font-semibold text-textColor">Season 1</span>
-            </a>
-            <a href="#" class="flex flex-col items-center gap-3">
-              <img
-                src="./imgs/1163193.jpg"
-                alt=""
-                class="w-[150px] rounded-lg shadow-shadow1"
-              />
-              <span class="text-lg font-semibold text-textColor">Season 2</span>
-            </a>
-            <a href="#" class="flex flex-col items-center gap-3">
-              <img
-                src="./imgs/1163193.jpg"
-                alt=""
-                class="w-[150px] rounded-lg shadow-shadow1"
-              />
-              <span class="text-lg font-semibold text-textColor">Season 3</span>
-            </a>
-          </div>
-        </details>
-      </div>
-      <div>
-        <details open>
-          <summary class="mb-5 text-xl font-bold text-thirdAccent">
-            Cast
-          </summary>
-          <div class="flex flex-wrap gap-4 max-sm:justify-center">
-            <a href="#" class="flex flex-col items-center gap-3">
-              <img
-                src="./imgs/placeholder.png"
-                alt=""
-                class="w-[100px] rounded-lg shadow-shadow1"
-              />
-              <span class="text-lg font-semibold text-textColor">Person 1</span>
-            </a>
-            <a href="#" class="flex flex-col items-center gap-3">
-              <img
-                src="./imgs/placeholder.png"
-                alt=""
-                class="w-[100px] rounded-lg shadow-shadow1"
-              />
-              <span class="text-lg font-semibold text-textColor">Person 2</span>
-            </a>
-            <a href="#" class="flex flex-col items-center gap-3">
-              <img
-                src="./imgs/placeholder.png"
-                alt=""
-                class="w-[100px] rounded-lg shadow-shadow1"
-              />
-              <span class="text-lg font-semibold text-textColor">Person 3</span>
-            </a>
-            <a href="#" class="flex flex-col items-center gap-3">
-              <img
-                src="./imgs/placeholder.png"
-                alt=""
-                class="w-[100px] rounded-lg shadow-shadow1"
-              />
-              <span class="text-lg font-semibold text-textColor">Person 4</span>
-            </a>
-            <a href="#" class="flex flex-col items-center gap-3">
-              <img
-                src="./imgs/placeholder.png"
-                alt=""
-                class="w-[100px] rounded-lg shadow-shadow1"
-              />
-              <span class="text-lg font-semibold text-textColor">Person 5</span>
-            </a>
-          </div>
-        </details>
-      </div>
-      <div
-        class="fixed bottom-0 left-0 z-50 flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-2 backdrop-blur-[6px] sm:hidden"
+        <i class="fa-solid fa-house cursor-pointer text-2xl"></i>
+        <span class="font-semibold">Home</span>
+      </a>
+      <a
+        href="#"
+        class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
       >
-        <a
-          href="index.html"
-          class="active flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
-        >
-          <i class="fa-solid fa-house cursor-pointer text-2xl"></i>
-          <span class="font-semibold">Home</span>
-        </a>
-        <a
-          href="#"
-          class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
-        >
-          <i class="fa-solid fa-clipboard-list cursor-pointer text-2xl"></i>
-          <span class="font-semibold">Watchlist</span>
-        </a>
-        <a
-          href="#"
-          class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
-        >
-          <i class="fa-solid fa-user cursor-pointer text-2xl"></i>
-          <span class="font-semibold">Profile</span>
-        </a>
-      </div>
+        <i class="fa-solid fa-clipboard-list cursor-pointer text-2xl"></i>
+        <span class="font-semibold">Watchlist</span>
+      </a>
+      <a
+        href="#"
+        class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+      >
+        <i class="fa-solid fa-user cursor-pointer text-2xl"></i>
+        <span class="font-semibold">Profile</span>
+      </a>
     </div>
   </body>
 </html>

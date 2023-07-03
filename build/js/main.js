@@ -69,7 +69,7 @@ const displayResults = async (query) => {
     image.className =
       "w-full h-full object-cover rounded-md shadow-shadow1 mb-2";
     div.className = "w-[210px] h-[270px] peer group relative overflow-hidden";
-    a.href = `#${show.id}`;
+    a.href = `show.html#${show.id}`;
     // Append the elements to the div and anchor
     div.append(image);
     div.insertAdjacentHTML("beforeend", info);
@@ -81,9 +81,7 @@ const displayResults = async (query) => {
 //* Search function
 const search = (e) => {
   // If the user presses enter or clicks the search button
-
-  container.classList.add("grid");
-  container.classList.remove("hidden");
+  container.classList.replace("hidden", "grid");
   // Scroll to the container
   container.scrollIntoView({ behavior: "smooth" });
   // Display the data
@@ -92,8 +90,7 @@ const search = (e) => {
 //* If the search input is empty
 const nothingToSearch = () => {
   if (searchInput.value === "") {
-    container.classList.add("hidden");
-    container.classList.remove("grid");
+    container.classList.replace("grid", "hidden");
     container.innerHTML = "";
     searchInput.blur();
   }
