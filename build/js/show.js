@@ -1,40 +1,47 @@
 "use strict";
-const container = document.querySelector(".container");
+const container = document.getElementById("overview");
 const overview = async () => {
-  const res = await fetch(
-    `https://api.tvmaze.com/shows/${window.location.hash.slice(1)}`
-  );
-  //   Convert the response to json
-  const show = await res.json();
-  // Fix the summary
-  show.summary = show.summary.replace(/<p>/g, "");
-  // Get the genres
-  const genres = show.genres
-    .map((genre) => {
-      return `
+  try {
+    const res = await fetch(
+      `https://api.tvmaze.com/shows/${window.location.hash.slice(1)}`
+    );
+    //   Convert the response to json
+    const show = await res.json();
+    console.log(show);
+    //   Set the background image
+    document.documentElement.style.setProperty(
+      "--bg",
+      `url(${show.image.original})`
+    );
+    // Fix the summary
+    show.summary = show.summary.replace(/<p>/g, "");
+    // Get the genres
+    const genres = show.genres
+      .map((genre) => {
+        return `
     <div
     class="w-fit rounded-lg bg-thirdAccent px-3 text-sm font-semibold text-textColor"
   >
     ${genre}
   </div>
     `;
-    })
-    .join("");
+      })
+      .join("");
 
-  // Get the stars number based on the rating and create the stars
-  let stars = [];
-  for (let i = 0; i < 5; i++) {
-    const star = document.createElement("i");
-    star.classList.add("fa-solid", "fa-star", "text-textColor2");
-    stars.push(star);
-  }
-  const starsNum = (Math.round(show.rating.average) / 10) * 5;
-  for (let i = 0; i < starsNum; i++) {
-    stars[i].classList.replace("text-textColor2", "text-primaryAccent");
-  }
+    // Get the stars number based on the rating and create the stars
+    let stars = [];
+    for (let i = 0; i < 5; i++) {
+      const star = document.createElement("i");
+      star.classList.add("fa-solid", "fa-star", "text-textColor2");
+      stars.push(star);
+    }
+    const starsNum = (Math.round(show.rating.average) / 10) * 5;
+    for (let i = 0; i < starsNum; i++) {
+      stars[i].classList.replace("text-textColor2", "text-primaryAccent");
+    }
 
-  // Create the info div
-  const info = `
+    // Create the info div
+    const info = `
   
   <div class="mb-16 mt-9 flex w-full items-center gap-7 max-sm:flex-col">
   <img
@@ -82,8 +89,8 @@ const overview = async () => {
   </div>
 </div>
   `;
-  // Create the details div
-  const details = `
+    // Create the details div
+    const details = `
   <div
   class="my-7 flex w-full items-start justify-between max-sm:flex-col max-sm:gap-10"
 >
@@ -103,6 +110,10 @@ const overview = async () => {
         Details
       </summary>
       <div class="flex items-center gap-4 text-lg">
+        <span class="font-semibold text-textColor2">Id :</span>
+        <span class="text-textColor">${show.id}</span>
+      </div>
+      <div class="mt-3 flex items-center gap-4 text-lg">
         <span class="font-semibold text-textColor2">Country :</span>
         <span class="text-textColor">${
           show.network?.country?.name || "Unknown"
@@ -123,22 +134,27 @@ const overview = async () => {
       <div class="mt-3 flex items-center gap-4 text-lg">
         <span class="font-semibold text-textColor2">Network :</span>
         <span class="text-textColor capitalize">${
-          show.network?.name || show.officialSite.split(".")[1]
+          show.network?.name || show.officialSite?.split(".")[1] || "Unknown"
         }</span>
       </div>
     </details>
   </div>
 </div>
   `;
-  //   Create the seasons div
-  const seasons = await getSeasons();
-  //   Create the cast div
-  const cast = await getCast();
-  //   Insert the elements
-  container.insertAdjacentHTML("beforeend", info);
-  container.insertAdjacentHTML("beforeend", details);
-  container.insertAdjacentHTML("beforeend", seasons);
-  container.insertAdjacentHTML("beforeend", cast);
+    //   Create the seasons div
+    const seasons = await getSeasons();
+    //   Create the cast div
+    const cast = await getCast();
+    //   Insert the elements
+    container.innerHTML = "";
+    container.insertAdjacentHTML("beforeend", info);
+    container.insertAdjacentHTML("beforeend", details);
+    container.insertAdjacentHTML("beforeend", seasons);
+    container.insertAdjacentHTML("beforeend", cast);
+  } catch (err) {
+    console.log(err);
+    container.innerHTML = noResults();
+  }
 };
 const getSeasons = async () => {
   const res = await fetch(
@@ -213,3 +229,28 @@ const getCast = async () => {
   return html;
 };
 overview();
+
+const noResults = () => {
+  document.documentElement.style.setProperty("--bg", `url(../imgs/bg.jpg)`);
+
+  return `
+    <div
+    class="absolute left-1/2 top-1/2 w-2/3 -translate-x-1/2 -translate-y-1/2 px-4 max-sm:w-full"
+  >
+    <img
+      src="imgs/no result search icon.png"
+      alt=""
+      class="mx-auto w-[400px]"
+    />
+    <h1
+      class="text-center text-xl font-bold leading-relaxed text-textColor2"
+    >
+      Oops! The TV show ID you entered is incorrect or doesn't exist.
+      Please double-check the ID and try again.
+      <spam class="text-primaryAccent">Thank you!</spam>
+    </h1>
+  </div>
+    `;
+};
+
+window.addEventListener("hashchange", overview);

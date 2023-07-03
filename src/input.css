@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg: url(../imgs/bg.jpg);
+}
 @layer utilities {
   .active {
     @apply text-primaryAccent;
@@ -10,4 +13,8 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+#showBody::before {
+  background-image: var(--bg);
 }
