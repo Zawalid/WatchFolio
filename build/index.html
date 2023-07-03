@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WatchFolio</title>
+
+    <link rel="stylesheet" href="./css/all.min.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bona+Nova:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <script defer src="./js/main.js"></script>
+  </head>
+  <body
+    class="relative h-screen bg-gradient bg-cover before:absolute before:-z-10 before:h-full before:w-full before:bg-background before:bg-cover before:bg-no-repeat before:opacity-20 before:blur-[1px]"
+  >
+    <div class="container relative h-full">
+      <header class="flex items-center justify-between py-5">
+        <h2 class="font-logo text-4xl font-extrabold max-sm:text-3xl">
+          <span class="text-primaryAccent">Watch</span
+          ><span class="text-textColor">Folio</span>
+        </h2>
+        <div class="flex items-center gap-7 max-sm:hidden">
+          <i
+            class="active fa-solid fa-house cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+          ></i>
+          <i
+            class="fa-solid fa-clipboard-list cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+          ></i>
+          <i
+            class="fa-solid fa-user cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+          ></i>
+        </div>
+      </header>
+      <div
+        class="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 px-3 pt-20"
+      >
+        <h1
+          class="mx-auto w-2/3 text-center text-6xl font-extrabold text-textColor max-sm:w-full max-sm:text-3xl"
+        >
+          Seamlessly Track, Discover, and Curate Your TV Show Journey
+        </h1>
+        <div
+          class="relative mx-auto mt-24 w-2/3 overflow-hidden rounded-[20px] bg-[#0005] px-5 py-3 shadow-shadow1 backdrop-blur-sm max-sm:w-full sm:py-4"
+        >
+          <input
+            type="text"
+            name="search"
+            id="search_input"
+            placeholder="Search for TV shows"
+            class="w-full flex-1 border-none bg-transparent font-semibold text-textColor placeholder-textColor2 placeholder:text-sm placeholder:font-bold focus:outline-none"
+          />
+          <div
+            class="absolute right-0 top-0 grid h-full cursor-pointer place-content-center bg-textColor pe-4 ps-3 transition-colors hover:bg-textColor2"
+            id="search_button"
+          >
+            <i class="fa-solid fa-search text-lg text-black"></i>
+          </div>
+        </div>
+      </div>
+      <div
+        class="fixed bottom-0 left-0 z-50 flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-2 backdrop-blur-[6px] sm:hidden"
+      >
+        <div
+          class="active flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+        >
+          <i class="fa-solid fa-house cursor-pointer text-2xl"></i>
+          <span class="font-semibold">Home</span>
+        </div>
+        <div
+          class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+        >
+          <i class="fa-solid fa-clipboard-list cursor-pointer text-2xl"></i>
+          <span class="font-semibold">Watchlist</span>
+        </div>
+        <div
+          class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+        >
+          <i class="fa-solid fa-user cursor-pointer text-2xl"></i>
+          <span class="font-semibold">Profile</span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="container hidden h-auto min-h-[75vh] w-full grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-6 bg-gradient py-5 max-sm:place-items-center max-sm:pb-24"
+      id="search_results"
+    ></div>
+  </body>
+</html>
