@@ -754,10 +754,6 @@ video {
   border-style: none;
 }
 
-.bg-\[\#0005\] {
-  background-color: #0005;
-}
-
 .bg-\[rgba\(11_\2c 21_\2c 49_\2c 0\.5\)\] {
   background-color: rgba(11 ,21 ,49 ,0.5);
 }
@@ -784,6 +780,10 @@ video {
 
 .bg-transparent {
   background-color: transparent;
+}
+
+.bg-opacity-40 {
+  --tw-bg-opacity: 0.4;
 }
 
 .bg-gradient {
@@ -977,7 +977,7 @@ video {
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
+  /* scroll-snap-type: y mandatory; */
 }
 
 .container {
@@ -1092,14 +1092,6 @@ html {
 
   .max-sm\:place-items-center {
     place-items: center;
-  }
-
-  .max-sm\:pb-20 {
-    padding-bottom: 5rem;
-  }
-
-  .max-sm\:pb-28 {
-    padding-bottom: 7rem;
   }
 
   .max-sm\:pb-24 {
