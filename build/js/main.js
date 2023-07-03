@@ -6,11 +6,16 @@ const searchInput = document.getElementById("search_input");
 const searchBtn = document.getElementById("search_button");
 
 const displayResults = async (query) => {
+  // Show the loading spinner
+  container.innerHTML = `
+    <i
+    class="fa-solid fa-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-4xl text-thirdAccent"
+  ></i>
+    `;
   // Fetch the data
   const res = await fetch(` https://api.tvmaze.com/search/shows?q=${query}`);
   //   Convert the response to json
   const data = await res.json();
-  console.log(data);
   // If there are no results
   const noResults = `
   <div class="flex flex-col items-center justify-center">
@@ -38,7 +43,7 @@ const displayResults = async (query) => {
     // Create the info div
     const info = `
 <div
-        class="blur-[60px] top-0 absolute -z-10 flex h-full w-full flex-col gap-3 bg-dark p-3 transition-all duration-[1s] group-hover:z-10 group-hover:bg-dark group-hover:bg-opacity-50 group-hover:blur-0"
+        class="blur-[60px] top-0 absolute -z-10 flex h-full w-full flex-col gap-3 bg-dark p-3 transition-all duration-[.8s] group-hover:z-10 group-hover:bg-dark group-hover:bg-opacity-50 group-hover:blur-0"
       >
         <div
           class="w-fit rounded-lg bg-thirdAccent px-3 text-sm font-semibold text-textColor"
@@ -82,7 +87,6 @@ const search = (e) => {
   container.scrollIntoView({ behavior: "smooth" });
   // Display the data
   displayResults(searchInput.value);
-  // searchInput.blur();
 };
 //* If the search input is empty
 const nothingToSearch = () => {
