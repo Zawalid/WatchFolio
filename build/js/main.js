@@ -75,14 +75,14 @@ const displayResults = async (query) => {
 //* Search function
 const search = (e) => {
   // If the user presses enter or clicks the search button
-  if (e.key === "Enter" || e.type === "click") {
-    container.classList.add("grid");
-    container.classList.remove("hidden");
-    // Scroll to the container
-    container.scrollIntoView({ behavior: "smooth" });
-    // Display the data
-    displayResults(searchInput.value);
-  }
+
+  container.classList.add("grid");
+  container.classList.remove("hidden");
+  // Scroll to the container
+  // Display the data
+  displayResults(searchInput.value);
+  searchInput.blur();
+  container.scrollIntoView({ behavior: "smooth" });
 };
 //* If the search input is empty
 const nothingToSearch = () => {
@@ -90,10 +90,13 @@ const nothingToSearch = () => {
     container.classList.add("hidden");
     container.classList.remove("grid");
     container.innerHTML = "";
+    searchInput.blur();
   }
 };
 //* Event listeners
 [search, nothingToSearch].forEach((func) => {
-  searchInput.addEventListener("keyup", func);
+  searchInput.addEventListener("keyup", (e) => {
+    if (e.key === "Enter") func();
+  });
   searchBtn.addEventListener("click", func);
 });
