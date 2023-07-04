@@ -17,6 +17,7 @@ const displayResults = async (query) => {
   //   Convert the response to json
   const data = await res.json();
   console.log(data);
+
   // If there are no results
   const noResults = `
   <div class="flex flex-col items-center justify-center col-span-5">
@@ -69,7 +70,7 @@ const displayResults = async (query) => {
     image.className =
       "w-full h-full object-cover rounded-md shadow-shadow1 mb-2";
     div.className = "w-[210px] h-[270px] peer group relative overflow-hidden";
-    a.href = `show.html#${show.id}`;
+    a.href = `show.html?${show.id}`;
     // Append the elements to the div and anchor
     div.append(image);
     div.insertAdjacentHTML("beforeend", info);

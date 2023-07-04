@@ -1,18 +1,34 @@
 "use strict";
 const container = document.getElementById("overview");
-const overview = async () => {
+
+// Get the stars number based on the rating and create the stars
+const getStars = (rating) => {
+  let stars = [];
+  for (let i = 0; i < 5; i++) {
+    const star = document.createElement("i");
+    star.classList.add("fa-solid", "fa-star", "text-textColor2");
+    stars.push(star);
+  }
+  const starsNum = (Math.round(rating) / 10) * 5;
+  for (let i = 0; i < starsNum; i++) {
+    stars[i].classList.replace("text-textColor2", "text-primaryAccent");
+  }
+  return stars;
+};
+const showOverview = async () => {
   try {
     const res = await fetch(
-      `https://api.tvmaze.com/shows/${window.location.hash.slice(1)}`
+      `https://api.tvmaze.com/shows/${window.location.search.split("?")[1]}`
     );
     //   Convert the response to json
     const show = await res.json();
-    console.log(show);
     //   Set the background image
     document.documentElement.style.setProperty(
       "--bg",
       `url(${show.image.original})`
     );
+    // Set the title
+    document.title = show.name;
     // Fix the summary
     show.summary = show.summary.replace(/<p>/g, "");
     // Get the genres
@@ -27,18 +43,6 @@ const overview = async () => {
     `;
       })
       .join("");
-
-    // Get the stars number based on the rating and create the stars
-    let stars = [];
-    for (let i = 0; i < 5; i++) {
-      const star = document.createElement("i");
-      star.classList.add("fa-solid", "fa-star", "text-textColor2");
-      stars.push(star);
-    }
-    const starsNum = (Math.round(show.rating.average) / 10) * 5;
-    for (let i = 0; i < starsNum; i++) {
-      stars[i].classList.replace("text-textColor2", "text-primaryAccent");
-    }
 
     // Create the info div
     const info = `
@@ -66,7 +70,9 @@ const overview = async () => {
     >
       <span>${show.rating.average}</span>
       <div class="flex gap-2">
-        ${stars.map((star) => star.outerHTML).join("")}
+        ${getStars(Math.round(show.rating.average))
+          .map((star) => star.outerHTML)
+          .join("")}
     </div>
     </div>
     <div class="mt-5 flex w-4/6 gap-6 max-sm:w-full max-sm:flex-col">
@@ -154,11 +160,14 @@ const overview = async () => {
   } catch (err) {
     console.log(err);
     container.innerHTML = noResults();
+    return;
   }
 };
 const getSeasons = async () => {
   const res = await fetch(
-    `https://api.tvmaze.com/shows/${window.location.hash.slice(1)}/seasons`
+    `https://api.tvmaze.com/shows/${
+      window.location.search.split("?")[1]
+    }/seasons`
   );
   //   Convert the response to json
   const seasons = await res.json();
@@ -173,7 +182,9 @@ const getSeasons = async () => {
       ${seasons
         .map((season) => {
           return `
-      <a href="#" class="flex flex-col items-center gap-3">
+      <a href="#${
+        season.id
+      }" class="flex flex-col items-center gap-3"  id="season">
       <img
         src="${season.image?.medium || "./imgs/placeholder.png"}"
         alt=""
@@ -194,11 +205,10 @@ const getSeasons = async () => {
 };
 const getCast = async () => {
   const res = await fetch(
-    `https://api.tvmaze.com/shows/${window.location.hash.slice(1)}/cast`
+    `https://api.tvmaze.com/shows/${window.location.search.split("?")[1]}/cast`
   );
   //   Convert the response to json
   const casts = await res.json();
-  //   console.log(casts);
   const html = `
     <div class="mb-8">
     <details open>
@@ -207,6 +217,7 @@ const getCast = async () => {
         </summary>
         <div class="flex flex-wrap gap-8 max-sm:justify-center">
         ${casts
+          .slice(0, 15)
           .map((cast) => {
             return `
         <a href="#" class="flex flex-col items-center gap-3">
@@ -228,8 +239,6 @@ const getCast = async () => {
     `;
   return html;
 };
-overview();
-
 const noResults = () => {
   document.documentElement.style.setProperty("--bg", `url(../imgs/bg.jpg)`);
 
@@ -252,5 +261,154 @@ const noResults = () => {
   </div>
     `;
 };
+const getEpisodes = async () => {
+  const res = await fetch(
+    `https://api.tvmaze.com/seasons/${window.location.hash.slice(1)}/episodes`
+  );
+  //   Convert the response to json
+  const episodes = await res.json();
+  console.log(episodes);
+  const html = episodes
+    .map((episode) => {
+      return `
+  <div class="flex items-center gap-3">
+        <h2 class="text-2xl font-bold text-textColor2">${episode.number}</h2>
+        <img src="${
+          episode.image?.original || "./imgs/placeholder.png"
+        }" alt="" class="w-[150px] rounded-xl" />
+        <div class="flex flex-1 flex-col gap-2">
+          <h3 class="text-lg font-bold text-textColor">
+           ${episode.name}
+          </h3>
+          <div
+            class="flex w-fit items-center gap-1 text-sm font-semibold text-textColor2"
+          >
+            ${episode.rating.average}
+            <div class="flex gap-2">
+            ${getStars(Math.round(episode.rating.average))
+              .map((star) => star.outerHTML)
+              .join("")}
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-clock text-textColor2"></i>
+            <span class="font-semibold text-textColor">${
+              episode.runtime
+            }min</span>
+          </div>
+        </div>
+      </div>
+  `;
+    })
+    .join("");
+  return html;
+};
+console.log(getEpisodes());
+// Initialize
+showOverview();
+// To make sure that the overview works also when the id is set manually
+window.addEventListener("hashchange", showOverview);
 
-window.addEventListener("hashchange", overview);
+//* Season overview
+const seasonOverviewContainer = document.getElementById("season_overview");
+
+const seasonOverview = async (id) => {
+  seasonOverviewContainer.classList.add("show");
+  // I used the try and catch to display an error message when the requests takes too long
+  const res = await fetch(`https://api.tvmaze.com/seasons/${id}`);
+  //   Convert the response to json
+  const season = await res.json();
+  // Fix the summary
+  season.summary = season.summary.replace(/<p>/g, "");
+  const html = `
+  <i
+    class="fa-solid fa-xmark text-textColor2 absolute right-4 top-4 cursor-pointer text-2xl"
+    id="close"
+  ></i>
+  <div class="flex w-full items-start gap-7 max-sm:flex-col">
+    <img
+      src="${season.image.original}"
+      alt=""
+      class="w-[200px] rounded-lg shadow-shadow1 max-sm:w-[230px]"
+    />
+    <div class="flex flex-1 flex-col gap-6 ">
+      <h1
+        class="font-logo text-4xl font-extrabold text-primaryAccent max-sm:text-3xl"
+      >
+        Season ${season.number}
+        <span class="ms-2 font-mono text-lg font-semibold text-textColor"
+          >(2008)</span
+        >
+      </h1>
+      <div class="">
+        <details open>
+          <summary class="mb-5 text-xl font-bold text-thirdAccent">
+            Details
+          </summary>
+          <div class="flex items-center gap-4 text-lg">
+            <span class="font-semibold text-textColor2">Id :</span>
+            <span class="text-textColor">${season.id}</span>
+          </div>
+          <div class="mt-3 flex items-center gap-4 text-lg">
+            <span class="font-semibold text-textColor2">Episodes :</span>
+            <span class="text-textColor">${season.episodeOrder}</span>
+          </div>
+          <div class="mt-3 flex items-center gap-4 text-lg">
+            <span class="font-semibold text-textColor2"
+              >Release Date :</span
+            >
+            <span class="text-textColor">${season.premiereDate}</span>
+          </div>
+          <div class="mt-3 flex items-center gap-4 text-lg">
+            <span class="font-semibold text-textColor2">End Date :</span>
+            <span class="text-textColor">${season.endDate}</span>
+          </div>
+        </details>
+      </div>
+      <div class="">
+        <details open>
+          <summary class="mb-5 text-xl font-bold text-thirdAccent">
+            Summary
+          </summary>
+          <p class="text-lg font-semibold leading-snug text-textColor2">
+           ${season.summary}
+          </p>
+        </details>
+      </div>
+    </div>
+  </div>
+  <div>
+    <details open>
+      <summary class="mb-5 text-xl font-bold text-thirdAccent">
+        Episodes
+      </summary>
+      <div class="my-7 flex flex-col sm:h-[300px] sm:overflow-y-scroll  gap-3">${await getEpisodes()}</div>
+    </details>
+  </div>
+  `;
+  seasonOverviewContainer.firstElementChild.innerHTML = `
+  <i
+  class="fa-solid fa-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-4xl text-thirdAccent"
+></i>
+  `;
+  setTimeout(() => {
+    seasonOverviewContainer.firstElementChild.innerHTML = html;
+  }, 1100);
+  if (window.matchMedia("(max-width: 640px)").matches) {
+    seasonOverviewContainer.firstElementChild.scrollIntoView({
+      behavior: "smooth",
+    });
+  }
+};
+document.addEventListener("click", (e) => {
+  if (e.target.closest("#season")) {
+    seasonOverview(e.target.closest("#season").hash.slice(1));
+  }
+});
+
+seasonOverviewContainer.addEventListener("click", (e) => {
+  if (e.target.closest("#close") || e.target === e.currentTarget) {
+    seasonOverviewContainer.classList.remove("show");
+    seasonOverviewContainer.firstElementChild.innerHTML = "";
+  }
+});
