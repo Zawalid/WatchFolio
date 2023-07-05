@@ -730,6 +730,10 @@ video {
   min-height: 100vh;
 }
 
+.w-16 {
+  width: 4rem;
+}
+
 .w-2\/3 {
   width: 66.666667%;
 }
@@ -909,6 +913,10 @@ video {
 
 .overflow-y-auto {
   overflow-y: auto;
+}
+
+.overflow-x-scroll {
+  overflow-x: scroll;
 }
 
 .rounded-3xl {
@@ -1224,7 +1232,14 @@ video {
   color: rgb(255 193 7 / var(--tw-text-opacity));
 }
 
-#season_overview.show {
+#person_overview.show ,
+  #season_overview.show {
+  z-index: 30;
+  opacity: 1;
+}
+
+#person_overview.\!show ,
+  #season_overview.\!show {
   z-index: 30;
   opacity: 1;
 }
@@ -1247,6 +1262,7 @@ html {
 
 ::-webkit-scrollbar {
   width: 3px;
+  height: 3px;
 }
 
 ::-webkit-scrollbar-track {
@@ -1321,6 +1337,10 @@ html {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
+.hover\:w-48:hover {
+  width: 12rem;
+}
+
 .hover\:bg-textColor2:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(212 212 212 / var(--tw-bg-opacity));
@@ -1369,6 +1389,10 @@ html {
     left: 0px;
   }
 
+  .max-md\:block {
+    display: block;
+  }
+
   .max-md\:h-full {
     height: 100%;
   }
@@ -1388,6 +1412,10 @@ html {
 
   .max-md\:pb-\[75px\] {
     padding-bottom: 75px;
+  }
+
+  .max-md\:text-center {
+    text-align: center;
   }
 }
 

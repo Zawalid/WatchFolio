@@ -9,6 +9,7 @@
   .active {
     @apply text-primaryAccent;
   }
+  #person_overview.show ,
   #season_overview.show {
     @apply z-30 opacity-100;
   }
@@ -27,6 +28,7 @@ html {
 
 ::-webkit-scrollbar {
   width: 3px;
+  height: 3px;
 }
 ::-webkit-scrollbar-track {
   background-color: white;

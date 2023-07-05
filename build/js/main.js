@@ -1,10 +1,11 @@
 "use strict";
 
-//! Search functionality
+//* ------------------ Search ------------------ *//
 const container = document.getElementById("search_results");
 const searchInput = document.getElementById("search_input");
 const searchBtn = document.getElementById("search_button");
 
+//* Display the results of the search
 const displayResults = async (query) => {
   // Show the loading spinner
   container.innerHTML = `
@@ -16,7 +17,6 @@ const displayResults = async (query) => {
   const res = await fetch(` https://api.tvmaze.com/search/shows?q=${query}`);
   //   Convert the response to json
   const data = await res.json();
-  console.log(data);
 
   // If there are no results
   const noResults = `
@@ -79,7 +79,7 @@ const displayResults = async (query) => {
     container.append(a);
   }
 };
-//* Search function
+//* Search for the show the user entered
 const search = (e) => {
   // If the user presses enter or clicks the search button
   container.classList.replace("hidden", "grid");

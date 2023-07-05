@@ -1,7 +1,7 @@
 "use strict";
-const container = document.getElementById("overview");
 
-// Get the stars number based on the rating and create the stars
+//* ------------------------------ Helpers Functions ------------------------------ *//
+//* Get the stars number based on the rating and create the stars
 const getStars = (rating) => {
   let stars = [];
   for (let i = 0; i < 5; i++) {
@@ -15,6 +15,38 @@ const getStars = (rating) => {
   }
   return stars;
 };
+//* Display the overview container
+const displayOverview = (container, html) => {
+  container.classList.add("show");
+  if (container === personOverviewContainer)
+    container.firstElementChild.scrollIntoView({ behavior: "smooth" });
+  container.firstElementChild.innerHTML = `
+  <i
+  class="fa-solid fa-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-4xl text-thirdAccent"
+></i>
+  `;
+  setTimeout(() => {
+    container.firstElementChild.innerHTML = html;
+  }, 1000);
+  if (window.matchMedia("(max-width: 768px)").matches) {
+    console.log("hi");
+    window.scrollTo(0, 0);
+    document.body.classList.add("h-screen", "overflow-hidden");
+  }
+};
+//* Close the overview container
+const closeOverview = (container) => {
+  container.addEventListener("click", (e) => {
+    if (e.target.closest("#close") || e.target === e.currentTarget) {
+      document.body.classList.remove("h-screen", "overflow-hidden");
+      container.classList.remove("show");
+      container.firstElementChild.innerHTML = "";
+    }
+  });
+};
+
+//* ------------------------------ The show overview ------------------------------ *//
+const showOverviewContainer = document.getElementById("overview");
 const showOverview = async () => {
   try {
     const res = await fetch(
@@ -152,17 +184,18 @@ const showOverview = async () => {
     //   Create the cast div
     const cast = await getCast();
     //   Insert the elements
-    container.innerHTML = "";
-    container.insertAdjacentHTML("beforeend", info);
-    container.insertAdjacentHTML("beforeend", details);
-    container.insertAdjacentHTML("beforeend", seasons);
-    container.insertAdjacentHTML("beforeend", cast);
+    showOverviewContainer.innerHTML = "";
+    showOverviewContainer.insertAdjacentHTML("beforeend", info);
+    showOverviewContainer.insertAdjacentHTML("beforeend", details);
+    showOverviewContainer.insertAdjacentHTML("beforeend", seasons);
+    showOverviewContainer.insertAdjacentHTML("beforeend", cast);
   } catch (err) {
     console.log(err);
-    container.innerHTML = noResults();
+    showOverviewContainer.innerHTML = noResults();
     return;
   }
 };
+//* Get the seasons
 const getSeasons = async () => {
   const res = await fetch(
     `https://api.tvmaze.com/shows/${
@@ -203,25 +236,31 @@ const getSeasons = async () => {
   `;
   return html;
 };
+//* Get the cast
 const getCast = async () => {
   const res = await fetch(
     `https://api.tvmaze.com/shows/${window.location.search.split("?")[1]}/cast`
   );
+  const renderPerson = (name, character, image) => {
+    return `
+    <div class="flex flex-col items-center gap-3 cursor-pointer" data-character="${character}" data-name="${name}" id="person">
+    <img
+    src="${image || "./imgs/placeholder.png"}"
+    alt=""
+    class="w-[120px] rounded-lg shadow-shadow1"
+    />
+    <span class="text-lg font-semibold text-textColor">${name}</span></div>`;
+  };
   const showAllCast = () => {
     return `
     ${casts
       .map((cast) => {
         return `
-        <a href="#" class="flex flex-col items-center gap-3">
-    <img
-        src="${cast.person.image?.medium || "./imgs/placeholder.png"}"
-        alt=""
-        class="w-[120px] rounded-lg shadow-shadow1"
-    />
-    <span class="text-lg font-semibold text-textColor">${
-      cast.person.name
-    }</span>
-    </a>
+        ${renderPerson(
+          cast.person.name,
+          cast.character.name,
+          cast.person.image?.medium
+        )}
         `;
       })
       .join("")}
@@ -234,16 +273,11 @@ const getCast = async () => {
       .slice(0, 15)
       .map((cast) => {
         return `
-        <a href="#" class="flex flex-col items-center gap-3">
-    <img
-        src="${cast.person.image?.medium || "./imgs/placeholder.png"}"
-        alt=""
-        class="w-[120px] rounded-lg shadow-shadow1"
-    />
-    <span class="text-lg font-semibold text-textColor">${
-      cast.person.name
-    }</span>
-    </a>
+        ${renderPerson(
+          cast.person.name,
+          cast.character.name,
+          cast.person.image?.medium
+        )}
         `;
       })
       .join("")}
@@ -279,6 +313,7 @@ const getCast = async () => {
 
   return html;
 };
+//* No results message
 const noResults = () => {
   document.documentElement.style.setProperty("--bg", `url(../imgs/bg.jpg)`);
 
@@ -301,59 +336,14 @@ const noResults = () => {
   </div>
     `;
 };
-const getEpisodes = async () => {
-  const res = await fetch(
-    `https://api.tvmaze.com/seasons/${window.location.hash.slice(1)}/episodes`
-  );
-  //   Convert the response to json
-  const episodes = await res.json();
-  const html = episodes
-    .map((episode) => {
-      return `
-  <div class="flex items-center gap-3">
-        <h2 class="text-2xl font-bold text-center text-textColor2 w-7 ${
-          !episode.number ? "textVertical" : ""
-        }">${episode.number || "Special"}</h2>
-        <img src="${
-          episode.image?.original || "./imgs/placeholder.png"
-        }" alt="" class="w-[150px] aspect-[3/2] object-cover rounded-xl max-sm:w-[100px]" />
-        <div class="flex flex-1 flex-col gap-2">
-          <h3 class="text-lg font-bold text-textColor h-7 overflow-y-auto">
-           ${episode.name}
-          </h3>
-          <div
-            class="flex w-fit items-center gap-1 text-sm font-semibold text-textColor2"
-          >
-            ${episode.rating?.average || "Unrated"}
-            <div class="flex gap-2">
-            ${getStars(Math.round(episode.rating.average))
-              .map((star) => star.outerHTML)
-              .join("")}
-            </div>
-          </div>
-          <div class="flex items-center gap-2">
-            <i class="fa-solid fa-clock text-textColor2"></i>
-            <span class="font-semibold text-textColor">${
-              episode.runtime
-            }min</span>
-          </div>
-        </div>
-      </div>
-  `;
-    })
-    .join("");
-  return html;
-};
-// Initialize
+//* Initialize
 showOverview();
-// To make sure that the overview works also when the id is set manually
+//* To make sure that the show overview works also when the id is set manually
 window.addEventListener("hashchange", showOverview);
 
-//* Season overview
+//* ------------------------------ Season overview ------------------------------ *//
 const seasonOverviewContainer = document.getElementById("season_overview");
-
 const seasonOverview = async (id) => {
-  seasonOverviewContainer.classList.add("show");
   // I used the try and catch to display an error message when the requests takes too long
   const res = await fetch(`https://api.tvmaze.com/seasons/${id}`);
   //   Convert the response to json
@@ -374,7 +364,7 @@ const seasonOverview = async (id) => {
     />
     <div class="flex flex-1 flex-col gap-6 ">
       <h1
-        class="font-logo text-4xl font-extrabold text-primaryAccent max-sm:text-3xl"
+        class="font-logo text-4xl font-extrabold text-primaryAccent max-sm:text-3xl max-md:text-center"
       >
         Season ${season.number}
         <span class="ms-2 font-mono text-lg font-semibold text-textColor"
@@ -425,30 +415,259 @@ const seasonOverview = async (id) => {
     </details>
   </div>
   `;
-  seasonOverviewContainer.firstElementChild.innerHTML = `
-  <i
-  class="fa-solid fa-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-4xl text-thirdAccent"
-></i>
-  `;
-  setTimeout(() => {
-    seasonOverviewContainer.firstElementChild.innerHTML = html;
-  }, 1100);
-  if (window.matchMedia("(max-width: 768px)").matches) {
-    console.log("hi");
-    window.scrollTo(0, 0);
-    document.body.classList.add("h-screen", "overflow-hidden");
-  }
+  displayOverview(seasonOverviewContainer, html);
 };
+//* Get the episodes
+const getEpisodes = async () => {
+  const res = await fetch(
+    `https://api.tvmaze.com/seasons/${window.location.hash.slice(1)}/episodes`
+  );
+  //   Convert the response to json
+  const episodes = await res.json();
+  const html = episodes
+    .map((episode) => {
+      return `
+  <div class="flex items-center gap-3">
+        <h2 class="text-2xl font-bold text-center text-textColor2 w-7 ${
+          !episode.number ? "textVertical" : ""
+        }">${episode.number || "Special"}</h2>
+        <img src="${
+          episode.image?.original || "./imgs/placeholder.png"
+        }" alt="" class="w-[150px] aspect-[3/2] object-cover rounded-xl max-sm:w-[100px]" />
+        <div class="flex flex-1 flex-col gap-2">
+          <h3 class="text-lg font-bold text-textColor h-7 overflow-y-auto">
+           ${episode.name}
+          </h3>
+          <div
+            class="flex w-fit items-center gap-1 text-sm font-semibold text-textColor2"
+          >
+            ${episode.rating?.average || "Unrated"}
+            <div class="flex gap-2">
+            ${getStars(Math.round(episode.rating.average))
+              .map((star) => star.outerHTML)
+              .join("")}
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-clock text-textColor2"></i>
+            <span class="font-semibold text-textColor">${
+              episode.runtime
+            }min</span>
+          </div>
+        </div>
+      </div>
+  `;
+    })
+    .join("");
+  return html;
+};
+//* Show the season overview when clicking on the season
 document.addEventListener("click", (e) => {
   if (e.target.closest("#season")) {
     seasonOverview(e.target.closest("#season").hash.slice(1));
   }
 });
+//* Close the season overview when clicking on the close button or the container
+closeOverview(seasonOverviewContainer);
 
-seasonOverviewContainer.addEventListener("click", (e) => {
-  if (e.target.closest("#close") || e.target === e.currentTarget) {
-    document.body.classList.remove("h-screen", "overflow-hidden");
-    seasonOverviewContainer.classList.remove("show");
-    seasonOverviewContainer.firstElementChild.innerHTML = "";
+//* ------------------------------ The TMDB API ------------------------------ *//
+const options = {
+  method: "GET",
+  headers: {
+    accept: "application/json",
+    Authorization:
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3OWUxNjZjMzNhZjE4ZmVlNTgzNWJiMDBiOGE5ZTA1NCIsInN1YiI6IjY0YTJiOTcxMTEzODZjMDBhZGM3OTQxMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.yxORg4upeOsiqCve7e9CDV4i-_Q2LfIpnqKKax3Fnw4",
+  },
+};
+const baseUrl = "http://image.tmdb.org/t/p/";
+const genders = {
+  0: "Not Specified",
+  1: "Female",
+  2: "Male",
+  3: "Non Binary",
+};
+
+//* ------------------------------ Person overview ------------------------------ *//
+const personOverviewContainer = document.getElementById("person_overview");
+const personOverview = async (name, character) => {
+  const personId = await getPersonId(name);
+  const res = await fetch(
+    `https://api.themoviedb.org/3/person/${personId}`,
+    options
+  );
+  const person = await res.json();
+  console.log(person);
+  const age =
+    new Date().getFullYear() - new Date(person.birthday).getFullYear();
+  const html = `
+
+  <i
+    class="fa-solid fa-xmark absolute right-4 top-4 cursor-pointer text-2xl text-textColor2"
+    id="close"
+  ></i>
+  <div class="flex w-full items-start gap-7 max-sm:flex-col">
+    <img src="${
+      baseUrl + "original" + person.profile_path || "./imgs/placeholder.png"
+    } "
+    alt="" class="w-[230px] rounded-lg shadow-shadow1 max-sm:self-center"
+    />
+    <div class="flex flex-1 flex-col gap-6">
+      <h1
+        class="font-logo text-4xl font-extrabold text-primaryAccent max-sm:text-3xl max-md:text-center"
+      >
+        ${person.name}
+        <span class="ms-2 font-mono text-lg font-semibold text-textColor max-md:block"
+          >(${character})</span
+        >
+      </h1>
+      <div class="">
+        <details open>
+          <summary class="mb-5 text-xl font-bold text-thirdAccent">
+            Personal Info
+          </summary>
+          <div class="mt-3 flex items-center gap-4 text-lg">
+            <span class="font-semibold text-textColor2">Age :</span>
+            <span class="text-textColor"
+              >${age}</span
+            >
+          </div>
+          <div class="mt-3 flex items-center gap-4 text-lg">
+            <span class="font-semibold text-textColor2"
+              >Gender :</span
+            >
+            <span class="text-textColor">${genders[person.gender]}</span>
+          </div>
+          <div class="mt-3 flex items-center gap-4 text-lg">
+            <span class="font-semibold text-textColor2">Birthday :</span>
+            <span class="text-textColor">${person.birthday}</span>
+          </div>
+          <div class="mt-3 flex items-center gap-4 text-lg">
+            <span class="font-semibold text-textColor2">Place of birth :</span>
+            <span class="text-textColor">${person.place_of_birth}</span>
+          </div>
+        </details>
+      </div>
+      <div class="">
+        <details>
+          <summary class="mb-5 text-xl font-bold text-thirdAccent">
+            Biography
+          </summary>
+          <p class="text-lg font-semibold leading-snug text-textColor2">
+            ${person.biography || "No biography available"}
+          </p>
+        </details>
+      </div>
+    </div>
+  </div>
+  <div>
+    <details open>
+      <summary class="mb-5 text-xl font-bold text-thirdAccent">
+        Other TV Shows
+      </summary>
+      <div
+        class="my-7 flex gap-3 overflow-x-scroll "
+      >
+        ${await getOtherShows(personId)}
+      </div>
+    </details>
+  </div>
+`;
+  displayOverview(personOverviewContainer, html);
+};
+//* Get the person id
+const getPersonId = async (name) => {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/search/person?query=${name}&page=1`,
+    options
+  );
+  const person = await res.json();
+  return person.results[0].id;
+};
+//* Get the other shows
+const getOtherShows = async (id) => {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/person/${id}/tv_credits`,
+    options
+  );
+  let shows = await res.json();
+  const infos = await Promise.all(
+    shows.cast.map((show) => {
+      return getOtherShowInfo(show.name);
+    })
+  );
+  shows.cast.forEach((show, i) => {
+    show.info = infos[i];
+  });
+  console.log(shows.cast);
+  console.log(new Set(shows.cast));
+
+  const html = shows.cast
+    .map((show) => {
+      if (!show.info) return "";
+      return `
+      <a href="show.html?${show?.info?.id}">
+      <div class=" h-[270px] w-16 hover:w-48 transition-all duration-500 peer group relative overflow-hidden">
+        <img
+          src="${
+            show.poster_path
+              ? baseUrl + "original" + show.poster_path
+              : "./imgs/placeholder.png"
+          }"
+          alt=""
+          class="w-full h-full object-cover rounded-md shadow-shadow1 mb-2"
+        />
+        ${show?.info?.info}
+        </div>
+        </a>
+    `;
+    })
+    .join("");
+
+  return html;
+};
+//* Get the show info using the first API
+const getOtherShowInfo = async (name) => {
+  try {
+    const res = await fetch(
+      `https://api.tvmaze.com/singlesearch/shows?q=${name}`
+    );
+    const show = await res.json();
+    const info = `
+    <div
+    class="blur-[60px] top-0 absolute -z-10 flex h-full w-full flex-col gap-3 bg-dark p-3 transition-all duration-[.8s] group-hover:z-10 group-hover:bg-dark group-hover:bg-opacity-50 group-hover:blur-0"
+  >
+          <div
+            class="w-fit rounded-lg bg-thirdAccent px-3 text-sm font-semibold text-textColor"
+          >
+            ${show.genres[0] || "No genre"}
+          </div>
+          <div
+            class="flex w-fit items-center gap-1 rounded-lg bg-secondaryAccent px-3 text-sm font-semibold text-textColor"
+          >
+            ${
+              show.rating.average || "Not rated"
+            } <i class="fa-solid fa-star text-primaryAccent"></i>
+          </div>
+          <h3 class="mt-auto font-logo text-lg font-bold text-textColor">
+          ${show.name}
+          </h3>
+          </div>
+       
+  `;
+    return {
+      info,
+      id: show.id,
+    };
+  } catch (err) {}
+};
+//* Show the person overview when clicking on the person
+document.addEventListener("click", (e) => {
+  if (e.target.closest("#person")) {
+    personOverview(
+      e.target.closest("#person").dataset.name,
+      e.target.closest("#person").dataset.character
+    );
   }
 });
+//* Close the person overview when clicking on the close button or the container
+closeOverview(personOverviewContainer);
