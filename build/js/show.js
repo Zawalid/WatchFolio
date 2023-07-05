@@ -421,7 +421,7 @@ const seasonOverview = async (id) => {
       <summary class="mb-5 text-xl font-bold text-thirdAccent">
         Episodes
       </summary>
-      <div class="my-7 flex flex-col sm:h-[300px] sm:overflow-y-scroll  gap-3">${await getEpisodes()}</div>
+      <div class="my-7 flex flex-col md:h-[300px] md:overflow-y-scroll  gap-3">${await getEpisodes()}</div>
     </details>
   </div>
   `;
@@ -433,14 +433,10 @@ const seasonOverview = async (id) => {
   setTimeout(() => {
     seasonOverviewContainer.firstElementChild.innerHTML = html;
   }, 1100);
-  if (window.matchMedia("(max-width: 640px)").matches) {
+  if (window.matchMedia("(max-width: 768px)").matches) {
     console.log("hi");
-    seasonOverviewContainer.firstElementChild.scrollIntoView(
-      (alignTop = true),
-      {
-        behavior: "smooth",
-      }
-    );
+    window.scrollTo(0, 0);
+    document.body.classList.add("h-screen", "overflow-hidden");
   }
 };
 document.addEventListener("click", (e) => {
@@ -451,6 +447,7 @@ document.addEventListener("click", (e) => {
 
 seasonOverviewContainer.addEventListener("click", (e) => {
   if (e.target.closest("#close") || e.target === e.currentTarget) {
+    document.body.classList.remove("h-screen", "overflow-hidden");
     seasonOverviewContainer.classList.remove("show");
     seasonOverviewContainer.firstElementChild.innerHTML = "";
   }

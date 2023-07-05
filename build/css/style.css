@@ -614,6 +614,10 @@ video {
   grid-column: span 5 / span 5;
 }
 
+.m-auto {
+  margin: auto;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -681,16 +685,16 @@ video {
   display: none;
 }
 
-.aspect-\[\] {
-  aspect-ratio: ;
-}
-
 .aspect-\[3\/2\] {
   aspect-ratio: 3/2;
 }
 
 .h-64 {
   height: 16rem;
+}
+
+.h-7 {
+  height: 1.75rem;
 }
 
 .h-\[270px\] {
@@ -701,16 +705,17 @@ video {
   height: auto;
 }
 
+.h-fit {
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
 .h-full {
   height: 100%;
 }
 
 .h-screen {
   height: 100vh;
-}
-
-.h-7 {
-  height: 1.75rem;
 }
 
 .min-h-\[600px\] {
@@ -727,6 +732,10 @@ video {
 
 .w-2\/3 {
   width: 66.666667%;
+}
+
+.w-3\/4 {
+  width: 75%;
 }
 
 .w-4\/5 {
@@ -778,10 +787,6 @@ video {
   width: 100%;
 }
 
-.w-3\/4 {
-  width: 75%;
-}
-
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -826,12 +831,12 @@ video {
   grid-template-columns: repeat(auto-fit,220px);
 }
 
-.grid-cols-\[repeat\(auto-fit\2c minmax\(152px\2c 1fr\)\)\] {
-  grid-template-columns: repeat(auto-fit,minmax(152px,1fr));
-}
-
 .grid-cols-\[repeat\(auto-fit\2c minmax\(110px\2c 1fr\)\)\] {
   grid-template-columns: repeat(auto-fit,minmax(110px,1fr));
+}
+
+.grid-cols-\[repeat\(auto-fit\2c minmax\(152px\2c 1fr\)\)\] {
+  grid-template-columns: repeat(auto-fit,minmax(152px,1fr));
 }
 
 .flex-col {
@@ -904,10 +909,6 @@ video {
 
 .overflow-y-auto {
   overflow-y: auto;
-}
-
-.overflow-y-scroll {
-  overflow-y: scroll;
 }
 
 .rounded-3xl {
@@ -1375,6 +1376,14 @@ html {
     --tw-translate-x: 0px;
     transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   }
+
+  .max-md\:overflow-scroll {
+    overflow: scroll;
+  }
+
+  .max-md\:overflow-y-scroll {
+    overflow-y: scroll;
+  }
 }
 
 @media not all and (min-width: 640px) {
@@ -1437,10 +1446,6 @@ html {
     display: none;
   }
 
-  .sm\:h-\[300px\] {
-    height: 300px;
-  }
-
   .sm\:overflow-y-scroll {
     overflow-y: scroll;
   }
@@ -1451,8 +1456,20 @@ html {
   }
 }
 
-@media (min-width: 878px) {
-  .wrap\:col-span-full {
-    grid-column: 1 / -1;
+@media (min-width: 768px) {
+  .md\:h-\[300px\] {
+    height: 300px;
+  }
+
+  .md\:items-center {
+    align-items: center;
+  }
+
+  .md\:justify-center {
+    justify-content: center;
+  }
+
+  .md\:overflow-y-scroll {
+    overflow-y: scroll;
   }
 }
