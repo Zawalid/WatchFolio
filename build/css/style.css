@@ -689,10 +689,6 @@ video {
   aspect-ratio: 3/2;
 }
 
-.h-40 {
-  height: 10rem;
-}
-
 .h-64 {
   height: 16rem;
 }
@@ -748,10 +744,6 @@ video {
 
 .w-4\/5 {
   width: 80%;
-}
-
-.w-40 {
-  width: 10rem;
 }
 
 .w-64 {
@@ -1424,6 +1416,10 @@ html {
 
   .max-md\:overflow-y-scroll {
     overflow-y: scroll;
+  }
+
+  .max-md\:pb-6 {
+    padding-bottom: 1.5rem;
   }
 
   .max-md\:pb-\[75px\] {
