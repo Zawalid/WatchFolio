@@ -1,5 +1,33 @@
 "use strict";
 
+//* ------------------ Creating overview containers (Avoid repetition) ------------------ *//
+const overviewContainer = `
+<div
+class="absolute inset-0 -z-10 flex h-full w-full cursor-zoom-out bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-500 max-md:h-full md:items-center md:justify-center"
+id="overview"
+>
+<div
+  class="relative flex min-h-[600px] w-4/5 cursor-auto flex-col gap-10 rounded-xl bg-gradient p-8 shadow-shadow1 max-md:left-0 max-md:h-full max-md:w-full max-md:translate-x-0 max-md:overflow-y-scroll max-md:pb-[75px] max-sm:rounded-none"
+></div>
+</div>
+`;
+for (let i = 0; i < 2; i++) {
+  document.body.insertAdjacentHTML("beforeend", overviewContainer);
+}
+
+document.querySelectorAll("#overview")[1].id = "season_overview";
+document.querySelectorAll("#overview")[1].id = "person_overview";
+
+// todo : add the lottie loading animation here and the container in the html when you finish (I hate live server)
+//* ------------------------------ Loading Animation ------------------------------ *//
+// const animation = lottie.loadAnimation({
+//   container: document.getElementById("animation-container"),
+//   renderer: "svg",
+//   path: "js/loading.json",
+//   autoplay: true,
+//   loop: true,
+// });
+
 //* ------------------------------ Helpers Functions ------------------------------ *//
 //* Get the stars number based on the rating and create the stars
 const getStars = (rating) => {
@@ -15,19 +43,22 @@ const getStars = (rating) => {
   }
   return stars;
 };
-//* Display the overview container
-const displayOverview = (container, html) => {
+//* Show the loading spinner and the container
+const showLoading = (container) => {
   container.classList.add("show");
-  if (container === personOverviewContainer)
-    container.firstElementChild.scrollIntoView({ behavior: "smooth" });
+  container.firstElementChild.scrollIntoView({ behavior: "smooth" });
   container.firstElementChild.innerHTML = `
   <i
   class="fa-solid fa-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-4xl text-thirdAccent"
 ></i>
   `;
+  // animation.setSpeed(0.7);
+};
+//* Display the overview container
+const displayOverview = (container, html) => {
   setTimeout(() => {
     container.firstElementChild.innerHTML = html;
-  }, 1000);
+  }, 1100);
   if (window.matchMedia("(max-width: 768px)").matches) {
     console.log("hi");
     window.scrollTo(0, 0);
@@ -36,7 +67,7 @@ const displayOverview = (container, html) => {
 };
 //* Close the overview container
 const closeOverview = (container) => {
-  container.addEventListener("click", (e) => {
+  container?.addEventListener("click", (e) => {
     if (e.target.closest("#close") || e.target === e.currentTarget) {
       document.body.classList.remove("h-screen", "overflow-hidden");
       container.classList.remove("show");
@@ -62,7 +93,7 @@ const showOverview = async () => {
     // Set the title
     document.title = show.name;
     // Fix the summary
-    show.summary = show.summary?.replace(/<p>/g, "");
+    show.summary = show.summary?.replace(/<p>|<\/p>/g, "");
     // Get the genres
     const genres = show.genres
       .map((genre) => {
@@ -243,7 +274,7 @@ const getCast = async () => {
   );
   const renderPerson = (name, character, image) => {
     return `
-    <div class="flex flex-col items-center gap-3 cursor-pointer" data-character="${character}" data-name="${name}" id="person">
+    <div class="flex flex-col  gap-3 cursor-pointer" data-character="${character}" data-name="${name}" id="person">
     <img
     src="${image || "./imgs/placeholder.png"}"
     alt=""
@@ -344,6 +375,7 @@ window.addEventListener("hashchange", showOverview);
 //* ------------------------------ Season overview ------------------------------ *//
 const seasonOverviewContainer = document.getElementById("season_overview");
 const seasonOverview = async (id) => {
+  showLoading(seasonOverviewContainer);
   // I used the try and catch to display an error message when the requests takes too long
   const res = await fetch(`https://api.tvmaze.com/seasons/${id}`);
   //   Convert the response to json
@@ -411,7 +443,7 @@ const seasonOverview = async (id) => {
       <summary class="mb-5 text-xl font-bold text-thirdAccent">
         Episodes
       </summary>
-      <div class="my-7 flex flex-col md:h-[300px] md:overflow-y-scroll  gap-3">${await getEpisodes()}</div>
+      <div class="my-7 flex flex-col md:h-[300px] md:overflow-y-scroll  gap-3 pb-8">${await getEpisodes()}</div>
     </details>
   </div>
   `;
@@ -490,6 +522,8 @@ const genders = {
 //* ------------------------------ Person overview ------------------------------ *//
 const personOverviewContainer = document.getElementById("person_overview");
 const personOverview = async (name, character) => {
+  showLoading(personOverviewContainer);
+  // Get the person id
   const personId = await getPersonId(name);
   const res = await fetch(
     `https://api.themoviedb.org/3/person/${personId}`,
@@ -565,7 +599,7 @@ const personOverview = async (name, character) => {
         Other TV Shows
       </summary>
       <div
-        class="my-7 flex gap-3 overflow-x-scroll "
+        class="my-7 flex gap-3 overflow-x-auto pb-8"
       >
         ${await getOtherShows(personId)}
       </div>
@@ -598,8 +632,11 @@ const getOtherShows = async (id) => {
   shows.cast.forEach((show, i) => {
     show.info = infos[i];
   });
-  console.log(shows.cast);
-  console.log(new Set(shows.cast));
+  // Remove duplicates
+  shows.cast = shows.cast = shows.cast.filter(
+    (show, i, arr) =>
+      show.info && arr.findIndex((t) => t.info?.id === show.info?.id) === i
+  );
 
   const html = shows.cast
     .map((show) => {
