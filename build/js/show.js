@@ -599,7 +599,7 @@ const personOverview = async (name, character) => {
         Other TV Shows
       </summary>
       <div
-        class="my-7 flex gap-3 overflow-x-auto pb-8"
+        class="my-7 flex gap-3 overflow-x-auto max-md:pb-6"
       >
         ${await getOtherShows(personId)}
       </div>
