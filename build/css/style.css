@@ -681,6 +681,14 @@ video {
   display: none;
 }
 
+.aspect-\[\] {
+  aspect-ratio: ;
+}
+
+.aspect-\[3\/2\] {
+  aspect-ratio: 3/2;
+}
+
 .h-64 {
   height: 16rem;
 }
@@ -699,6 +707,10 @@ video {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-7 {
+  height: 1.75rem;
 }
 
 .min-h-\[600px\] {
@@ -721,12 +733,12 @@ video {
   width: 80%;
 }
 
-.w-4\/6 {
-  width: 66.666667%;
-}
-
 .w-64 {
   width: 16rem;
+}
+
+.w-7 {
+  width: 1.75rem;
 }
 
 .w-\[120px\] {
@@ -766,6 +778,10 @@ video {
   width: 100%;
 }
 
+.w-3\/4 {
+  width: 75%;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -794,12 +810,28 @@ video {
   animation: spin 1s linear infinite;
 }
 
+.cursor-auto {
+  cursor: auto;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
 
+.cursor-zoom-out {
+  cursor: zoom-out;
+}
+
 .grid-cols-\[repeat\(auto-fit\2c 220px\)\] {
   grid-template-columns: repeat(auto-fit,220px);
+}
+
+.grid-cols-\[repeat\(auto-fit\2c minmax\(152px\2c 1fr\)\)\] {
+  grid-template-columns: repeat(auto-fit,minmax(152px,1fr));
+}
+
+.grid-cols-\[repeat\(auto-fit\2c minmax\(110px\2c 1fr\)\)\] {
+  grid-template-columns: repeat(auto-fit,minmax(110px,1fr));
 }
 
 .flex-col {
@@ -868,6 +900,14 @@ video {
 
 .overflow-hidden {
   overflow: hidden;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+.overflow-y-scroll {
+  overflow-y: scroll;
 }
 
 .rounded-3xl {
@@ -1312,6 +1352,12 @@ html {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
+@media not all and (min-width: 878px) {
+  .max-wrap\:col-span-full {
+    grid-column: 1 / -1;
+  }
+}
+
 @media not all and (min-width: 768px) {
   .max-md\:left-0 {
     left: 0px;
@@ -1334,6 +1380,10 @@ html {
 @media not all and (min-width: 640px) {
   .max-sm\:hidden {
     display: none;
+  }
+
+  .max-sm\:w-\[100px\] {
+    width: 100px;
   }
 
   .max-sm\:w-\[230px\] {
@@ -1398,5 +1448,11 @@ html {
   .sm\:py-4 {
     padding-top: 1rem;
     padding-bottom: 1rem;
+  }
+}
+
+@media (min-width: 878px) {
+  .wrap\:col-span-full {
+    grid-column: 1 / -1;
   }
 }

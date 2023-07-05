@@ -37,6 +37,9 @@ module.exports = {
       boxShadow: {
         shadow1: "-7px 11px 20px #000000a1",
       },
+      screens: {
+        wrap:  "878px" ,
+      },
     },
   },
   plugins: [],

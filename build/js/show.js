@@ -62,7 +62,7 @@ const showOverview = async () => {
         >(${show.premiered.split("-")[0]})</span
       >
     </h1>
-    <div class="flex gap-5">
+    <div class="flex gap-5 flex-wrap max-sm:justify-center">
       ${genres}
     </div>
     <div
@@ -75,19 +75,19 @@ const showOverview = async () => {
           .join("")}
     </div>
     </div>
-    <div class="mt-5 flex w-4/6 gap-6 max-sm:w-full max-sm:flex-col">
+    <div class="mt-5  gap-6 w-3/4 max-sm:w-full  grid grid-cols-[repeat(auto-fit,minmax(152px,1fr))]">
       <div
-        class="w-full cursor-pointer rounded-3xl bg-secondaryAccent px-5 py-3 text-center font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80"
+        class=" cursor-pointer rounded-3xl bg-secondaryAccent px-5 py-3 text-center font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80"
       >
         I Watched
       </div>
       <div
-        class="w-full cursor-pointer rounded-3xl bg-dark px-5 py-3 text-center font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80"
+        class=" cursor-pointer rounded-3xl bg-dark px-5 py-3 text-center font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80"
       >
         I'm Watching
       </div>
       <div
-        class="w-full cursor-pointer rounded-3xl bg-thirdAccent px-5 py-3 text-center font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80"
+        class="max-wrap:col-span-full cursor-pointer rounded-3xl bg-thirdAccent px-5 py-3 text-center font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80"
       >
         I Will Watch
       </div>
@@ -215,7 +215,7 @@ const getCast = async () => {
         <summary class="mb-5 text-xl font-bold text-thirdAccent">
         Casts
         </summary>
-        <div class="flex flex-wrap gap-8 max-sm:justify-center">
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(110px,1fr))] text-center gap-8 max-sm:justify-center">
         ${casts
           .slice(0, 15)
           .map((cast) => {
@@ -267,17 +267,18 @@ const getEpisodes = async () => {
   );
   //   Convert the response to json
   const episodes = await res.json();
-  console.log(episodes);
   const html = episodes
     .map((episode) => {
       return `
   <div class="flex items-center gap-3">
-        <h2 class="text-2xl font-bold text-textColor2">${episode.number}</h2>
+        <h2 class="text-2xl font-bold text-center text-textColor2 w-7">${
+          episode.number
+        }</h2>
         <img src="${
           episode.image?.original || "./imgs/placeholder.png"
-        }" alt="" class="w-[150px] rounded-xl" />
+        }" alt="" class="w-[150px] aspect-[3/2] object-cover rounded-xl max-sm:w-[100px]" />
         <div class="flex flex-1 flex-col gap-2">
-          <h3 class="text-lg font-bold text-textColor">
+          <h3 class="text-lg font-bold text-textColor h-7 overflow-y-auto">
            ${episode.name}
           </h3>
           <div
@@ -303,7 +304,6 @@ const getEpisodes = async () => {
     .join("");
   return html;
 };
-console.log(getEpisodes());
 // Initialize
 showOverview();
 // To make sure that the overview works also when the id is set manually
@@ -318,6 +318,7 @@ const seasonOverview = async (id) => {
   const res = await fetch(`https://api.tvmaze.com/seasons/${id}`);
   //   Convert the response to json
   const season = await res.json();
+  console.log(season);
   // Fix the summary
   season.summary = season.summary.replace(/<p>/g, "");
   const html = `
@@ -337,7 +338,7 @@ const seasonOverview = async (id) => {
       >
         Season ${season.number}
         <span class="ms-2 font-mono text-lg font-semibold text-textColor"
-          >(2008)</span
+          >(${season.premiereDate.split("-")[0]})</span
         >
       </h1>
       <div class="">
@@ -395,9 +396,13 @@ const seasonOverview = async (id) => {
     seasonOverviewContainer.firstElementChild.innerHTML = html;
   }, 1100);
   if (window.matchMedia("(max-width: 640px)").matches) {
-    seasonOverviewContainer.firstElementChild.scrollIntoView({
-      behavior: "smooth",
-    });
+    console.log("hi");
+    seasonOverviewContainer.firstElementChild.scrollIntoView(
+      (alignTop = true),
+      {
+        behavior: "smooth",
+      }
+    );
   }
 };
 document.addEventListener("click", (e) => {
