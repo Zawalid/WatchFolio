@@ -30,7 +30,7 @@ const showOverview = async () => {
     // Set the title
     document.title = show.name;
     // Fix the summary
-    show.summary = show.summary.replace(/<p>/g, "");
+    show.summary = show.summary?.replace(/<p>/g, "");
     // Get the genres
     const genres = show.genres
       .map((genre) => {
@@ -49,7 +49,7 @@ const showOverview = async () => {
   
   <div class="mb-16 mt-9 flex w-full items-center gap-7 max-sm:flex-col">
   <img
-    src="${show.image.original || "./imgs/placeholder.png"}"
+    src="${show.image?.original || "./imgs/placeholder.png"}"
     alt=""
     class="w-[300px] rounded-lg shadow-shadow1 max-sm:w-[230px]"
   />
@@ -207,36 +207,76 @@ const getCast = async () => {
   const res = await fetch(
     `https://api.tvmaze.com/shows/${window.location.search.split("?")[1]}/cast`
   );
+  const showAllCast = () => {
+    return `
+    ${casts
+      .map((cast) => {
+        return `
+        <a href="#" class="flex flex-col items-center gap-3">
+    <img
+        src="${cast.person.image?.medium || "./imgs/placeholder.png"}"
+        alt=""
+        class="w-[120px] rounded-lg shadow-shadow1"
+    />
+    <span class="text-lg font-semibold text-textColor">${
+      cast.person.name
+    }</span>
+    </a>
+        `;
+      })
+      .join("")}
+      <a class="flex flex-col items-center justify-center text-thirdAccent text-lg font-bold h-fit m-auto cursor-pointer" id="showLess">Show Less</a>
+      `;
+  };
+  const showLessCast = () => {
+    return `
+    ${casts
+      .slice(0, 15)
+      .map((cast) => {
+        return `
+        <a href="#" class="flex flex-col items-center gap-3">
+    <img
+        src="${cast.person.image?.medium || "./imgs/placeholder.png"}"
+        alt=""
+        class="w-[120px] rounded-lg shadow-shadow1"
+    />
+    <span class="text-lg font-semibold text-textColor">${
+      cast.person.name
+    }</span>
+    </a>
+        `;
+      })
+      .join("")}
+      ${
+        casts.length > 15
+          ? `<a class="flex flex-col items-center justify-center text-thirdAccent text-lg font-bold h-fit m-auto cursor-pointer" id="showMore">Show More</a>`
+          : ""
+      }
+      `;
+  };
   //   Convert the response to json
   const casts = await res.json();
   const html = `
     <div class="mb-8">
     <details open>
         <summary class="mb-5 text-xl font-bold text-thirdAccent">
-        Casts
+        Cast
         </summary>
-        <div class="grid grid-cols-[repeat(auto-fit,minmax(110px,1fr))] text-center gap-8 max-sm:justify-center">
-        ${casts
-          .slice(0, 15)
-          .map((cast) => {
-            return `
-        <a href="#" class="flex flex-col items-center gap-3">
-        <img
-            src="${cast.person.image?.medium || "./imgs/placeholder.png"}"
-            alt=""
-            class="w-[120px] rounded-lg shadow-shadow1"
-        />
-        <span class="text-lg font-semibold text-textColor">${
-          cast.person.name
-        }</span>
-        </a>
-        `;
-          })
-          .join("")}
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(110px,1fr))] text-center gap-8 max-sm:justify-center" id="cast">
+        ${showLessCast()}
         </div>
     </details>
     </div>
     `;
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("#showMore")) {
+      document.getElementById("cast").innerHTML = showAllCast();
+    }
+    if (e.target.closest("#showLess")) {
+      document.getElementById("cast").innerHTML = showLessCast();
+    }
+  });
+
   return html;
 };
 const noResults = () => {
@@ -284,7 +324,7 @@ const getEpisodes = async () => {
           <div
             class="flex w-fit items-center gap-1 text-sm font-semibold text-textColor2"
           >
-            ${episode.rating.average}
+            ${episode.rating?.average || "Unrated"}
             <div class="flex gap-2">
             ${getStars(Math.round(episode.rating.average))
               .map((star) => star.outerHTML)
@@ -320,7 +360,7 @@ const seasonOverview = async (id) => {
   const season = await res.json();
   console.log(season);
   // Fix the summary
-  season.summary = season.summary.replace(/<p>/g, "");
+  season.summary = season.summary?.replace(/<p>/g, "");
   const html = `
   <i
     class="fa-solid fa-xmark text-textColor2 absolute right-4 top-4 cursor-pointer text-2xl"
@@ -328,7 +368,7 @@ const seasonOverview = async (id) => {
   ></i>
   <div class="flex w-full items-start gap-7 max-sm:flex-col">
     <img
-      src="${season.image.original}"
+      src="${season.image?.original || "./imgs/placeholder.png"} "
       alt=""
       class="w-[200px] rounded-lg shadow-shadow1 max-sm:w-[230px]"
     />
@@ -346,13 +386,11 @@ const seasonOverview = async (id) => {
           <summary class="mb-5 text-xl font-bold text-thirdAccent">
             Details
           </summary>
-          <div class="flex items-center gap-4 text-lg">
-            <span class="font-semibold text-textColor2">Id :</span>
-            <span class="text-textColor">${season.id}</span>
-          </div>
           <div class="mt-3 flex items-center gap-4 text-lg">
             <span class="font-semibold text-textColor2">Episodes :</span>
-            <span class="text-textColor">${season.episodeOrder}</span>
+            <span class="text-textColor">${
+              season.episodeOrder || "Unconfirmed"
+            }</span>
           </div>
           <div class="mt-3 flex items-center gap-4 text-lg">
             <span class="font-semibold text-textColor2"
@@ -372,7 +410,7 @@ const seasonOverview = async (id) => {
             Summary
           </summary>
           <p class="text-lg font-semibold leading-snug text-textColor2">
-           ${season.summary}
+           ${season.summary || "No summary available"}
           </p>
         </details>
       </div>
