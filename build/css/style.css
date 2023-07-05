@@ -1426,6 +1426,10 @@ html {
     padding-bottom: 75px;
   }
 
+  .max-md\:pt-14 {
+    padding-top: 3.5rem;
+  }
+
   .max-md\:text-center {
     text-align: center;
   }

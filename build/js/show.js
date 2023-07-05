@@ -7,7 +7,7 @@ class="absolute inset-0 -z-10 flex h-full w-full cursor-zoom-out bg-[#0005] opac
 id="overview"
 >
 <div
-  class="relative flex min-h-[600px] w-4/5 cursor-auto flex-col gap-10 rounded-xl bg-gradient p-8 shadow-shadow1 max-md:left-0 max-md:h-full max-md:w-full max-md:translate-x-0 max-md:overflow-y-scroll max-md:pb-[75px] max-sm:rounded-none"
+  class="relative flex min-h-[600px] w-4/5 cursor-auto flex-col gap-10 rounded-xl bg-gradient p-8 shadow-shadow1 max-md:left-0 max-md:h-full max-md:w-full max-md:translate-x-0 max-md:overflow-y-scroll max-md:pb-[75px] max-md:pt-14 max-sm:rounded-none"
 ></div>
 </div>
 `;
