@@ -252,7 +252,7 @@ const getSeasons = async () => {
       <img
         src="${season.image?.medium || "./imgs/placeholder.png"}"
         alt=""
-        class="w-[150px] rounded-lg shadow-shadow1"
+        class="w-[150px] rounded-lg shadow-shadow1 flex-1"
       />
       <span class="text-lg font-semibold text-textColor">Season ${
         season.number
@@ -327,8 +327,8 @@ const getCast = async () => {
         <summary class="mb-5 text-xl font-bold text-thirdAccent">
         Cast
         </summary>
-        <div class="grid grid-cols-[repeat(auto-fit,minmax(110px,1fr))] text-center gap-8 max-sm:justify-center" id="cast">
-        ${showLessCast()}
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(110px,1fr))] text-center gap-8 max-sm:justify-center ${casts.length === 0 ? "font-bold text-lg text-textColor2" : ""}" id="cast">
+        ${casts.length !== 0  ? showLessCast() : "No cast available"}
         </div>
     </details>
     </div>
