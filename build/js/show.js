@@ -311,9 +311,9 @@ const getEpisodes = async () => {
     .map((episode) => {
       return `
   <div class="flex items-center gap-3">
-        <h2 class="text-2xl font-bold text-center text-textColor2 w-7">${
-          episode.number
-        }</h2>
+        <h2 class="text-2xl font-bold text-center text-textColor2 w-7 ${
+          !episode.number ? "textVertical" : ""
+        }">${episode.number || "Special"}</h2>
         <img src="${
           episode.image?.original || "./imgs/placeholder.png"
         }" alt="" class="w-[150px] aspect-[3/2] object-cover rounded-xl max-sm:w-[100px]" />
@@ -370,7 +370,7 @@ const seasonOverview = async (id) => {
     <img
       src="${season.image?.original || "./imgs/placeholder.png"} "
       alt=""
-      class="w-[200px] rounded-lg shadow-shadow1 max-sm:w-[230px]"
+      class="w-[230px] rounded-lg shadow-shadow1 max-sm:self-center"
     />
     <div class="flex flex-1 flex-col gap-6 ">
       <h1

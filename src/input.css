@@ -12,6 +12,9 @@
   #season_overview.show {
     @apply z-30 opacity-100;
   }
+  .textVertical {
+    writing-mode: vertical-rl;
+  }
 }
 
 html {

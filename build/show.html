@@ -22,7 +22,7 @@
   >
     <div class="container h-full pb-8 max-sm:pb-20">
       <header class="flex items-center justify-between py-5">
-        <h2 class="font-logo text-4xl font-extrabold max-sm:text-3xl">
+        <h2 class="font-logo text-4xl font-extrabold max-sm:text-3xl ">
           <span class="text-primaryAccent">Watch</span
           ><span class="text-textColor">Folio</span>
         </h2>
@@ -43,7 +43,7 @@
       <div id="overview"></div>
     </div>
     <div
-      class="fixed bottom-0 left-0 z-50 flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-2 backdrop-blur-[6px] sm:hidden"
+      class="fixed bottom-0 left-0 z-50 flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-2 backdrop-blur-[6px] md:hidden"
     >
       <a
         href="index.html"
@@ -72,7 +72,15 @@
       id="season_overview"
     >
       <div
-        class="relative flex min-h-[600px] w-4/5 cursor-auto flex-col gap-10 rounded-xl bg-gradient p-8 shadow-shadow1 max-md:left-0 max-md:h-full max-md:w-full max-md:translate-x-0 max-md:overflow-y-scroll max-sm:rounded-none"
+        class="relative flex min-h-[600px] w-4/5 cursor-auto flex-col gap-10 rounded-xl bg-gradient p-8 shadow-shadow1 max-md:left-0 max-md:h-full max-md:w-full max-md:translate-x-0 max-md:overflow-y-scroll max-sm:rounded-none max-md:pb-[75px]"
+      ></div>
+    </div>
+    <div
+      class="absolute inset-0 -z-10 flex h-full w-full cursor-zoom-out bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-500 max-md:h-full md:items-center md:justify-center"
+      id="person_overview"
+    >
+      <div
+        class="relative flex min-h-[600px] w-4/5 cursor-auto flex-col gap-10 rounded-xl bg-gradient p-8 shadow-shadow1 max-md:left-0 max-md:h-full max-md:w-full max-md:translate-x-0 max-md:overflow-y-scroll max-sm:rounded-none max-md:pb-[75px]"
       ></div>
     </div>
   </body>

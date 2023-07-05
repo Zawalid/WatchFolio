@@ -758,12 +758,12 @@ video {
   width: 150px;
 }
 
-.w-\[200px\] {
-  width: 200px;
-}
-
 .w-\[210px\] {
   width: 210px;
+}
+
+.w-\[230px\] {
+  width: 230px;
 }
 
 .w-\[300px\] {
@@ -943,6 +943,11 @@ video {
   background-color: rgba(11 ,21 ,49 ,0.5);
 }
 
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+}
+
 .bg-dark {
   --tw-bg-opacity: 1;
   background-color: rgb(19 15 64 / var(--tw-bg-opacity));
@@ -969,10 +974,6 @@ video {
 
 .bg-opacity-30 {
   --tw-bg-opacity: 0.3;
-}
-
-.bg-opacity-40 {
-  --tw-bg-opacity: 0.4;
 }
 
 .bg-gradient {
@@ -1140,14 +1141,14 @@ video {
   color: rgb(3 169 244 / var(--tw-text-opacity));
 }
 
-.placeholder-textColor2::-moz-placeholder {
+.placeholder-black::-moz-placeholder {
   --tw-placeholder-opacity: 1;
-  color: rgb(212 212 212 / var(--tw-placeholder-opacity));
+  color: rgb(0 0 0 / var(--tw-placeholder-opacity));
 }
 
-.placeholder-textColor2::placeholder {
+.placeholder-black::placeholder {
   --tw-placeholder-opacity: 1;
-  color: rgb(212 212 212 / var(--tw-placeholder-opacity));
+  color: rgb(0 0 0 / var(--tw-placeholder-opacity));
 }
 
 .opacity-0 {
@@ -1226,6 +1227,10 @@ video {
 #season_overview.show {
   z-index: 30;
   opacity: 1;
+}
+
+.textVertical {
+  writing-mode: vertical-rl;
 }
 
 :root {
@@ -1377,12 +1382,12 @@ html {
     transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   }
 
-  .max-md\:overflow-scroll {
-    overflow: scroll;
-  }
-
   .max-md\:overflow-y-scroll {
     overflow-y: scroll;
+  }
+
+  .max-md\:pb-\[75px\] {
+    padding-bottom: 75px;
   }
 }
 
@@ -1423,6 +1428,10 @@ html {
     gap: 2.5rem;
   }
 
+  .max-sm\:self-center {
+    align-self: center;
+  }
+
   .max-sm\:rounded-none {
     border-radius: 0px;
   }
@@ -1446,10 +1455,6 @@ html {
     display: none;
   }
 
-  .sm\:overflow-y-scroll {
-    overflow-y: scroll;
-  }
-
   .sm\:py-4 {
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -1457,6 +1462,10 @@ html {
 }
 
 @media (min-width: 768px) {
+  .md\:hidden {
+    display: none;
+  }
+
   .md\:h-\[300px\] {
     height: 300px;
   }
