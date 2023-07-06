@@ -7,7 +7,7 @@ class="absolute inset-0 -z-10 flex h-full w-full cursor-zoom-out bg-[#0005] opac
 id="overview"
 >
 <div
-  class="relative flex min-h-[600px] w-4/5 cursor-auto flex-col gap-10 rounded-xl bg-gradient p-8 shadow-shadow1 max-md:left-0 max-md:h-full max-md:w-full max-md:translate-x-0 max-md:overflow-y-scroll max-md:pb-[75px] max-md:pt-14 max-sm:rounded-none"
+  class="relative flex min-h-[600px] max-md:min-h-screen w-4/5 cursor-auto flex-col gap-10 rounded-xl bg-gradient p-8 shadow-shadow1 max-md:left-0 max-md:h-full max-md:w-full max-md:translate-x-0 max-md:overflow-y-scroll max-md:pb-[75px] max-md:pt-14 max-sm:rounded-none"
 ></div>
 </div>
 `;
@@ -327,8 +327,10 @@ const getCast = async () => {
         <summary class="mb-5 text-xl font-bold text-thirdAccent">
         Cast
         </summary>
-        <div class="grid grid-cols-[repeat(auto-fit,minmax(110px,1fr))] text-center gap-8 max-sm:justify-center ${casts.length === 0 ? "font-bold text-lg text-textColor2" : ""}" id="cast">
-        ${casts.length !== 0  ? showLessCast() : "No cast available"}
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(110px,1fr))] text-center gap-8 max-sm:justify-center ${
+          casts.length === 0 ? "font-bold text-lg text-textColor2" : ""
+        }" id="cast">
+        ${casts.length !== 0 ? showLessCast() : "No cast available"}
         </div>
     </details>
     </div>
@@ -443,7 +445,7 @@ const seasonOverview = async (id) => {
       <summary class="mb-5 text-xl font-bold text-thirdAccent">
         Episodes
       </summary>
-      <div class="my-7 flex flex-col md:h-[300px] md:overflow-y-scroll  gap-3 max-md:pb-6">${await getEpisodes()}</div>
+      <div class="my-7 flex flex-col md:h-[300px] md:overflow-y-scroll  gap-3">${await getEpisodes()}</div>
     </details>
   </div>
   `;
@@ -708,3 +710,5 @@ document.addEventListener("click", (e) => {
 });
 //* Close the person overview when clicking on the close button or the container
 closeOverview(personOverviewContainer);
+
+

@@ -1291,6 +1291,11 @@ html {
   background-color: black;
 }
 
+.swiper {
+  width: 600px;
+  height: 300px;
+}
+
 .placeholder\:font-bold::-moz-placeholder {
   font-weight: 700;
 }
@@ -1403,6 +1408,10 @@ html {
 
   .max-md\:h-full {
     height: 100%;
+  }
+
+  .max-md\:min-h-screen {
+    min-height: 100vh;
   }
 
   .max-md\:w-full {
