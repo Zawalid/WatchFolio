@@ -77,7 +77,8 @@ const displayOverview = (container, html, img = null) => {
 const closeOverview = (container) => {
   container.addEventListener("click", (e) => {
     if (e.target.closest("#close") || e.target === e.currentTarget) {
-      document.body.classList.remove("h-screen", "overflow-hidden");
+      container !== episodeOverviewContainer &&
+        document.body.classList.remove("h-screen", "overflow-hidden");
       container.classList.remove("show");
       container.firstElementChild.innerHTML = "";
       if (container === episodeOverviewContainer) {
@@ -745,7 +746,7 @@ const episodeOverview = async (showName, season, otherInfo) => {
     options
   );
   const episode = await res.json();
-  console.log(episode);
+  const homePage = await getShowHomePage(showName);
   const episodePoster = `${baseUrl}original${episode.still_path}`;
   const html = `
 <i
@@ -753,7 +754,7 @@ const episodeOverview = async (showName, season, otherInfo) => {
           id="close"
         ></i>
         <div
-          class="flex w-full flex-1 flex-col gap-7 bg-black bg-opacity-50 p-8 backdrop-blur-[1px] max-md:pb-[75px] max-md:pt-14 max-sm:flex-col"
+          class="flex w-full flex-1 flex-col gap-7 bg-black bg-opacity-50 p-8 max-md:pb-[75px] max-md:pt-14 max-sm:flex-col"
         >
           <h1 class="text-4xl font-bold text-textColor">
             ${showName} season ${season} episode ${otherInfo.episodeNumber} :
@@ -794,7 +795,7 @@ const episodeOverview = async (showName, season, otherInfo) => {
             </p>
 
             <a
-              href=""
+              href="${homePage || "#"}}"
               class="mt-5 cursor-pointer rounded-3xl bg-secondaryAccent px-7 py-3 text-center font-bold text-textColor transition-colors duration-300 hover:bg-opacity-80"
             >
               Watch Now
@@ -812,9 +813,9 @@ const getShowId = async (showName) => {
   const data = await res.json();
   return data.results[0].id;
 };
-const getShowHomePage = async () => {
+const getShowHomePage = async (showName) => {
   const res = await fetch(
-    `https://api.themoviedb.org/3/tv/${await getShowId()}`,
+    `https://api.themoviedb.org/3/tv/${await getShowId(showName)}`,
     options
   );
   const data = await res.json();
