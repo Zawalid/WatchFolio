@@ -445,7 +445,7 @@ const seasonOverview = async (id) => {
       <summary class="mb-5 text-xl font-bold text-thirdAccent">
         Episodes
       </summary>
-      <div class="my-7 flex flex-col md:h-[300px] md:overflow-y-scroll  gap-3 max-md:pb-5">${await getEpisodes()}</div>
+      <div class="my-7 flex flex-col md:h-[300px] md:overflow-y-scroll  gap-3 max-md:pb-6">${await getEpisodes()}</div>
     </details>
   </div>
   `;
