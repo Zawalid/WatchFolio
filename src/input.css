@@ -4,12 +4,14 @@
 
 :root {
   --bg: url(../imgs/bg.jpg);
+  --episode-bg: linear-gradient(306deg, #000 0%, #0b1531 100%);
 }
 @layer utilities {
   .active {
     @apply text-primaryAccent;
   }
-  #person_overview.show ,
+  #episode_overview.show,
+  #person_overview.show,
   #season_overview.show {
     @apply z-30 opacity-100;
   }
@@ -24,6 +26,9 @@ html {
 
 #showBody::before {
   background-image: var(--bg);
+}
+#episode_overview > div {
+  background-image: var(--episode-bg);
 }
 
 ::-webkit-scrollbar {

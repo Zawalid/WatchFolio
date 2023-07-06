@@ -1,5 +1,7 @@
 "use strict";
 
+let showName, currentSeason;
+
 //* ------------------ Creating overview containers (Avoid repetition) ------------------ *//
 const overviewContainer = `
 <div
@@ -7,16 +9,19 @@ class="absolute inset-0 -z-10 flex h-full w-full cursor-zoom-out bg-[#0005] opac
 id="overview"
 >
 <div
-  class="relative flex min-h-[600px] max-md:min-h-screen w-4/5 cursor-auto flex-col gap-10 rounded-xl bg-gradient p-8 shadow-shadow1 max-md:left-0 max-md:h-full max-md:w-full max-md:translate-x-0 max-md:overflow-y-scroll max-md:pb-[75px] max-md:pt-14 max-sm:rounded-none"
+  class="relative bg-gradient flex min-h-[500px] max-md:min-h-screen w-4/5 cursor-auto flex-col gap-10 rounded-xl bg-gradient p-8 shadow-shadow1 max-md:left-0 max-md:h-full max-md:w-full max-md:translate-x-0 max-md:overflow-y-scroll max-md:pb-[75px] max-md:pt-14 max-sm:rounded-none"
 ></div>
 </div>
 `;
-for (let i = 0; i < 2; i++) {
+for (let i = 0; i < 3; i++) {
   document.body.insertAdjacentHTML("beforeend", overviewContainer);
 }
 
 document.querySelectorAll("#overview")[1].id = "season_overview";
 document.querySelectorAll("#overview")[1].id = "person_overview";
+document.querySelectorAll("#overview")[1].firstElementChild.className =
+  "relative flex min-h-[500px] w-4/5 cursor-auto flex-col gap-10 rounded-xl bg-gradient  bg-cover bg-center shadow-shadow1 max-md:left-0 max-md:h-full max-md:min-h-screen max-md:w-full max-md:translate-x-0 max-md:overflow-y-scroll max-sm:rounded-none overflow-hidden";
+document.querySelectorAll("#overview")[1].id = "episode_overview";
 
 // todo : add the lottie loading animation here and the container in the html when you finish (I hate live server)
 //* ------------------------------ Loading Animation ------------------------------ *//
@@ -55,10 +60,13 @@ const showLoading = (container) => {
   // animation.setSpeed(0.7);
 };
 //* Display the overview container
-const displayOverview = (container, html) => {
+const displayOverview = (container, html, img = null) => {
   setTimeout(() => {
     container.firstElementChild.innerHTML = html;
-  }, 1100);
+    if (container === episodeOverviewContainer) {
+      document.documentElement.style.setProperty("--episode-bg", `url(${img})`);
+    }
+  }, 1000);
   if (window.matchMedia("(max-width: 768px)").matches) {
     console.log("hi");
     window.scrollTo(0, 0);
@@ -67,11 +75,17 @@ const displayOverview = (container, html) => {
 };
 //* Close the overview container
 const closeOverview = (container) => {
-  container?.addEventListener("click", (e) => {
+  container.addEventListener("click", (e) => {
     if (e.target.closest("#close") || e.target === e.currentTarget) {
       document.body.classList.remove("h-screen", "overflow-hidden");
       container.classList.remove("show");
       container.firstElementChild.innerHTML = "";
+      if (container === episodeOverviewContainer) {
+        document.documentElement.style.setProperty(
+          "--episode-bg",
+          "linear-gradient(306deg, #000 0%, #0b1531 100%)"
+        );
+      }
     }
   });
 };
@@ -90,6 +104,7 @@ const showOverview = async () => {
       "--bg",
       `url(${show.image.original})`
     );
+    showName = show.name;
     // Set the title
     document.title = show.name;
     // Fix the summary
@@ -383,6 +398,7 @@ const seasonOverview = async (id) => {
   //   Convert the response to json
   const season = await res.json();
   console.log(season);
+  currentSeason = season.number;
   // Fix the summary
   season.summary = season.summary?.replace(/<p>/g, "");
   const html = `
@@ -460,8 +476,17 @@ const getEpisodes = async () => {
   const episodes = await res.json();
   const html = episodes
     .map((episode) => {
+      const info = {
+        episodeName: episode.name,
+        episodeNumber: episode.number,
+        episodeRating: episode.rating?.average,
+      };
       return `
-  <div class="flex items-center gap-3">
+      <div
+  " 
+  class="flex items-center gap-3 cursor-pointer" id="episode" data-info=${JSON.stringify(
+    info
+  )}>
         <h2 class="text-2xl font-bold text-center text-textColor2 w-7 ${
           !episode.number ? "textVertical" : ""
         }">${episode.number || "Special"}</h2>
@@ -711,4 +736,94 @@ document.addEventListener("click", (e) => {
 //* Close the person overview when clicking on the close button or the container
 closeOverview(personOverviewContainer);
 
+const episodeOverviewContainer = document.getElementById("episode_overview");
+const episodeOverview = async (showName, season, otherInfo) => {
+  showLoading(episodeOverviewContainer);
+  const showId = await getShowId(showName);
+  const res = await fetch(
+    `https://api.themoviedb.org/3/tv/${showId}/season/${season}/episode/${otherInfo.episodeNumber}`,
+    options
+  );
+  const episode = await res.json();
+  console.log(episode);
+  const episodePoster = `${baseUrl}original${episode.still_path}`;
+  const html = `
+<i
+          class="fa-solid fa-xmark absolute right-4 top-4 cursor-pointer text-2xl z-10 text-textColor2"
+          id="close"
+        ></i>
+        <div
+          class="flex w-full flex-1 flex-col gap-7 bg-black bg-opacity-50 p-8 backdrop-blur-[1px] max-md:pb-[75px] max-md:pt-14 max-sm:flex-col"
+        >
+          <h1 class="text-4xl font-bold text-textColor">
+            ${showName} season ${season} episode ${otherInfo.episodeNumber} :
+          </h1>
+          <div
+            class="flex w-full flex-1 flex-col items-start justify-center gap-5"
+          >
+            <div class="flex gap-2 text-lg font-bold text-textColor2">
+              Name :
+              <h2 class="text-lg font-semibold text-textColor">
+                ${otherInfo.episodeName || episode.name}
+                <span class="ms-2 font-semibold">(${episode.name})</span>
+              </h2>
+            </div>
+            <div class="flex gap-2 text-lg font-bold text-textColor2">
+              Rating :
+              <div
+                class="flex w-fit items-center gap-5 rounded-lg bg-dark bg-opacity-30 px-3 py-1 text-sm font-semibold text-textColor backdrop-blur-sm"
+              >
+                <span>${otherInfo.episodeRating}</span>
+                <div class="flex gap-2">
+                  ${getStars(otherInfo.episodeRating)
+                    .map((star) => star.outerHTML)
+                    .join("")}
+                </div>
+              </div>
+            </div>
+            <div class="flex gap-2 text-lg font-bold text-textColor2">
+              Runtime :
+              <div class="flex items-center gap-2 text-textColor">
+                <i class="fa-solid fa-clock"></i>
+                <span class="font-semibold">60min</span>
+              </div>
+            </div>
+            <p class="text-lg font-bold leading-snug text-textColor">
+              <span class="text-textColor2">Overview :</span>
+              ${episode.overview || "No overview available"}
+            </p>
 
+            <a
+              href=""
+              class="mt-5 cursor-pointer rounded-3xl bg-secondaryAccent px-7 py-3 text-center font-bold text-textColor transition-colors duration-300 hover:bg-opacity-80"
+            >
+              Watch Now
+            </a>
+          </div>
+        </div>
+`;
+  displayOverview(episodeOverviewContainer, html, episodePoster);
+};
+const getShowId = async (showName) => {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/search/tv?query=${showName}`,
+    options
+  );
+  const data = await res.json();
+  return data.results[0].id;
+};
+const getShowHomePage = async () => {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/tv/${await getShowId()}`,
+    options
+  );
+  const data = await res.json();
+  return data.homepage;
+};
+document.addEventListener("click", (e) => {
+  if (e.target.closest("#episode")) {
+    const info = JSON.parse(e.target.closest("#episode").dataset.info);
+    episodeOverview(showName, currentSeason, info);
+  }
+});
+closeOverview(episodeOverviewContainer);

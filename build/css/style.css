@@ -606,6 +606,10 @@ video {
   z-index: -10;
 }
 
+.z-10 {
+  z-index: 10;
+}
+
 .z-50 {
   z-index: 50;
 }
@@ -718,8 +722,8 @@ video {
   height: 100vh;
 }
 
-.min-h-\[600px\] {
-  min-height: 600px;
+.min-h-\[500px\] {
+  min-height: 500px;
 }
 
 .min-h-\[75vh\] {
@@ -992,12 +996,20 @@ video {
   --tw-bg-opacity: 0.3;
 }
 
+.bg-opacity-50 {
+  --tw-bg-opacity: 0.5;
+}
+
 .bg-gradient {
   background-image: linear-gradient(306deg, #000 0%, #0B1531 100%);
 }
 
 .bg-cover {
   background-size: cover;
+}
+
+.bg-center {
+  background-position: center;
 }
 
 .object-cover {
@@ -1026,6 +1038,11 @@ video {
 .px-5 {
   padding-left: 1.25rem;
   padding-right: 1.25rem;
+}
+
+.px-7 {
+  padding-left: 1.75rem;
+  padding-right: 1.75rem;
 }
 
 .py-1 {
@@ -1191,6 +1208,12 @@ video {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
+.backdrop-blur-\[1px\] {
+  --tw-backdrop-blur: blur(1px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+
 .backdrop-blur-\[2px\] {
   --tw-backdrop-blur: blur(2px);
   -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
@@ -1227,14 +1250,6 @@ video {
   transition-duration: 150ms;
 }
 
-.transition {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
 .duration-300 {
   transition-duration: 300ms;
 }
@@ -1252,19 +1267,22 @@ video {
   color: rgb(255 193 7 / var(--tw-text-opacity));
 }
 
-#person_overview.\!show ,
+#episode_overview.\!show,
+  #person_overview.\!show,
   #season_overview.\!show {
   z-index: 30;
   opacity: 1;
 }
 
-#person_overview.show ,
+#episode_overview.show,
+  #person_overview.show,
   #season_overview.show {
   z-index: 30;
   opacity: 1;
 }
 
-#person_overview.\!show ,
+#episode_overview.\!show,
+  #person_overview.\!show,
   #season_overview.\!show {
   z-index: 30;
   opacity: 1;
@@ -1276,6 +1294,7 @@ video {
 
 :root {
   --bg: url(../imgs/bg.jpg);
+  --episode-bg: linear-gradient(306deg, #000 0%, #0b1531 100%);
 }
 
 html {
@@ -1284,6 +1303,10 @@ html {
 
 #showBody::before {
   background-image: var(--bg);
+}
+
+#episode_overview > div {
+  background-image: var(--episode-bg);
 }
 
 ::-webkit-scrollbar {
@@ -1342,6 +1365,11 @@ html {
   background-size: cover;
 }
 
+.before\:bg-center::before {
+  content: var(--tw-content);
+  background-position: center;
+}
+
 .before\:bg-no-repeat::before {
   content: var(--tw-content);
   background-repeat: no-repeat;
@@ -1350,6 +1378,11 @@ html {
 .before\:opacity-20::before {
   content: var(--tw-content);
   opacity: 0.2;
+}
+
+.before\:opacity-50::before {
+  content: var(--tw-content);
+  opacity: 0.5;
 }
 
 .before\:blur-\[1px\]::before {
@@ -1376,32 +1409,14 @@ html {
   color: rgb(255 193 7 / var(--tw-text-opacity));
 }
 
-.hover\:shadow-shadow1:hover {
-  --tw-shadow: -7px 11px 20px #000000a1;
-  --tw-shadow-colored: -7px 11px 20px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
 .hover\:shadow-\[-19px_15px_20px_\#000\]:hover {
   --tw-shadow: -19px 15px 20px #000;
   --tw-shadow-colored: -19px 15px 20px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-.hover\:ring-offset-zinc-800:hover {
-  --tw-ring-offset-color: #27272a;
-}
-
-.hover\:ring-offset-zinc-900:hover {
-  --tw-ring-offset-color: #18181b;
-}
-
 .hover\:grayscale:hover {
   --tw-grayscale: grayscale(100%);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
-.hover\:filter:hover {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
@@ -1464,8 +1479,8 @@ html {
     overflow-y: scroll;
   }
 
-  .max-md\:pb-6 {
-    padding-bottom: 1.5rem;
+  .max-md\:pb-7 {
+    padding-bottom: 1.75rem;
   }
 
   .max-md\:pb-\[75px\] {
@@ -1474,18 +1489,6 @@ html {
 
   .max-md\:pt-14 {
     padding-top: 3.5rem;
-  }
-
-  .max-md\:pb-4 {
-    padding-bottom: 1rem;
-  }
-
-  .max-md\:pb-5 {
-    padding-bottom: 1.25rem;
-  }
-
-  .max-md\:pb-7 {
-    padding-bottom: 1.75rem;
   }
 
   .max-md\:text-center {
