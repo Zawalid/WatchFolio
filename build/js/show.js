@@ -489,7 +489,9 @@ const getEpisodes = async () => {
   class="flex items-center gap-3 cursor-pointer" id="episode" data-info="${
     episode.name
   }|${episode.number}|${episode.rating.average}">
-        <h2 class="text-2xl font-bold text-center text-textColor2 w-7">${episode.number || "Special"}</h2>
+        <h2 class="text-2xl font-bold text-center text-textColor2 w-7">${
+          episode.number || "Special"
+        }</h2>
         <img src="${
           episode.image?.original || "./imgs/placeholder.png"
         }" alt="" class="w-[150px] aspect-[3/2] object-cover rounded-xl max-sm:w-[100px]" />
@@ -746,7 +748,8 @@ const episodeOverview = async (showName, season, otherInfo) => {
   );
   const episode = await res.json();
   const homePage = await getShowHomePage(showName);
-  const episodePoster = `${baseUrl}original${episode.still_path}`;
+  const episodePoster =
+    `${baseUrl}original${episode.still_path}` || "../imgs/placeholder.png";
   const html = `
 <i
           class="fa-solid fa-xmark absolute right-4 top-4 cursor-pointer text-2xl z-10 text-textColor2"
