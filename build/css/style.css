@@ -1447,6 +1447,10 @@ html {
     padding-bottom: 1.25rem;
   }
 
+  .max-md\:pb-7 {
+    padding-bottom: 1.75rem;
+  }
+
   .max-md\:text-center {
     text-align: center;
   }
