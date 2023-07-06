@@ -252,7 +252,7 @@ const getSeasons = async () => {
       <img
         src="${season.image?.medium || "./imgs/placeholder.png"}"
         alt=""
-        class="w-[150px] rounded-lg shadow-shadow1 flex-1"
+        class="w-[150px] rounded-lg transition-all duration-500 hover:shadow-[-19px_15px_20px_#000] shadow-shadow1 flex-1"
       />
       <span class="text-lg font-semibold text-textColor">Season ${
         season.number
@@ -278,7 +278,7 @@ const getCast = async () => {
     <img
     src="${image || "./imgs/placeholder.png"}"
     alt=""
-    class="w-[120px] rounded-lg shadow-shadow1"
+    class="w-[120px] rounded-lg shadow-shadow1 transition-all duration-300 hover:grayscale"
     />
     <span class="text-lg font-semibold text-textColor">${name}</span></div>`;
   };
