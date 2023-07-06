@@ -475,22 +475,21 @@ const getEpisodes = async () => {
   );
   //   Convert the response to json
   const episodes = await res.json();
+  // Remove episodes with number null
+  episodes.forEach((episode, i) => {
+    if (!episode.number) {
+      episodes.splice(i, 1);
+    }
+  });
   const html = episodes
     .map((episode) => {
-      const info = {
-        episodeName: episode.name,
-        episodeNumber: episode.number,
-        episodeRating: episode.rating?.average,
-      };
       return `
       <div
   " 
-  class="flex items-center gap-3 cursor-pointer" id="episode" data-info=${JSON.stringify(
-    info
-  )}>
-        <h2 class="text-2xl font-bold text-center text-textColor2 w-7 ${
-          !episode.number ? "textVertical" : ""
-        }">${episode.number || "Special"}</h2>
+  class="flex items-center gap-3 cursor-pointer" id="episode" data-info="${
+    episode.name
+  }|${episode.number}|${episode.rating.average}">
+        <h2 class="text-2xl font-bold text-center text-textColor2 w-7">${episode.number || "Special"}</h2>
         <img src="${
           episode.image?.original || "./imgs/placeholder.png"
         }" alt="" class="w-[150px] aspect-[3/2] object-cover rounded-xl max-sm:w-[100px]" />
@@ -766,7 +765,6 @@ const episodeOverview = async (showName, season, otherInfo) => {
               Name :
               <h2 class="text-lg font-semibold text-textColor">
                 ${otherInfo.episodeName || episode.name}
-                <span class="ms-2 font-semibold">(${episode.name})</span>
               </h2>
             </div>
             <div class="flex gap-2 text-lg font-bold text-textColor2">
@@ -823,7 +821,12 @@ const getShowHomePage = async (showName) => {
 };
 document.addEventListener("click", (e) => {
   if (e.target.closest("#episode")) {
-    const info = JSON.parse(e.target.closest("#episode").dataset.info);
+    let info = e.target.closest("#episode").dataset.info;
+    info = {
+      episodeName: info.split("|")[0],
+      episodeNumber: info.split("|")[1],
+      episodeRating: info.split("|")[2],
+    };
     episodeOverview(showName, currentSeason, info);
   }
 });
