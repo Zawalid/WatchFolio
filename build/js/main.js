@@ -70,7 +70,7 @@ const displayResults = async (query) => {
     image.className =
       "w-full h-full object-cover rounded-md shadow-shadow1 mb-2";
     div.className = "w-[210px] h-[270px] peer group relative overflow-hidden";
-    a.href = `show.html?${show.id}`;
+    a.href = `show.html?id=${show.id}`;
     // Append the elements to the div and anchor
     div.append(image);
     div.insertAdjacentHTML("beforeend", info);

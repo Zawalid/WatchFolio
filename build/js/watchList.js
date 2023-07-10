@@ -109,7 +109,7 @@ const displayShowsFromWatchList = async (list) => {
     const show = await getShow(id);
     return `
     <div class="flex items-center justify-between" >
-  <a href="show.html?${show.id}" class="flex items-center gap-3 " >
+  <a href="show.html?id=${show.id}" class="flex items-center gap-3 " >
   <img src="${
     show.image.medium || "./imgs/placeholder.png"
   }" alt="" class="w-[100px] rounded-lg" >
@@ -139,7 +139,7 @@ document.addEventListener("click", (e) => {
     // Get the id of the show to remove by getting the href of the show link
     const id = e.target
       .closest("#removeFromList")
-      .previousElementSibling.href.split("?")[1];
+      .previousElementSibling.href.split("=")[1];
     // Get the current list from the dataset to use it to remove the show from the right list
     const list = watchListContainer.dataset.current_list;
     // Check if the user is on the show page and change the button text to the default one

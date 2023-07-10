@@ -99,7 +99,7 @@ const showOverviewContainer = document.getElementById("overview");
 const showOverview = async () => {
   try {
     const res = await fetch(
-      `https://api.tvmaze.com/shows/${window.location.search.split("?")[1]}`
+      `https://api.tvmaze.com/shows/${window.location.search.split("=")[1]}`
     );
     //   Convert the response to json
     const show = await res.json();
@@ -254,7 +254,7 @@ const showOverview = async () => {
 const getSeasons = async () => {
   const res = await fetch(
     `https://api.tvmaze.com/shows/${
-      window.location.search.split("?")[1]
+      window.location.search.split("=")[1]
     }/seasons`
   );
   //   Convert the response to json
@@ -299,7 +299,7 @@ const getSeasons = async () => {
 //* Get the cast
 const getCast = async () => {
   const res = await fetch(
-    `https://api.tvmaze.com/shows/${window.location.search.split("?")[1]}/cast`
+    `https://api.tvmaze.com/shows/${window.location.search.split("=")[1]}/cast`
   );
 
   const renderPerson = (name, character, image) => {
@@ -692,7 +692,7 @@ const getOtherShows = async (id) => {
     .map((show) => {
       if (!show.info) return "";
       return `
-      <a href="show.html?${show?.info?.id}">
+      <a href="show.html?id=${show?.info?.id}">
       <div class=" h-[270px] w-16 hover:w-48 transition-all duration-500 peer group relative overflow-hidden">
         <img
           src="${
@@ -873,7 +873,7 @@ closeOverview(episodeOverviewContainer);
 //* Perform the right action when clicking  on a watchList button
 showOverviewContainer.addEventListener("click", (e) => {
   // Get the id of the show
-  const id = window.location.search.split("?")[1];
+  const id = window.location.search.split("=")[1];
   const toggleIdToWatchList = (list) => {
     // Check if the show already added and remove it if so  else add it
     if (list.shows.has(id)) {
@@ -904,7 +904,7 @@ showOverviewContainer.addEventListener("click", (e) => {
 const activateWatchListButton = () => {
   for (const list in watchLists) {
     watchLists[list].shows.forEach((show) => {
-      if (show === window.location.search.split("?")[1]) {
+      if (show === window.location.search.split("=")[1]) {
         document.querySelector(`[data-list=${list}]`).innerHTML =
           watchLists[list].activeButton;
       }
