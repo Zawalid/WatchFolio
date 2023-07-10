@@ -1,7 +1,7 @@
 "use strict";
 
 let showName, currentSeason;
-!window.localStorage.getItem("watched") &&
+!window.localStorage.key("watched") &&
   ["watched", "watching", "willWatch"].forEach((list) => {
     window.localStorage.setItem(list, "");
   });
