@@ -3,7 +3,7 @@
 let showName, currentSeason;
 !window.localStorage.getItem("watched") &&
   ["watched", "watching", "willWatch"].forEach((list) => {
-    window.localStorage.setItem(list,"");
+    window.localStorage.setItem(list, "");
   });
 
 //* ------------------ Creating overview containers (Avoid repetition) ------------------ *//
@@ -851,7 +851,6 @@ closeOverview(episodeOverviewContainer);
 
 //* ------------------------------ WatchLists ------------------------------ *//
 const watchListContainer = document.getElementById("watchList");
-const closeList = watchListContainer.querySelector("#close");
 document.querySelectorAll("#watchList_toggler").forEach((toggler) => {
   toggler.addEventListener("click", function () {
     watchListContainer.classList.toggle("show");
@@ -864,9 +863,8 @@ document.querySelectorAll("#watchList_toggler").forEach((toggler) => {
 });
 document.addEventListener("click", (e) => {
   if (
-    (!watchListContainer.contains(e.target) &&
-      !e.target.closest("#watchList_toggler")) ||
-    e.target === closeList
+    !watchListContainer.contains(e.target) &&
+    !e.target.closest("#watchList_toggler")
   ) {
     watchListContainer.classList.remove("show");
     document
