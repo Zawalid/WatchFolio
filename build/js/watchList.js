@@ -2,16 +2,19 @@
 // TODO: Make this script a module
 //* ------------------------------ WatchLists ------------------------------ *//
 const watchListContainer = document.getElementById("watchList");
+//* Toggle the watchList
 document.querySelectorAll("#watchList_toggler").forEach((toggler) => {
   toggler.addEventListener("click", function () {
-    showsFromWatchList(watchLists.watched.name);
+    // Display the shows from the watched list by default
+    displayShowsFromWatchList(watchLists.watched.name);
     watchListContainer.classList.toggle("show");
-
+    // Check if the user is on the show page and add the overflow-hidden class to the body to prevent scrolling when the watchList is open
     !watchListContainer.classList.contains("show") &&
       window.location.pathname.includes("show.html") &&
       document.body.classList.remove("h-screen", "overflow-hidden");
-
+    // Add the active class to the toggler
     this.firstElementChild.classList.toggle("active");
+    // Scroll to the top of the page when the watchList is open on mobile
     if (window.matchMedia("(max-width: 768px)").matches) {
       window.scrollTo(0, 0);
       watchListContainer.classList.contains("show") &&
@@ -19,22 +22,26 @@ document.querySelectorAll("#watchList_toggler").forEach((toggler) => {
     }
   });
 });
+//* Close the watchList when clicking outside of it
 document.addEventListener("click", (e) => {
   if (
     !watchListContainer.contains(e.target) &&
     !e.target.closest("#watchList_toggler")
   ) {
     watchListContainer.classList.remove("show");
+    // Remove the active class from the toggler
     document
       .querySelectorAll("#watchList_toggler")
       .forEach((toggler) =>
         toggler.firstElementChild.classList.remove("active")
       );
+    // Check if the user is on the show page and remove the overflow-hidden class from the body to allow scrolling when the watchList is closed
     window.location.pathname.includes("show.html") &&
       document.body.classList.remove("h-screen", "overflow-hidden");
   }
 });
-//* Data related to the watchList
+
+//* WatchLists (watched, watching, willWatch)
 const watchLists = {
   watched: {
     name: "watched",
@@ -69,7 +76,6 @@ const addToWatchList = (id, list) => {
       (document.querySelector(`[data-list="${list.name}"]`).innerHTML =
         list.defaultButton)
   );
-
   // Add the id to the chosen list
   list.add(id);
   // Update the lists in the local storage
@@ -79,14 +85,13 @@ const addToWatchList = (id, list) => {
 };
 //* Remove from the chosen list
 const removeFromWatchList = (id, list) => {
-  // Add the id to the chosen list
+  // Delete the id to from chosen list
   list.shows.delete(id);
   // Update the list in the local storage
   window.localStorage.setItem(list.name, [...list.shows]);
 };
-
 //* Display shows from the chosen list
-const showsFromWatchList = async (list) => {
+const displayShowsFromWatchList = async (list) => {
   watchListContainer
     .querySelectorAll("button")
     .forEach((button) => button.classList.remove("active"));
@@ -127,13 +132,16 @@ const showsFromWatchList = async (list) => {
 
   watchListContainer.lastElementChild.innerHTML = html;
 };
-// Delete
+//* Remove from the chosen list when clicking on the trash icon
 document.addEventListener("click", (e) => {
   if (e.target.closest("#removeFromList")) {
+    // Get the id of the show to remove by getting the href of the show link
     const id = e.target
       .closest("#removeFromList")
       .previousElementSibling.href.split("?")[1];
+    // Get the current list from the dataset to use it to remove the show from the right list
     const list = watchListContainer.dataset.current_list;
+    // Check if the user is on the show page and change the button text to the default one
     window.location.pathname.includes("show.html") &&
       document
         .getElementById("overview")
@@ -143,27 +151,36 @@ document.addEventListener("click", (e) => {
             button.innerHTML = watchLists[list].defaultButton;
           }
         });
+    // Remove the show from the list
     removeFromWatchList(id, watchLists[list]);
-    showsFromWatchList(list);
+    // Display the shows from the list
+    displayShowsFromWatchList(list);
   }
 });
-//* Retrieve shows from local storage and store them back in the lists
+//* Show the shows from the selected list and change the active button
+watchListContainer.querySelectorAll("button").forEach((button) => {
+  button.addEventListener("click", function () {
+    // Remove the active class from all the buttons
+    watchListContainer
+      .querySelectorAll("button")
+      .forEach((button) => button.classList.remove("active"));
+    // Add the active class to the clicked button
+    this.classList.add("active");
+    // Update the current list in the dataset to use to know which list is the current one
+    watchListContainer.dataset.current_list = this.dataset.list;
+    // Display the shows from the selected list
+    displayShowsFromWatchList(watchLists[this.dataset.list].name);
+  });
+});
+//* Retrieve shows from local storage and store them back in the lists to manipulate them
 const retrieveAndStoreLists = (list, listName) => {
+  // Get the shows from the local storage
   const lists = window.localStorage.getItem(listName)?.split(",");
+  // Remove the empty string from the array (it's added when the list is empty)
   lists[0] == "" && lists.splice(0, 1);
+  // Store the shows in the list to manipulate them
   list.shows = new Set(lists);
 };
 retrieveAndStoreLists(watchLists.watched, "watched");
 retrieveAndStoreLists(watchLists.watching, "watching");
 retrieveAndStoreLists(watchLists.willWatch, "willWatch");
-
-watchListContainer.querySelectorAll("button").forEach((button) => {
-  button.addEventListener("click", function () {
-    watchListContainer
-      .querySelectorAll("button")
-      .forEach((button) => button.classList.remove("active"));
-    this.classList.add("active");
-    watchListContainer.dataset.current_list = this.dataset.list;
-    showsFromWatchList(watchLists[this.dataset.list].name);
-  });
-});

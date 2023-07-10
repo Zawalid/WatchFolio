@@ -1,6 +1,7 @@
 "use strict";
 
 let showName, currentSeason;
+// TODO : add a initialize function to initialize the lists and the overview containers
 !window.localStorage.key("watched") &&
   ["watched", "watching", "willWatch"].forEach((list) => {
     window.localStorage.setItem(list, "");
@@ -568,7 +569,6 @@ const personOverview = async (name, character) => {
     options
   );
   const person = await res.json();
-  console.log(person);
   const age =
     new Date().getFullYear() - new Date(person.birthday).getFullYear();
   const html = `
@@ -662,6 +662,10 @@ const getOtherShows = async (id) => {
     options
   );
   let shows = await res.json();
+  const currentShowName = document
+    .querySelector("h1")
+    .firstChild.textContent.trim();
+  shows.cast = shows.cast.filter((show) => show.name !== currentShowName);
   const infos = await Promise.all(
     shows.cast.map((show) => {
       return getOtherShowInfo(show.name);
@@ -849,10 +853,11 @@ document.addEventListener("click", (e) => {
 //* Close the episode overview when clicking on the close button or the container
 closeOverview(episodeOverviewContainer);
 
-// //* ------------------------------ WatchLists ------------------------------ *//
+//* ------------------------------ WatchLists ------------------------------ *//
 // import "./watchList.js";
 //* Perform the right action when clicking  on a watchList button
 showOverviewContainer.addEventListener("click", (e) => {
+  // Get the id of the show
   const id = window.location.search.split("?")[1];
   const toggleIdToWatchList = (list) => {
     // Check if the show already added and remove it if so  else add it
@@ -880,4 +885,3 @@ showOverviewContainer.addEventListener("click", (e) => {
     toggleIdToWatchList(watchLists.willWatch);
   }
 });
-console.log(showOverviewContainer.querySelectorAll("button"));
