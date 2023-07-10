@@ -24,7 +24,7 @@ for (let i = 0; i < 3; i++) {
 document.querySelectorAll("#overview")[1].id = "season_overview";
 document.querySelectorAll("#overview")[1].id = "person_overview";
 document.querySelectorAll("#overview")[1].firstElementChild.className =
-  "relative flex min-h-[500px] w-4/5 cursor-auto flex-col gap-10 rounded-xl bg-gradient  bg-cover bg-center shadow-shadow1 max-md:left-0 max-md:h-full max-md:min-h-screen max-md:w-full max-md:translate-x-0 max-md:overflow-y-scroll max-sm:rounded-none overflow-hidden";
+  "relative flex min-h-[500px] w-4/5 cursor-auto flex-col gap-10 rounded-xl bg-gradient  bg-cover bg-center shadow-shadow1 max-md:left-0 max-md:h-full max-md:min-h-screen max-md:w-full max-md:translate-x-0 max-md:overflow-y-auto max-sm:rounded-none overflow-hidden";
 document.querySelectorAll("#overview")[1].id = "episode_overview";
 
 // todo : add the lottie loading animation here and the container in the html when you finish (I hate live server)
@@ -853,11 +853,17 @@ closeOverview(episodeOverviewContainer);
 const watchListContainer = document.getElementById("watchList");
 document.querySelectorAll("#watchList_toggler").forEach((toggler) => {
   toggler.addEventListener("click", function () {
+    // Initialization
+    showsFromWatchList(watchLists.watched.name);
     watchListContainer.classList.toggle("show");
+    !watchListContainer.classList.contains("show") &&
+      document.body.classList.remove("h-screen", "overflow-hidden");
+
     this.firstElementChild.classList.toggle("active");
     if (window.matchMedia("(max-width: 768px)").matches) {
       window.scrollTo(0, 0);
-      document.body.classList.add("h-screen", "overflow-hidden");
+      watchListContainer.classList.contains("show") &&
+        document.body.classList.add("h-screen", "overflow-hidden");
     }
   });
 });
@@ -872,7 +878,6 @@ document.addEventListener("click", (e) => {
       .forEach((toggler) =>
         toggler.firstElementChild.classList.remove("active")
       );
-
     document.body.classList.remove("h-screen", "overflow-hidden");
   }
 });
@@ -1011,5 +1016,3 @@ watchListContainer.querySelectorAll("button").forEach((button) => {
     showsFromWatchList(watchLists[this.dataset.list].name);
   });
 });
-// Initialization
-showsFromWatchList(watchLists.watched.name);
