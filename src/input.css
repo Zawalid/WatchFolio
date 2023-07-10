@@ -7,7 +7,7 @@
   --episode-bg: linear-gradient(306deg, #000 0%, #0b1531 100%);
 }
 @layer utilities {
-  div.active,
+  li.active,
   i.active {
     @apply text-primaryAccent;
   }

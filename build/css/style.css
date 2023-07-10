@@ -747,6 +747,10 @@ video {
   height: 100vh;
 }
 
+.h-\[550px\] {
+  height: 550px;
+}
+
 .min-h-\[500px\] {
   min-height: 500px;
 }
@@ -1302,7 +1306,7 @@ video {
   transition-duration: .8s;
 }
 
-div.active,
+li.active,
   i.active {
   --tw-text-opacity: 1;
   color: rgb(255 193 7 / var(--tw-text-opacity));

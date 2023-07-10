@@ -10,10 +10,13 @@ document.querySelectorAll("#watchList_toggler").forEach((toggler) => {
     watchListContainer.classList.toggle("show");
     // Check if the user is on the show page and add the overflow-hidden class to the body to prevent scrolling when the watchList is open
     !watchListContainer.classList.contains("show") &&
-      window.location.pathname.includes("show.html") &&
-      document.body.classList.remove("h-screen", "overflow-hidden");
+    window.location.pathname.includes("show.html")
+      ? document.body.classList.remove("h-screen", "overflow-hidden")
+      : document.body.classList.remove("overflow-hidden");
     // Add the active class to the toggler
-    this.firstElementChild.classList.toggle("active");
+    window.matchMedia("(max-width: 768px)").matches
+      ? this.classList.add("active")
+      : this.firstElementChild.classList.add("active");
     // Scroll to the top of the page when the watchList is open on mobile
     if (window.matchMedia("(max-width: 768px)").matches) {
       window.scrollTo(0, 0);
@@ -30,14 +33,12 @@ document.addEventListener("click", (e) => {
   ) {
     watchListContainer.classList.remove("show");
     // Remove the active class from the toggler
-    document
-      .querySelectorAll("#watchList_toggler")
-      .forEach((toggler) =>
-        toggler.firstElementChild.classList.remove("active")
-      );
-    // Check if the user is on the show page and remove the overflow-hidden class from the body to allow scrolling when the watchList is closed
-    window.location.pathname.includes("show.html") &&
-      document.body.classList.remove("h-screen", "overflow-hidden");
+    document.querySelectorAll("#watchList_toggler").forEach((toggler) => {
+      window.matchMedia("(max-width: 768px)").matches
+        ? toggler.classList.remove("active")
+        : toggler.firstElementChild.classList.remove("active");
+    });
+   
   }
 });
 
