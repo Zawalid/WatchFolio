@@ -526,8 +526,12 @@ const getEpisodes = async () => {
           <div class="flex items-center gap-2">
             <i class="fa-solid fa-clock text-textColor2"></i>
             <span class="font-semibold text-textColor">${
-              episode.runtime
-            }min</span>
+              episode.runtime > 60
+                ? `${Math.floor(episode.runtime / 60)}h ${Math.floor(
+                    episode.runtime % 60
+                  )}min `
+                : episode.runtime + "min"
+            }</span>
           </div>
         </div>
       </div>
@@ -765,6 +769,7 @@ const episodeOverview = async (showName, season, otherInfo) => {
     options
   );
   const episode = await res.json();
+  console.log(episode);
   const homePage = await getShowHomePage(showName);
   const episodePoster =
     `${baseUrl}original${episode.still_path}` || "../imgs/placeholder.png";
@@ -805,7 +810,13 @@ const episodeOverview = async (showName, season, otherInfo) => {
               Runtime :
               <div class="flex items-center gap-2 text-textColor">
                 <i class="fa-solid fa-clock"></i>
-                <span class="font-semibold">60min</span>
+                <span class="font-semibold">${
+                  episode.runtime > 60
+                    ? `${Math.floor(episode.runtime / 60)}h ${Math.floor(
+                        episode.runtime % 60
+                      )}min `
+                    : episode.runtime + "min"
+                }</span>
               </div>
             </div>
             <p class="text-lg font-bold leading-snug text-textColor">
