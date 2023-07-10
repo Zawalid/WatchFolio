@@ -15,6 +15,7 @@
       rel="stylesheet"
     />
     <script defer src="./js/main.js"></script>
+    <script defer src="./js/watchList.js"></script>
   </head>
   <body
     class="relative h-screen bg-gradient bg-cover before:absolute before:-z-10 before:h-full before:w-full before:bg-background before:bg-cover before:bg-no-repeat before:opacity-20 before:blur-[1px]"
@@ -104,5 +105,36 @@
       class="container relative hidden h-auto min-h-[75vh] w-full grid-cols-[repeat(auto-fit,220px)] gap-6 bg-gradient py-5 max-sm:place-content-center max-sm:pb-24"
       id="search_results"
     ></div>
+    <div
+    class="absolute right-20 top-[75px] -z-10 h-[600px] w-[400px] rounded-xl bg-gradient opacity-0 transition-opacity duration-300 max-md:right-0 max-md:top-0 max-md:h-full max-md:w-full"
+    id="watchList"
+    data-current_list="watched"
+  >
+    <div
+      class="grid-cols-[repeat(2,105px)_122px] grid place-content-between gap-3 overflow-x-auto py-5 px-2"
+    >
+      <button
+        class="active rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+        data-list="watched"
+      >
+        Watched
+      </button>
+      <button
+        class="rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+        data-list="watching"
+      >
+        Watching
+      </button>
+      <button
+        class="rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+        data-list="willWatch"
+      >
+        Will Watch
+      </button>
+    </div>
+    <div
+      class="me-2 mt-5 h-[450px] overflow-y-auto px-5 max-md:h-3/4 max-md:pb-[76px]"
+    ></div>
+  </div>
   </body>
 </html>
