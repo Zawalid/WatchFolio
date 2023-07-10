@@ -47,7 +47,7 @@ const watchLists = {
   watched: {
     name: "watched",
     defaultButton: "I Watched",
-    activeButton: `<i class="fa-solid fa-check"></i> Watched`,
+    activeButton: `<i class="fa-solid fa-circle-check"></i> Watched`,
     shows: new Set(),
   },
   watching: {
@@ -59,7 +59,7 @@ const watchLists = {
   willWatch: {
     name: "willWatch",
     defaultButton: "I Will Watch",
-    activeButton: `<i class="fa-solid fa-check"></i> Will Watch`,
+    activeButton: `<i class="fa-solid fa-calendar-plus"></i> Will Watch`,
     shows: new Set(),
   },
 };

@@ -726,8 +726,8 @@ video {
   height: 450px;
 }
 
-.h-\[600px\] {
-  height: 600px;
+.h-\[550px\] {
+  height: 550px;
 }
 
 .h-auto {
@@ -745,10 +745,6 @@ video {
 
 .h-screen {
   height: 100vh;
-}
-
-.h-\[550px\] {
-  height: 550px;
 }
 
 .min-h-\[500px\] {
@@ -906,6 +902,10 @@ video {
 
 .items-center {
   align-items: center;
+}
+
+.items-baseline {
+  align-items: baseline;
 }
 
 .justify-center {

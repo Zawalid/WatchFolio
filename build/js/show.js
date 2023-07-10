@@ -1,5 +1,4 @@
 "use strict";
-
 let showName, currentSeason;
 // TODO : add a initialize function to initialize the lists and the overview containers
 !window.localStorage.key("watched") &&
@@ -160,17 +159,20 @@ const showOverview = async () => {
     </div>
     <div class="mt-5  gap-6 w-3/4 max-sm:w-full  grid grid-cols-[repeat(auto-fit,minmax(152px,1fr))]">
       <button
-        class=" cursor-pointer rounded-3xl bg-secondaryAccent px-5 py-3 text-center font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80" data-list="watched"
+        class=" cursor-pointer rounded-3xl bg-secondaryAccent px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80 flex items-baseline gap-2 justify-center
+        " data-list="watched"
       >
         I Watched
       </button>
       <button
-        class=" cursor-pointer rounded-3xl bg-dark px-5 py-3 text-center font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80" data-list="watching"
+        class=" cursor-pointer rounded-3xl bg-dark px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80 flex items-baseline gap-2 justify-center
+        " data-list="watching"
       >
         I'm Watching
       </button>
       <button
-        class="max-wrap:col-span-full cursor-pointer rounded-3xl bg-thirdAccent px-5 py-3 text-center font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80" data-list="willWatch"
+        class="max-wrap:col-span-full cursor-pointer rounded-3xl bg-thirdAccent px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80 flex items-baseline gap-2 justify-center
+        " data-list="willWatch"
       >
         I Will Watch
       </button>
@@ -210,15 +212,15 @@ const showOverview = async () => {
       </div>
       <div class="mt-3 flex items-center gap-4 text-lg">
         <span class="font-semibold text-textColor2">Language :</span>
-        <span class="text-textColor">${show.language}</span>
+        <span class="text-textColor">${show.language || "Unknown"}</span>
       </div>
       <div class="mt-3 flex items-center gap-4 text-lg">
         <span class="font-semibold text-textColor2">Release Date :</span>
-        <span class="text-textColor">${show.premiered}</span>
+        <span class="text-textColor">${show.premiered || "Unknown"}</span>
       </div>
       <div class="mt-3 flex items-center gap-4 text-lg">
         <span class="font-semibold text-textColor2">Status :</span>
-        <span class="text-textColor">${show.status}</span>
+        <span class="text-textColor">${show.status || "Unknown"}</span>
       </div>
       <div class="mt-3 flex items-center gap-4 text-lg">
         <span class="font-semibold text-textColor2">Network :</span>
@@ -237,12 +239,14 @@ const showOverview = async () => {
     //   Insert the elements
     showOverviewContainer.innerHTML = "";
     showOverviewContainer.insertAdjacentHTML("beforeend", info);
+    // Activate the watch list button after inserting the buttons
+    activateWatchListButton();
     showOverviewContainer.insertAdjacentHTML("beforeend", details);
     showOverviewContainer.insertAdjacentHTML("beforeend", seasons);
     showOverviewContainer.insertAdjacentHTML("beforeend", cast);
   } catch (err) {
     console.log(err);
-    // showOverviewContainer.innerHTML = noResults();
+    showOverviewContainer.innerHTML = noResults();
     return;
   }
 };
@@ -885,3 +889,14 @@ showOverviewContainer.addEventListener("click", (e) => {
     toggleIdToWatchList(watchLists.willWatch);
   }
 });
+//* Activate the right button when the page loads if the show is already added to a watchList
+const activateWatchListButton = () => {
+  for (const list in watchLists) {
+    watchLists[list].shows.forEach((show) => {
+      if (show === window.location.search.split("?")[1]) {
+        document.querySelector(`[data-list=${list}]`).innerHTML =
+          watchLists[list].activeButton;
+      }
+    });
+  }
+};
