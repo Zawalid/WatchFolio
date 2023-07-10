@@ -25,53 +25,92 @@
     class="relative min-h-screen bg-gradient bg-cover before:absolute before:-z-10 before:h-full before:w-full before:bg-cover before:bg-center before:bg-no-repeat before:opacity-20 before:blur-[1px]"
   >
     <div class="container h-full pb-8 max-sm:pb-20">
-      <header class="flex items-center justify-between py-5 relative z-30">
+      <header class="relative z-30 flex items-center justify-between py-5">
         <a href="index.html">
           <h2 class="font-logo text-4xl font-extrabold max-sm:text-3xl">
             <span class="text-primaryAccent">Watch</span
             ><span class="text-textColor">Folio</span>
           </h2>
         </a>
-        <div class="flex items-center gap-7 max-sm:hidden">
-          <a href="index.html">
+        <ul class="flex items-center gap-7 max-sm:hidden">
+          <li>
+            <a href="index.html">
+              <i
+                class="fa-solid fa-house cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+              ></i>
+            </a>
+          </li>
+          <li id="watchList_toggler">
             <i
-              class="fa-solid fa-house cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+              class="fa-solid fa-clipboard-list cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
             ></i>
-          </a>
-          <i
-            class="fa-solid fa-clipboard-list cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
-          ></i>
-          <i
-            class="fa-solid fa-user cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
-          ></i>
-        </div>
+          </li>
+          <li>
+            <i
+              class="fa-solid fa-user cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+            ></i>
+          </li>
+        </ul>
       </header>
       <div id="overview"></div>
     </div>
-    <div
-      class="fixed bottom-0 left-0 z-50 flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-2 backdrop-blur-[6px] md:hidden"
+    <ul
+      class="fixed bottom-0 left-0 z-[9999] flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-2 backdrop-blur-[6px] md:hidden"
     >
-      <a
-        href="index.html"
-        class="active flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
-      >
-        <i class="fa-solid fa-house cursor-pointer text-2xl"></i>
-        <span class="font-semibold">Home</span>
-      </a>
-      <a
-        href="#"
-        class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+      <li class="marker:text-transparent">
+        <a
+          href="index.html"
+          class="active flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+        >
+          <i class="fa-solid fa-house cursor-pointer text-2xl"></i>
+          <span class="font-semibold">Home</span>
+        </a>
+      </li>
+      <li
+        class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
+        id="watchList_toggler"
       >
         <i class="fa-solid fa-clipboard-list cursor-pointer text-2xl"></i>
         <span class="font-semibold">Watchlist</span>
-      </a>
-      <a
-        href="#"
-        class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+      </li>
+      <li
+        class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
       >
         <i class="fa-solid fa-user cursor-pointer text-2xl"></i>
         <span class="font-semibold">Profile</span>
-      </a>
+      </li>
+    </ul>
+    <div
+      class="show absolute right-20 top-[75px] -z-10 h-[600px] w-[400px] rounded-xl bg-gradient opacity-0 transition-opacity duration-300 max-md:right-0 max-md:top-0 max-md:h-full max-md:w-full"
+      id="watchList"
+    >
+      <i
+        class="fa-solid fa-xmark absolute right-4 top-2 cursor-pointer text-xl text-textColor2"
+        id="close"
+      ></i>
+      <div class="flex items-center justify-center gap-3 py-9">
+        <button
+          class="active rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          data-list="watched"
+        >
+          Watched
+        </button>
+        <button
+          class="rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          data-list="watching"
+        >
+          Watching
+        </button>
+        <button
+          class="rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          data-list="willWatch"
+        >
+          Will Watch
+        </button>
+      </div>
+      <div
+        class="me-2 h-[450px] overflow-y-auto px-5 max-md:h-3/4 max-md:pb-[76px]"
+      ></div>
     </div>
   </body>
 </html>

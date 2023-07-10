@@ -68,7 +68,6 @@ const displayOverview = (container, html, img = null) => {
     }
   }, 1000);
   if (window.matchMedia("(max-width: 768px)").matches) {
-    console.log("hi");
     window.scrollTo(0, 0);
     document.body.classList.add("h-screen", "overflow-hidden");
   }
@@ -155,21 +154,21 @@ const showOverview = async () => {
     </div>
     </div>
     <div class="mt-5  gap-6 w-3/4 max-sm:w-full  grid grid-cols-[repeat(auto-fit,minmax(152px,1fr))]">
-      <div
-        class=" cursor-pointer rounded-3xl bg-secondaryAccent px-5 py-3 text-center font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80"
+      <button
+        class=" cursor-pointer rounded-3xl bg-secondaryAccent px-5 py-3 text-center font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80" data-list="watched"
       >
         I Watched
-      </div>
-      <div
-        class=" cursor-pointer rounded-3xl bg-dark px-5 py-3 text-center font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80"
+      </button>
+      <button
+        class=" cursor-pointer rounded-3xl bg-dark px-5 py-3 text-center font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80" data-list="watching"
       >
         I'm Watching
-      </div>
-      <div
-        class="max-wrap:col-span-full cursor-pointer rounded-3xl bg-thirdAccent px-5 py-3 text-center font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80"
+      </button>
+      <button
+        class="max-wrap:col-span-full cursor-pointer rounded-3xl bg-thirdAccent px-5 py-3 text-center font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80" data-list="willWatch"
       >
         I Will Watch
-      </div>
+      </button>
     </div>
   </div>
 </div>
@@ -238,7 +237,7 @@ const showOverview = async () => {
     showOverviewContainer.insertAdjacentHTML("beforeend", cast);
   } catch (err) {
     console.log(err);
-    showOverviewContainer.innerHTML = noResults();
+    // showOverviewContainer.innerHTML = noResults();
     return;
   }
 };
@@ -251,7 +250,12 @@ const getSeasons = async () => {
   );
   //   Convert the response to json
   const seasons = await res.json();
-
+  // Remove seasons with premiereDate null
+  seasons.forEach((season, i) => {
+    if (!season.premiereDate) {
+      seasons.splice(i, 1);
+    }
+  });
   const html = `
   <div class="mb-8">
   <details open>
@@ -288,6 +292,7 @@ const getCast = async () => {
   const res = await fetch(
     `https://api.tvmaze.com/shows/${window.location.search.split("?")[1]}/cast`
   );
+
   const renderPerson = (name, character, image) => {
     return `
     <div class="flex flex-col  gap-3 cursor-pointer" data-character="${character}" data-name="${name}" id="person">
@@ -343,7 +348,7 @@ const getCast = async () => {
         <summary class="mb-5 text-xl font-bold text-thirdAccent">
         Cast
         </summary>
-        <div class="grid grid-cols-[repeat(auto-fit,minmax(110px,1fr))] text-center gap-8 max-sm:justify-center ${
+        <div class="grid grid-cols-[repeat(auto-fit,110px)] text-center gap-8 max-sm:justify-center ${
           casts.length === 0 ? "font-bold text-lg text-textColor2" : ""
         }" id="cast">
         ${casts.length !== 0 ? showLessCast() : "No cast available"}
@@ -398,7 +403,7 @@ const seasonOverview = async (id) => {
   const res = await fetch(`https://api.tvmaze.com/seasons/${id}`);
   //   Convert the response to json
   const season = await res.json();
-  console.log(season);
+  // const season = seasons.find((e) => e.id === +id);
   currentSeason = season.number;
   // Fix the summary
   season.summary = season.summary?.replace(/<p>/g, "");
@@ -417,9 +422,9 @@ const seasonOverview = async (id) => {
       <h1
         class="font-logo text-4xl font-extrabold text-primaryAccent max-sm:text-3xl max-md:text-center"
       >
-        Season ${season.number}
+        Season ${season?.number}
         <span class="ms-2 font-mono text-lg font-semibold text-textColor"
-          >(${season.premiereDate.split("-")[0]})</span
+          >(${season.premiereDate?.split("-")[0] || ""})</span
         >
       </h1>
       <div class="">
@@ -430,18 +435,20 @@ const seasonOverview = async (id) => {
           <div class="mt-3 flex items-center gap-4 text-lg">
             <span class="font-semibold text-textColor2">Episodes :</span>
             <span class="text-textColor">${
-              season.episodeOrder || "Unconfirmed"
+              season?.episodeOrder || "Unconfirmed"
             }</span>
           </div>
           <div class="mt-3 flex items-center gap-4 text-lg">
             <span class="font-semibold text-textColor2"
               >Release Date :</span
             >
-            <span class="text-textColor">${season.premiereDate}</span>
+            <span class="text-textColor">${
+              season?.premiereDate || "Unconfirmed"
+            }</span>
           </div>
           <div class="mt-3 flex items-center gap-4 text-lg">
             <span class="font-semibold text-textColor2">End Date :</span>
-            <span class="text-textColor">${season.endDate}</span>
+            <span class="text-textColor">${season?.endDate}</span>
           </div>
         </details>
       </div>
@@ -462,7 +469,9 @@ const seasonOverview = async (id) => {
       <summary class="mb-5 text-xl font-bold text-thirdAccent">
         Episodes
       </summary>
-      <div class="my-7 flex flex-col md:h-[300px] md:overflow-y-scroll  gap-3 max-md:pb-7">${await getEpisodes()}</div>
+      <div class="my-7 flex flex-col md:h-[300px] md:overflow-y-scroll  gap-3 max-md:pb-7">
+      ${await getEpisodes()}
+      </div>
     </details>
   </div>
   `;
@@ -474,13 +483,9 @@ const getEpisodes = async () => {
     `https://api.tvmaze.com/seasons/${window.location.hash.slice(1)}/episodes`
   );
   //   Convert the response to json
-  const episodes = await res.json();
+  let episodes = await res.json();
   // Remove episodes with number null
-  episodes.forEach((episode, i) => {
-    if (!episode.number) {
-      episodes.splice(i, 1);
-    }
-  });
+  episodes = episodes.filter((episode) => episode.number);
   const html = episodes
     .map((episode) => {
       return `
@@ -738,6 +743,7 @@ document.addEventListener("click", (e) => {
 //* Close the person overview when clicking on the close button or the container
 closeOverview(personOverviewContainer);
 
+//* ------------------------------ Episode overview ------------------------------ *//
 const episodeOverviewContainer = document.getElementById("episode_overview");
 const episodeOverview = async (showName, season, otherInfo) => {
   showLoading(episodeOverviewContainer);
@@ -806,6 +812,7 @@ const episodeOverview = async (showName, season, otherInfo) => {
 `;
   displayOverview(episodeOverviewContainer, html, episodePoster);
 };
+//* Get the show id
 const getShowId = async (showName) => {
   const res = await fetch(
     `https://api.themoviedb.org/3/search/tv?query=${showName}`,
@@ -814,6 +821,7 @@ const getShowId = async (showName) => {
   const data = await res.json();
   return data.results[0].id;
 };
+//* Get the show official homepage
 const getShowHomePage = async (showName) => {
   const res = await fetch(
     `https://api.themoviedb.org/3/tv/${await getShowId(showName)}`,
@@ -822,6 +830,7 @@ const getShowHomePage = async (showName) => {
   const data = await res.json();
   return data.homepage;
 };
+//* Show the episode overview when clicking on the episode
 document.addEventListener("click", (e) => {
   if (e.target.closest("#episode")) {
     let info = e.target.closest("#episode").dataset.info;
@@ -833,4 +842,172 @@ document.addEventListener("click", (e) => {
     episodeOverview(showName, currentSeason, info);
   }
 });
+//* Close the episode overview when clicking on the close button or the container
 closeOverview(episodeOverviewContainer);
+
+//* ------------------------------ WatchLists ------------------------------ *//
+const watchListContainer = document.getElementById("watchList");
+const closeList = watchListContainer.querySelector("#close");
+document.querySelectorAll("#watchList_toggler").forEach((toggler) => {
+  toggler.addEventListener("click", function () {
+    watchListContainer.classList.toggle("show");
+    this.firstElementChild.classList.toggle("active");
+    if (window.matchMedia("(max-width: 768px)").matches) {
+      window.scrollTo(0, 0);
+      document.body.classList.add("h-screen", "overflow-hidden");
+    }
+  });
+});
+document.addEventListener("click", (e) => {
+  if (
+    (!watchListContainer.contains(e.target) &&
+      !e.target.closest("#watchList_toggler")) ||
+    e.target === closeList
+  ) {
+    watchListContainer.classList.remove("show");
+    document
+      .querySelectorAll("#watchList_toggler")
+      .forEach((toggler) =>
+        toggler.firstElementChild.classList.remove("active")
+      );
+
+    document.body.classList.remove("h-screen", "overflow-hidden");
+  }
+});
+//* Data related to the watchList
+const watchLists = {
+  watched: {
+    name: "watched",
+    defaultButton: "I Watched",
+    activeButton: `<i class="fa-solid fa-check"></i> Watched`,
+    shows: new Set(),
+  },
+  watching: {
+    name: "watching",
+    defaultButton: "I'm Watching",
+    activeButton: `<i class="fa-solid fa-eye"></i> Watching`,
+    shows: new Set(),
+  },
+  willWatch: {
+    name: "willWatch",
+    defaultButton: "I Will Watch",
+    activeButton: `<i class="fa-solid fa-check"></i> Will Watch`,
+    shows: new Set(),
+  },
+};
+//* Add to the chosen list
+const addToWatchList = (id, list) => {
+  // Remove the id from the other lists if it exists
+  [
+    watchLists.watched.shows,
+    watchLists.watching.shows,
+    watchLists.willWatch.shows,
+  ].forEach((l) => l.has(id) && l.delete(id));
+  // Remove the active textContent from all the other lists
+  [watchLists.watched, watchLists.watching, watchLists.willWatch].forEach(
+    (list) =>
+      (document.querySelector(`[data-list="${list.name}"]`).innerHTML =
+        list.defaultButton)
+  );
+
+  // Add the id to the chosen list
+  list.add(id);
+  // Update the lists in the local storage
+  [watchLists.watched, watchLists.watching, watchLists.willWatch].forEach((l) =>
+    window.localStorage.setItem(l.name, [...l.shows])
+  );
+};
+//* Remove from the chosen list
+const removeFromWatchList = (id, list) => {
+  // Add the id to the chosen list
+  list.shows.delete(id);
+  // Update the list in the local storage
+  window.localStorage.setItem(list.name, [...list.shows]);
+};
+//* Perform the right action when clicking  on a watchList button
+showOverviewContainer.addEventListener("click", (e) => {
+  const id = window.location.search.split("?")[1];
+  const toggleIdToWatchList = (list) => {
+    // Check if the show already added and remove it if so  else add it
+    if (list.shows.has(id)) {
+      removeFromWatchList(id, list);
+      // Restore the text content to the default
+      e.target.innerHTML = list.defaultButton;
+    } else {
+      addToWatchList(id, list.shows);
+      // Set the text content to the active
+      e.target.innerHTML = list.activeButton;
+    }
+  };
+  if (e.target.tagName === "BUTTON" && e.target.dataset.list === "watched") {
+    toggleIdToWatchList(watchLists.watched);
+  } else if (
+    e.target.tagName === "BUTTON" &&
+    e.target.dataset.list === "watching"
+  ) {
+    toggleIdToWatchList(watchLists.watching);
+  } else if (
+    e.target.tagName === "BUTTON" &&
+    e.target.dataset.list === "willWatch"
+  ) {
+    toggleIdToWatchList(watchLists.willWatch);
+  }
+});
+//* Display shows from the chosen list
+const showsFromWatchList = async (list) => {
+  const showsIds = watchLists[list].shows;
+  const getShow = async (id) => {
+    const res = await fetch(`https://api.tvmaze.com/shows/${id}`);
+    const show = await res.json();
+    return show;
+  };
+  const displayShow = async (id) => {
+    const show = await getShow(id);
+    return `
+    <div class="flex items-center justify-between" >
+  <a href="show.html?${show.id}" class="flex items-center gap-3 " >
+  <img src="${
+    show.image.medium || "./imgs/placeholder.png"
+  }" alt="" class="w-[100px] rounded-lg" >
+  <h3 class="text-textColor font-bold text-lg">${show.name} </h3>
+  </a>
+  <i class="fa-solid fa-trash text-textColor2 transition-colors hover:text-secondaryAccent duration-300 text-lg cursor-pointer" id="remove"></i>
+  </div>
+  `;
+  };
+  const emptyList = `
+  <div class="flex flex-col items-center h-full justify-center ">
+  <img src="" alt="" class="">
+  <h2 class="font-bold text-textColor2">List is empty</div>
+  </div>
+  `;
+
+  let html =
+    showsIds.size > 0
+      ? await Promise.all([...showsIds].map((id) => displayShow(id)))
+      : emptyList;
+
+  watchListContainer.lastElementChild.innerHTML = html;
+};
+
+//* Retrieve shows from local storage and store them back in the lists
+const retrieveAndStoreLists = (list, listName) => {
+  const lists = window.localStorage.getItem(listName)?.split(",");
+  lists[0] == "" && lists.splice(0, 1);
+  list.shows = new Set(lists);
+};
+retrieveAndStoreLists(watchLists.watched, "watched");
+retrieveAndStoreLists(watchLists.watching, "watching");
+retrieveAndStoreLists(watchLists.willWatch, "willWatch");
+
+watchListContainer.querySelectorAll("button").forEach((button) => {
+  button.addEventListener("click", function () {
+    watchListContainer
+      .querySelectorAll("button")
+      .forEach((button) => button.classList.remove("active"));
+    this.classList.add("active");
+    showsFromWatchList(watchLists[this.dataset.list].name);
+  });
+});
+// Initialization
+showsFromWatchList(watchLists.watched.name);

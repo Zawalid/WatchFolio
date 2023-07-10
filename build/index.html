@@ -25,17 +25,25 @@
           <span class="text-primaryAccent">Watch</span
           ><span class="text-textColor">Folio</span>
         </h2>
-        <div class="flex items-center gap-7 max-sm:hidden">
-          <i
-            class="active fa-solid fa-house cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
-          ></i>
-          <i
-            class="fa-solid fa-clipboard-list cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
-          ></i>
-          <i
-            class="fa-solid fa-user cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
-          ></i>
-        </div>
+        <ul class="flex items-center gap-7 max-sm:hidden">
+          <li>
+            <a href="index.html">
+              <i
+                class="fa-solid fa-house cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+              ></i>
+            </a>
+          </li>
+          <li id="watchList_toggler">
+            <i
+              class="fa-solid fa-clipboard-list cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+            ></i>
+          </li>
+          <li>
+            <i
+              class="fa-solid fa-user cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+            ></i>
+          </li>
+        </ul>
       </header>
       <div
         class="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 px-3 pt-20"
@@ -43,48 +51,54 @@
         <h1
           class="mx-auto w-2/3 text-center text-6xl font-extrabold text-primaryAccent max-sm:w-full max-sm:text-3xl"
         >
-          Seamlessly Track, Discover, and Curate Your <span class="text-textColor">TV Show</span> Journey
+          Seamlessly Track, Discover, and Curate Your
+          <span class="text-textColor">TV Show</span> Journey
         </h1>
         <div
-          class="relative mx-auto mt-24 w-2/3  rounded-[20px] bg-textColor px-5 py-3 shadow-shadow1 backdrop-blur-sm max-sm:w-full sm:py-4"
+          class="relative mx-auto mt-24 w-2/3 rounded-[20px] bg-textColor px-5 py-3 shadow-shadow1 backdrop-blur-sm max-sm:w-full sm:py-4"
         >
           <input
             type="text"
             name="search"
             id="search_input"
             placeholder="Search for TV shows"
-            class=" w-full flex-1 border-none bg-transparent font-semibold text-black placeholder-black placeholder:font-bold focus:outline-none"
+            class="w-full flex-1 border-none bg-transparent font-semibold text-black placeholder-black placeholder:font-bold focus:outline-none"
           />
           <div
-            class="rounded-tr-[19px] rounded-br-[19px] absolute right-0 top-0 grid h-full cursor-pointer place-content-center bg-black pe-4 ps-3 transition-colors hover:bg-primaryAccent"
+            class="absolute right-0 top-0 grid h-full cursor-pointer place-content-center rounded-br-[19px] rounded-tr-[19px] bg-black pe-4 ps-3 transition-colors hover:bg-primaryAccent"
             id="search_button"
           >
             <i class="fa-solid fa-search text-lg text-textColor"></i>
           </div>
         </div>
       </div>
-      <div
-        class="fixed bottom-0 left-0 z-50 flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-2 backdrop-blur-[6px] sm:hidden"
+      <ul
+        class="fixed bottom-0 left-0 z-[9999] flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-2 backdrop-blur-[6px] md:hidden"
       >
-        <div
-          class="active flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
-        >
-          <i class="fa-solid fa-house cursor-pointer text-2xl"></i>
-          <span class="font-semibold">Home</span>
-        </div>
-        <div
-          class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+        <li class="marker:text-transparent">
+          <a
+            href="index.html"
+            class="active flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+          >
+            <i class="fa-solid fa-house cursor-pointer text-2xl"></i>
+            <span class="font-semibold">Home</span>
+          </a>
+        </li>
+
+        <li
+          class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
+          id="watchList_toggler"
         >
           <i class="fa-solid fa-clipboard-list cursor-pointer text-2xl"></i>
           <span class="font-semibold">Watchlist</span>
-        </div>
-        <div
-          class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+        </li>
+        <li
+          class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
         >
           <i class="fa-solid fa-user cursor-pointer text-2xl"></i>
           <span class="font-semibold">Profile</span>
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
     <div
       class="container relative hidden h-auto min-h-[75vh] w-full grid-cols-[repeat(auto-fit,220px)] gap-6 bg-gradient py-5 max-sm:place-content-center max-sm:pb-24"

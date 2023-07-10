@@ -7,7 +7,8 @@
   --episode-bg: linear-gradient(306deg, #000 0%, #0b1531 100%);
 }
 @layer utilities {
-  .active {
+  div.active,
+  i.active {
     @apply text-primaryAccent;
   }
   #episode_overview.show,
@@ -15,15 +16,17 @@
   #season_overview.show {
     @apply z-30 opacity-100;
   }
-  .textVertical {
-    writing-mode: vertical-rl;
+  #watchList button.active {
+    @apply bg-secondaryAccent;
+  }
+  #watchList.show {
+    @apply z-10 opacity-100 max-md:z-50;
   }
 }
 
 html {
   scroll-behavior: smooth;
 }
-
 #showBody::before {
   background-image: var(--bg);
 }
