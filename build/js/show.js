@@ -820,7 +820,7 @@ const getOtherShows = async (id) => {
   shows.cast = shows.cast.filter((show) => show.name !== currentShowName);
   const infos = await Promise.all(
     shows.cast.map((show) => {
-      return getOtherShowsInfo(show.name);
+      return getShowsInfo(show.name);
     })
   );
   shows.cast.forEach((show, i) => {
