@@ -455,6 +455,7 @@ const getRecommendationsOrSimilarShows = async (id, request) => {
     .join("");
 
   return `
+  <div class="mb-8">
   <details open>
   <summary class="mb-5 text-xl font-bold text-thirdAccent">
     ${request === "recommendations" ? "Recommendations" : "Similar Shows"}
@@ -464,7 +465,8 @@ const getRecommendationsOrSimilarShows = async (id, request) => {
   >
     ${html}
   </div>
-</details>
+  </details>
+  </div>
   `;
 };
 //* Initialize
