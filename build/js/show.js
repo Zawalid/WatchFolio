@@ -205,12 +205,6 @@ const showOverview = async () => {
         <span class="text-textColor">${show.id}</span>
       </div>
       <div class="mt-3 flex items-center gap-4 text-lg">
-        <span class="font-semibold text-textColor2">Country :</span>
-        <span class="text-textColor">${
-          show.network?.country?.name || "Unknown"
-        }</span>
-      </div>
-      <div class="mt-3 flex items-center gap-4 text-lg">
         <span class="font-semibold text-textColor2">Language :</span>
         <span class="text-textColor">${show.language || "Unknown"}</span>
       </div>
@@ -236,6 +230,16 @@ const showOverview = async () => {
     const seasons = await getSeasons();
     //   Create the cast div
     const cast = await getCast();
+    // Create the similar shows div
+    const similarShows = await getRecommendationsOrSimilarShows(
+      await getShowId(showName),
+      "similar"
+    );
+    // Create the recommendations div
+    const recommendations = await getRecommendationsOrSimilarShows(
+      await getShowId(showName),
+      "recommendations"
+    );
     //   Insert the elements
     showOverviewContainer.innerHTML = "";
     showOverviewContainer.insertAdjacentHTML("beforeend", info);
@@ -244,6 +248,14 @@ const showOverview = async () => {
     showOverviewContainer.insertAdjacentHTML("beforeend", details);
     showOverviewContainer.insertAdjacentHTML("beforeend", seasons);
     showOverviewContainer.insertAdjacentHTML("beforeend", cast);
+    showOverviewContainer.insertAdjacentHTML(
+      "beforeend",
+      similarShows.length !== 0 ? similarShows : ""
+    );
+    showOverviewContainer.insertAdjacentHTML(
+      "beforeend",
+      recommendations.length !== 0 ? recommendations : ""
+    );
   } catch (err) {
     console.log(err);
     showOverviewContainer.innerHTML = noResults();
@@ -379,7 +391,6 @@ const getCast = async () => {
 //* No results message
 const noResults = () => {
   document.documentElement.style.setProperty("--bg", `url(../imgs/bg.jpg)`);
-
   return `
     <div
     class="absolute left-1/2 top-1/2 w-2/3 -translate-x-1/2 -translate-y-1/2 px-4 max-sm:w-full"
@@ -399,6 +410,63 @@ const noResults = () => {
   </div>
     `;
 };
+//* Get the recommendations or similar shows
+const getRecommendationsOrSimilarShows = async (id, request) => {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/tv/${id}/${request}`,
+    options
+  );
+  let shows = await res.json();
+  console.log(shows);
+  const infos = await Promise.all(
+    shows.results.map((show) => {
+      return getShowsInfo(show.name);
+    })
+  );
+  shows.results.forEach((show, i) => {
+    show.info = infos[i];
+  });
+  // Remove duplicates
+  shows.results = shows.results = shows.results.filter(
+    (show, i, arr) =>
+      show.info && arr.findIndex((t) => t.info?.id === show.info?.id) === i
+  );
+
+  const html = shows.results
+    .map((show) => {
+      if (!show.info) return "";
+      return `
+      <a href="show.html?id=${show?.info?.id}">
+      <div class=" h-[270px] w-16 hover:w-48 transition-all duration-300 peer group relative overflow-hidden">
+        <img
+          src="${
+            show.poster_path
+              ? baseUrl + "original" + show.poster_path
+              : "./imgs/placeholder.png"
+          }"
+          alt=""
+          class="w-full h-full object-cover rounded-md shadow-shadow1 mb-2"
+        />
+        ${show?.info?.info}
+        </div>
+        </a>
+    `;
+    })
+    .join("");
+
+  return `
+  <details open>
+  <summary class="mb-5 text-xl font-bold text-thirdAccent">
+    ${request === "recommendations" ? "Recommendations" : "Similar Shows"}
+  </summary>
+  <div
+    class="my-7 flex gap-3 overflow-x-auto max-md:pb-7"
+  >
+    ${html}
+  </div>
+</details>
+  `;
+};
 //* Initialize
 showOverview();
 //* To make sure that the show overview works also when the id is set manually
@@ -412,12 +480,10 @@ const seasonOverview = async (id) => {
   const res = await fetch(`https://api.tvmaze.com/seasons/${id}`);
   //   Convert the response to json
   const season = await res.json();
+  // Set the current season
   currentSeason = season.number;
-  const s = await getSeason(showName, currentSeason);
-  console.log(s);
-  const trailer = s.videos.results?.filter((video) => video.type === "Trailer")
-  const key = trailer[trailer.length - 1]
-    ?.key;
+  // Get the trailer key
+  const key = await getSeasonTrailer(showName, season.number);
   // Fix the summary
   season.summary = season.summary?.replace(/<p>/g, "");
   const html = `
@@ -503,7 +569,8 @@ const seasonOverview = async (id) => {
   `;
   displayOverview(seasonOverviewContainer, html);
 };
-const getSeason = async (showName, season) => {
+//* Get the season trailer
+const getSeasonTrailer = async (showName, season) => {
   const res = await fetch(
     `https://api.themoviedb.org/3/tv/${await getShowId(
       showName
@@ -511,7 +578,11 @@ const getSeason = async (showName, season) => {
     options
   );
   const s = await res.json();
-  return s;
+  // Filter to get the trailer
+  const trailer = s.videos.results?.filter((video) => video.type === "Trailer");
+  // Get the key (the last element in the array is the latest trailer)
+  const key = trailer[trailer.length - 1]?.key;
+  return key;
 };
 //* Get the episodes
 const getEpisodes = async () => {
@@ -591,6 +662,50 @@ const genders = {
   1: "Female",
   2: "Male",
   3: "Non Binary",
+};
+//* Get the show id using the TMDB API
+const getShowId = async (showName) => {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/search/tv?query=${showName}`,
+    options
+  );
+  const data = await res.json();
+  return data.results[0].id;
+};
+//* Get the show info using the first API
+const getShowsInfo = async (name) => {
+  try {
+    const res = await fetch(
+      `https://api.tvmaze.com/singlesearch/shows?q=${name}`
+    );
+    const show = await res.json();
+    const info = `
+    <div
+    class="blur-[60px] top-0 absolute -z-10 flex h-full w-full flex-col gap-3 bg-dark p-3 transition-all duration-[.8s] group-hover:z-10 group-hover:bg-dark group-hover:bg-opacity-50 group-hover:blur-0"
+  >
+          <div
+            class="w-fit rounded-lg bg-thirdAccent px-3 text-sm font-semibold text-textColor"
+          >
+            ${show.genres[0] || "No genre"}
+          </div>
+          <div
+            class="flex w-fit items-center gap-1 rounded-lg bg-secondaryAccent px-3 text-sm font-semibold text-textColor"
+          >
+            ${
+              show.rating.average || "Not rated"
+            } <i class="fa-solid fa-star text-primaryAccent"></i>
+          </div>
+          <h3 class="mt-auto font-logo text-lg font-bold text-textColor">
+          ${show.name}
+          </h3>
+          </div>
+       
+  `;
+    return {
+      info,
+      id: show.id,
+    };
+  } catch (err) {}
 };
 
 //* ------------------------------ Person overview ------------------------------ *//
@@ -703,7 +818,7 @@ const getOtherShows = async (id) => {
   shows.cast = shows.cast.filter((show) => show.name !== currentShowName);
   const infos = await Promise.all(
     shows.cast.map((show) => {
-      return getOtherShowInfo(show.name);
+      return getOtherShowsInfo(show.name);
     })
   );
   shows.cast.forEach((show, i) => {
@@ -720,7 +835,7 @@ const getOtherShows = async (id) => {
       if (!show.info) return "";
       return `
       <a href="show.html?id=${show?.info?.id}">
-      <div class=" h-[270px] w-16 hover:w-48 transition-all duration-500 peer group relative overflow-hidden">
+      <div class=" h-[270px] w-16 hover:w-48 transition-all duration-300 peer group relative overflow-hidden">
         <img
           src="${
             show.poster_path
@@ -739,41 +854,7 @@ const getOtherShows = async (id) => {
 
   return html;
 };
-//* Get the show info using the first API
-const getOtherShowInfo = async (name) => {
-  try {
-    const res = await fetch(
-      `https://api.tvmaze.com/singlesearch/shows?q=${name}`
-    );
-    const show = await res.json();
-    const info = `
-    <div
-    class="blur-[60px] top-0 absolute -z-10 flex h-full w-full flex-col gap-3 bg-dark p-3 transition-all duration-[.8s] group-hover:z-10 group-hover:bg-dark group-hover:bg-opacity-50 group-hover:blur-0"
-  >
-          <div
-            class="w-fit rounded-lg bg-thirdAccent px-3 text-sm font-semibold text-textColor"
-          >
-            ${show.genres[0] || "No genre"}
-          </div>
-          <div
-            class="flex w-fit items-center gap-1 rounded-lg bg-secondaryAccent px-3 text-sm font-semibold text-textColor"
-          >
-            ${
-              show.rating.average || "Not rated"
-            } <i class="fa-solid fa-star text-primaryAccent"></i>
-          </div>
-          <h3 class="mt-auto font-logo text-lg font-bold text-textColor">
-          ${show.name}
-          </h3>
-          </div>
-       
-  `;
-    return {
-      info,
-      id: show.id,
-    };
-  } catch (err) {}
-};
+
 //* Show the person overview when clicking on the person
 document.addEventListener("click", (e) => {
   if (e.target.closest("#person")) {
@@ -862,15 +943,6 @@ const episodeOverview = async (showName, season, otherInfo) => {
 `;
   displayOverview(episodeOverviewContainer, html, episodePoster);
 };
-//* Get the show id
-const getShowId = async (showName) => {
-  const res = await fetch(
-    `https://api.themoviedb.org/3/search/tv?query=${showName}`,
-    options
-  );
-  const data = await res.json();
-  return data.results[0].id;
-};
 //* Get the show official homepage
 const getShowHomePage = async (showName) => {
   const res = await fetch(
@@ -938,3 +1010,4 @@ const activateWatchListButton = () => {
     });
   }
 };
+
