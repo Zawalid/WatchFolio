@@ -412,8 +412,12 @@ const seasonOverview = async (id) => {
   const res = await fetch(`https://api.tvmaze.com/seasons/${id}`);
   //   Convert the response to json
   const season = await res.json();
-  // const season = seasons.find((e) => e.id === +id);
   currentSeason = season.number;
+  const s = await getSeason(showName, currentSeason);
+  console.log(s);
+  const trailer = s.videos.results?.filter((video) => video.type === "Trailer")
+  const key = trailer[trailer.length - 1]
+    ?.key;
   // Fix the summary
   season.summary = season.summary?.replace(/<p>/g, "");
   const html = `
@@ -476,6 +480,19 @@ const seasonOverview = async (id) => {
   <div>
     <details open>
       <summary class="mb-5 text-xl font-bold text-thirdAccent">
+        Trailer
+      </summary>
+      ${
+        !key
+          ? `<p class="text-lg font-semibold leading-snug text-textColor2 text-center">No trailer available</p>`
+          : `
+      <iframe src="https://www.youtube.com/embed/${key}" frameborder="0" allowfullscreen class="rounded-xl w-full h-[400px] max-sm:h-[250px] max-md:h-[300px]"></iframe>`
+      }
+    </details>
+  </div>
+  <div>
+    <details open>
+      <summary class="mb-5 text-xl font-bold text-thirdAccent">
         Episodes
       </summary>
       <div class="my-7 flex flex-col md:h-[300px] md:overflow-y-scroll  gap-3 max-md:pb-7">
@@ -485,6 +502,16 @@ const seasonOverview = async (id) => {
   </div>
   `;
   displayOverview(seasonOverviewContainer, html);
+};
+const getSeason = async (showName, season) => {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/tv/${await getShowId(
+      showName
+    )}/season/${season}?append_to_response=images%2Cvideos`,
+    options
+  );
+  const s = await res.json();
+  return s;
 };
 //* Get the episodes
 const getEpisodes = async () => {

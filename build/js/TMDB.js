@@ -5,22 +5,7 @@ const options = {
     Authorization:
       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3OWUxNjZjMzNhZjE4ZmVlNTgzNWJiMDBiOGE5ZTA1NCIsInN1YiI6IjY0YTJiOTcxMTEzODZjMDBhZGM3OTQxMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.yxORg4upeOsiqCve7e9CDV4i-_Q2LfIpnqKKax3Fnw4",
   },
-};
-const externalData = await fetch(
-  `https://api.themoviedb.org/3/search/tv?query=${show.name}&page=1`,
-  options
-);
-const externalDataJson = await externalData.json();
-console.log(externalDataJson);
-const showId = externalDataJson.results[0].id;
-const mainInfo = await fetch(
-  `https://api.themoviedb.org/3/tv/${showId}/videos`,
-  options
-);
-const mainInfoJson = await mainInfo.json();
-console.log(mainInfoJson);
-
-const config = {
+};const config = {
   images: {
     base_url: "http://image.tmdb.org/t/p/",
     secure_base_url: "https://image.tmdb.org/t/p/",

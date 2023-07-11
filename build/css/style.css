@@ -722,6 +722,10 @@ video {
   height: 270px;
 }
 
+.h-\[400px\] {
+  height: 400px;
+}
+
 .h-\[450px\] {
   height: 450px;
 }
@@ -1551,6 +1555,10 @@ html {
     height: 75%;
   }
 
+  .max-md\:h-\[300px\] {
+    height: 300px;
+  }
+
   .max-md\:h-full {
     height: 100%;
   }
@@ -1600,6 +1608,10 @@ html {
 @media not all and (min-width: 640px) {
   .max-sm\:hidden {
     display: none;
+  }
+
+  .max-sm\:h-\[250px\] {
+    height: 250px;
   }
 
   .max-sm\:w-\[100px\] {
