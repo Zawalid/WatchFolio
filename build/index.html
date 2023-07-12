@@ -106,35 +106,35 @@
       id="search_results"
     ></div>
     <div
-    class="absolute right-20 top-[75px] -z-10 h-[550px] w-[400px] rounded-xl bg-gradient opacity-0 transition-opacity duration-300 max-md:right-0 max-md:top-0 max-md:h-full max-md:w-full"
-    id="watchList"
-    data-current_list="watched"
-  >
-    <div
-      class="grid-cols-[repeat(2,105px)_122px] grid place-content-between gap-3 overflow-x-auto py-5 px-2"
+      class="absolute right-20 top-[75px] -z-10 h-[550px] w-[400px] rounded-xl bg-gradient opacity-0 transition-opacity duration-300 max-md:right-0 max-md:top-0 max-md:h-full max-md:w-full"
+      id="watchList"
+      data-current_list="watched"
     >
-      <button
-        class="active rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
-        data-list="watched"
+      <div
+        class="grid grid-cols-[repeat(2,105px)_122px] place-content-between gap-3 overflow-x-auto px-2 py-5"
       >
-        Watched
-      </button>
-      <button
-        class="rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
-        data-list="watching"
-      >
-        Watching
-      </button>
-      <button
-        class="rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
-        data-list="willWatch"
-      >
-        Will Watch
-      </button>
+        <button
+          class="active rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          data-list="watched"
+        >
+          Watched
+        </button>
+        <button
+          class="rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          data-list="watching"
+        >
+          Watching
+        </button>
+        <button
+          class="rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          data-list="willWatch"
+        >
+          Will Watch
+        </button>
+      </div>
+      <div
+        class="me-2 mt-5 h-[450px] overflow-y-auto px-5 pb-5 max-md:h-3/4 max-md:pb-[76px]"
+      ></div>
     </div>
-    <div
-      class="me-2 mt-5 h-[450px] overflow-y-auto px-5 max-md:h-3/4 max-md:pb-[76px]"
-    ></div>
-  </div>
   </body>
 </html>

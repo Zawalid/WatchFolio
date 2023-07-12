@@ -1,4 +1,5 @@
 "use strict";
+
 let showName, currentSeason;
 // TODO : add a initialize function to initialize the lists and the overview containers
 !window.localStorage.key("watched") &&
@@ -417,7 +418,6 @@ const getRecommendationsOrSimilarShows = async (id, request) => {
     options
   );
   let shows = await res.json();
-  console.log(shows);
   const infos = await Promise.all(
     shows.results.map((show) => {
       return getShowsInfo(show.name);
@@ -461,9 +461,19 @@ const getRecommendationsOrSimilarShows = async (id, request) => {
     ${request === "recommendations" ? "Recommendations" : "Similar Shows"}
   </summary>
   <div
-    class="my-7 flex gap-3 overflow-x-auto max-md:pb-7"
+    class="my-7 flex gap-3 overflow-x-auto max-md:pb-7 ${
+      shows.results.length === 0
+        ? "font-bold text-lg text-textColor2 justify-center"
+        : ""
+    }"
   >
-    ${html}
+    ${
+      shows.results.length > 0
+        ? html
+        : request === "recommendations"
+        ? "No recommendations available"
+        : "No similar shows available"
+    }
   </div>
   </details>
   </div>
@@ -1012,4 +1022,3 @@ const activateWatchListButton = () => {
     });
   }
 };
-
