@@ -3,6 +3,7 @@
 //* ------------------------------ WatchLists ------------------------------ *//
 const watchListContainer = document.getElementById("watchList");
 const listsButtons = document.querySelectorAll("#listsButtons button");
+const actions = document.getElementById("actions");
 let currentListShows = [...watchListContainer.querySelectorAll("a")];
 //* Toggle the watchList
 document.querySelectorAll("#watchList_toggler").forEach((toggler) => {
@@ -10,6 +11,8 @@ document.querySelectorAll("#watchList_toggler").forEach((toggler) => {
     // Display the shows from the watched list by default
     displayShowsFromWatchList(watchLists.watched.name);
     watchListContainer.classList.toggle("show");
+    // SHow the actions in the nav bar when the watchList is open
+    actions.classList.toggle("hidden");
     // Check if the user is on the show page and add the overflow-hidden class to the body to prevent scrolling when the watchList is open
     !watchListContainer.classList.contains("show") &&
     window.location.pathname.includes("show.html")
@@ -32,7 +35,8 @@ document.addEventListener("click", (e) => {
   if (
     !watchListContainer.contains(e.target) &&
     !e.target.closest("#watchList_toggler") &&
-    !e.target.closest("#downloadList")
+    !e.target.closest("#downloadList") &&
+    !actions.contains(e.target)
   ) {
     watchListContainer.classList.remove("show");
     // Remove the active class from the toggler
@@ -329,5 +333,3 @@ searchListInput.addEventListener("keyup", (e) => {
       );
   }
 });
-
-
