@@ -113,7 +113,7 @@
       id="search_results"
     ></div>
     <div
-      class="absolute right-20 top-[75px] -z-10 flex h-[550px] w-[400px] flex-col rounded-xl bg-gradient opacity-0 transition-opacity duration-300 max-md:right-0 max-md:top-0 max-md:h-watchlist max-md:w-full"
+      class="absolute right-20 top-[75px] -z-10 h-[550px] w-[400px] rounded-xl bg-gradient opacity-0 transition-opacity duration-300 max-md:right-0 max-md:top-0 max-md:h-full max-md:w-full"
       id="watchList"
       data-current_list="watched"
     >
@@ -141,41 +141,43 @@
         </button>
       </div>
       <div
-        class="me-2 mt-5 flex flex-1 flex-col gap-4 overflow-y-auto px-5 pb-5 max-md:pb-[75px]"
+        class="me-2 mt-5 flex h-[400px] flex-col gap-4 overflow-y-auto px-5 pb-5 max-md:h-[72%] max-md:pb-[76px]"
         id="shows"
       ></div>
       <div
-        class="relative flex hidden w-full items-center justify-between px-5 py-2"
+        class="relative  hidden w-full "
         id="actions"
       >
-        <i
-          class="fa-solid fa-download cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-          id="download"
-        ></i>
-        <i
-          class="fa-solid fa-eraser cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-          id="clear"
-        ></i>
-        <i
-          class="fa-solid fa-magnifying-glass-plus cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-          id="search"
-        ></i>
-        <i
-          class="fa-solid fa-arrow-down-a-z cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-          id="sortAZ"
-        ></i>
-        <i
-          class="fa-solid fa-arrow-down-z-a cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-          id="sortZA"
-        ></i>
-        <input
-          type="text"
-          name="search"
-          id="search_list"
-          autocomplete="off"
-          placeholder="Search for watched shows"
-          class="absolute bottom-0 left-0 -z-10 h-full w-full border-none bg-textColor2 px-5 font-semibold text-dark placeholder-dark opacity-0 transition-all duration-300 placeholder:font-bold focus:outline-none"
-        />
+        <div class="items-center justify-between px-5 py-2 max-md:bg-gradient flex">
+          <i
+            class="fa-solid fa-download cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="download"
+          ></i>
+          <i
+            class="fa-solid fa-eraser cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="clear"
+          ></i>
+          <i
+            class="fa-solid fa-magnifying-glass-plus cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="search"
+          ></i>
+          <i
+            class="fa-solid fa-arrow-down-a-z cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="sortAZ"
+          ></i>
+          <i
+            class="fa-solid fa-arrow-down-z-a cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="sortZA"
+          ></i>
+          <input
+            type="text"
+            name="search"
+            id="search_list"
+            autocomplete="off"
+            placeholder="Search for watched shows"
+            class="absolute bottom-0 left-0 -z-10 h-full w-full border-none bg-textColor2 px-5 font-semibold text-dark placeholder-dark opacity-0 transition-all duration-300 placeholder:font-bold focus:outline-none"
+          />
+        </div>
       </div>
       <div
         class="absolute inset-0 hidden h-full w-full items-center justify-center backdrop-blur-[2px]"

@@ -40,9 +40,6 @@ module.exports = {
       screens: {
         wrap: "878px",
       },
-      height: {
-        watchlist: "calc(100% - 76px)",
-      },
     },
   },
   plugins: [],
