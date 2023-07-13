@@ -59,32 +59,37 @@
       </header>
       <div id="overview"></div>
     </div>
-    <ul
-      class="fixed bottom-0 left-0 z-[9999] flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-2 backdrop-blur-[6px] md:hidden"
+    <div
+      class="fixed bottom-0 left-0 z-[9999] flex w-full flex-col-reverse items-center justify-between md:hidden"
+      id="nav"
     >
-      <li class="marker:text-transparent">
-        <a
-          href="index.html"
-          class="active flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+      <ul
+        class="flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-2 backdrop-blur-[6px]"
+      >
+        <li class="marker:text-transparent">
+          <a
+            href="index.html"
+            class="active flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+          >
+            <i class="fa-solid fa-house cursor-pointer text-2xl"></i>
+            <span class="font-semibold">Home</span>
+          </a>
+        </li>
+        <li
+          class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
+          id="watchList_toggler"
         >
-          <i class="fa-solid fa-house cursor-pointer text-2xl"></i>
-          <span class="font-semibold">Home</span>
-        </a>
-      </li>
-      <li
-        class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
-        id="watchList_toggler"
-      >
-        <i class="fa-solid fa-clipboard-list cursor-pointer text-2xl"></i>
-        <span class="font-semibold">Watchlist</span>
-      </li>
-      <li
-        class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
-      >
-        <i class="fa-solid fa-user cursor-pointer text-2xl"></i>
-        <span class="font-semibold">Profile</span>
-      </li>
-    </ul>
+          <i class="fa-solid fa-clipboard-list cursor-pointer text-2xl"></i>
+          <span class="font-semibold">Watchlist</span>
+        </li>
+        <li
+          class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
+        >
+          <i class="fa-solid fa-user cursor-pointer text-2xl"></i>
+          <span class="font-semibold">Profile</span>
+        </li>
+      </ul>
+    </div>
     <div
       class="absolute right-20 top-[75px] -z-10 flex h-[550px] w-[400px] flex-col rounded-xl bg-gradient opacity-0 transition-opacity duration-300 max-md:right-0 max-md:top-0 max-md:h-watchlist max-md:w-full"
       id="watchList"
@@ -114,11 +119,11 @@
         </button>
       </div>
       <div
-        class="me-2 mt-5 flex flex-1 flex-col gap-4 overflow-y-auto px-5 pb-5"
+        class="me-2 mt-5 flex flex-1 flex-col gap-4 overflow-y-auto px-5 pb-5 max-md:pb-[75px]"
         id="shows"
       ></div>
       <div
-        class="relative flex items-center justify-between px-5 py-2"
+        class="relative flex hidden w-full items-center justify-between px-5 py-2"
         id="actions"
       >
         <i

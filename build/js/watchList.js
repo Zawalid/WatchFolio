@@ -12,6 +12,11 @@ document.querySelectorAll("#watchList_toggler").forEach((toggler) => {
     // Display the shows from the watched list by default
     displayShowsFromWatchList(watchLists.watched.name);
     watchListContainer.classList.toggle("show");
+    // Check if the user is on the show page and add the overflow-hidden class to the body to prevent scrolling when the watchList is open
+    !watchListContainer.classList.contains("show") &&
+    window.location.pathname.includes("show.html")
+      ? document.body.classList.remove("h-screen", "overflow-hidden")
+      : document.body.classList.remove("overflow-hidden");
     // Switch the actions to the navbar if the watchList is open and the media query matches
     if (window.matchMedia("(max-width: 768px)").matches) {
       document.getElementById("nav").appendChild(actions);
@@ -20,11 +25,6 @@ document.querySelectorAll("#watchList_toggler").forEach((toggler) => {
       document.getElementById("watchList").appendChild(actions);
       actions.classList.remove("hidden");
     }
-    // Check if the user is on the show page and add the overflow-hidden class to the body to prevent scrolling when the watchList is open
-    !watchListContainer.classList.contains("show") &&
-    window.location.pathname.includes("show.html")
-      ? document.body.classList.remove("h-screen", "overflow-hidden")
-      : document.body.classList.remove("overflow-hidden");
     // Add the active class to the toggler
     window.matchMedia("(max-width: 768px)").matches
       ? this.classList.add("active")
