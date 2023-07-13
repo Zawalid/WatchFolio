@@ -38,7 +38,10 @@ module.exports = {
         shadow1: "-7px 11px 20px #000000a1",
       },
       screens: {
-        wrap:  "878px" ,
+        wrap: "878px",
+      },
+      height: {
+        watchlist: "calc(100% - 76px)",
       },
     },
   },
