@@ -2,10 +2,10 @@
 
 let showName, currentSeason;
 // TODO : add a initialize function to initialize the lists and the overview containers
-!window.localStorage.key("watched") &&
-  ["watched", "watching", "willWatch"].forEach((list) => {
-    window.localStorage.setItem(list, "");
-  });
+//* Initialize the watchLists if they don't exist 
+["watched", "watching", "willWatch"].forEach((list) => {
+  !window.localStorage.getItem(list) && window.localStorage.setItem(list, "");
+});
 
 //* ------------------ Creating overview containers (Avoid repetition) ------------------ *//
 const overviewContainer = `

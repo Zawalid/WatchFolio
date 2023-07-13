@@ -26,6 +26,9 @@
     z-index: 99;
     opacity: 1;
   }
+  #search_list.show {
+    @apply z-10 opacity-100 bottom-full;
+  }
 }
 
 html {

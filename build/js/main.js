@@ -1,5 +1,10 @@
 "use strict";
 
+//* Initialize the watchLists if they don't exist 
+["watched", "watching", "willWatch"].forEach((list) => {
+  !window.localStorage.getItem(list) && window.localStorage.setItem(list, "");
+});
+
 //* ------------------ Search ------------------ *//
 const container = document.getElementById("search_results");
 const searchInput = document.getElementById("search_input");

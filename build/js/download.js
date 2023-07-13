@@ -280,20 +280,14 @@ const downloadList = (format) => {
   }
 };
 const downloadWatchListContainer = document.getElementById("downloadList");
-const downloadInfo = document.getElementById("download_info");
 
-//* Show the download watchList container when clicking on the download button
-downloadInfo.addEventListener("click", (e) => {
-  if (e.target.closest("#download")) {
-    downloadWatchListContainer.classList.add("show");
-  }
-  if (e.target.closest("i.fa-times")) {
-    downloadInfo.remove();
-  }
-});
 //* Close the download watchList container when clicking on the close button or the container and download the watchList when clicking on the download button
 downloadWatchListContainer.addEventListener("click", function (e) {
-  if (e.target.closest("#close") || e.target === e.currentTarget || e.target.closest("ul")) {
+  if (
+    e.target.closest("#close") ||
+    e.target === e.currentTarget ||
+    e.target.closest("ul")
+  ) {
     this.classList.remove("show");
   }
   if (e.target.closest("#download")) {

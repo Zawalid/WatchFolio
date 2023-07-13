@@ -614,16 +614,16 @@ video {
   top: 50%;
 }
 
+.top-2 {
+  top: 0.5rem;
+}
+
 .top-4 {
   top: 1rem;
 }
 
 .top-\[75px\] {
   top: 75px;
-}
-
-.top-2 {
-  top: 0.5rem;
 }
 
 .-z-10 {
@@ -690,6 +690,10 @@ video {
           margin-inline-end: 0.5rem;
 }
 
+.ml-\[50\%\] {
+  margin-left: 50%;
+}
+
 .ms-2 {
   -webkit-margin-start: 0.5rem;
           margin-inline-start: 0.5rem;
@@ -711,8 +715,16 @@ video {
   margin-top: 1.25rem;
 }
 
+.mt-6 {
+  margin-top: 1.5rem;
+}
+
 .mt-9 {
   margin-top: 2.25rem;
+}
+
+.mt-\[50\%\] {
+  margin-top: 50%;
 }
 
 .mt-auto {
@@ -741,6 +753,10 @@ video {
 
 .aspect-\[3\/2\] {
   aspect-ratio: 3/2;
+}
+
+.h-10 {
+  height: 2.5rem;
 }
 
 .h-64 {
@@ -816,10 +832,6 @@ video {
   width: 80%;
 }
 
-.w-5\/6 {
-  width: 83.333333%;
-}
-
 .w-64 {
   width: 16rem;
 }
@@ -867,6 +879,14 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.w-1 {
+  width: 0.25rem;
+}
+
+.w-52 {
+  width: 13rem;
 }
 
 .flex-1 {
@@ -963,10 +983,6 @@ video {
 
 .justify-between {
   justify-content: space-between;
-}
-
-.justify-evenly {
-  justify-content: space-evenly;
 }
 
 .gap-1 {
@@ -1101,6 +1117,11 @@ video {
 .bg-textColor {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.bg-textColor2 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(212 212 212 / var(--tw-bg-opacity));
 }
 
 .bg-thirdAccent {
@@ -1348,6 +1369,16 @@ video {
   color: rgb(0 0 0 / var(--tw-placeholder-opacity));
 }
 
+.placeholder-dark::-moz-placeholder {
+  --tw-placeholder-opacity: 1;
+  color: rgb(19 15 64 / var(--tw-placeholder-opacity));
+}
+
+.placeholder-dark::placeholder {
+  --tw-placeholder-opacity: 1;
+  color: rgb(19 15 64 / var(--tw-placeholder-opacity));
+}
+
 .opacity-0 {
   opacity: 0;
 }
@@ -1481,6 +1512,18 @@ li.active,
 
 #downloadList.show{
   z-index: 99;
+  opacity: 1;
+}
+
+#search_list.\!show {
+  bottom: 100%;
+  z-index: 10;
+  opacity: 1;
+}
+
+#search_list.show {
+  bottom: 100%;
+  z-index: 10;
   opacity: 1;
 }
 
@@ -1737,10 +1780,6 @@ html {
 
   .max-sm\:h-\[250px\] {
     height: 250px;
-  }
-
-  .max-sm\:h-full {
-    height: 100%;
   }
 
   .max-sm\:w-\[100px\] {
