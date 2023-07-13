@@ -925,6 +925,10 @@ video {
   flex-direction: column;
 }
 
+.flex-col-reverse {
+  flex-direction: column-reverse;
+}
+
 .flex-wrap {
   flex-wrap: wrap;
 }
@@ -1473,12 +1477,12 @@ li.active,
   }
 }
 
-#downloadList.\!show{
+#downloadList.\!show {
   z-index: 99 !important;
   opacity: 1 !important;
 }
 
-#downloadList.show{
+#downloadList.show {
   z-index: 99;
   opacity: 1;
 }
@@ -1681,10 +1685,6 @@ html {
 
   .max-md\:top-0 {
     top: 0px;
-  }
-
-  .max-md\:mb-\[75px\] {
-    margin-bottom: 75px;
   }
 
   .max-md\:block {

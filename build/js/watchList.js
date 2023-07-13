@@ -5,14 +5,21 @@ const watchListContainer = document.getElementById("watchList");
 const listsButtons = document.querySelectorAll("#listsButtons button");
 const actions = document.getElementById("actions");
 let currentListShows = [...watchListContainer.querySelectorAll("a")];
+
 //* Toggle the watchList
 document.querySelectorAll("#watchList_toggler").forEach((toggler) => {
   toggler.addEventListener("click", function () {
     // Display the shows from the watched list by default
     displayShowsFromWatchList(watchLists.watched.name);
     watchListContainer.classList.toggle("show");
-    // SHow the actions in the nav bar when the watchList is open
-    actions.classList.toggle("hidden");
+    // Switch the actions to the navbar if the watchList is open and the media query matches
+    if (window.matchMedia("(max-width: 768px)").matches) {
+      document.getElementById("nav").appendChild(actions);
+      actions.classList.toggle("hidden");
+    } else {
+      document.getElementById("watchList").appendChild(actions);
+      actions.classList.remove("hidden");
+    }
     // Check if the user is on the show page and add the overflow-hidden class to the body to prevent scrolling when the watchList is open
     !watchListContainer.classList.contains("show") &&
     window.location.pathname.includes("show.html")
@@ -191,8 +198,7 @@ retrieveAndStoreLists(watchLists.willWatch, "willWatch");
 //* ------------------------------ Actions ------------------------------ *//
 
 //* ------------------------------ Download ------------------------------ *//
-//* Show the download watchList container when clicking on the download button
-document.querySelector("#actions #download").addEventListener("click", (e) => {
+actions.querySelector("#download").addEventListener("click", (e) => {
   downloadWatchListContainer.classList.add("show");
 });
 
@@ -228,9 +234,7 @@ const clearWatchList = () => {
     }
   });
 };
-document
-  .querySelector("#actions #clear")
-  .addEventListener("click", clearWatchList);
+actions.querySelector("#clear").addEventListener("click", clearWatchList);
 
 //* ------------------------------ Sort ------------------------------ *//
 //* Sort the watchList
@@ -268,12 +272,12 @@ const sortWatchList = (direction) => {
     : "";
 };
 //* Sort from A to Z
-document
-  .querySelector("#actions #sortAZ")
+actions
+  .querySelector("#sortAZ")
   .addEventListener("click", () => sortWatchList("AZ"));
 //* Sort from Z to A
-document
-  .querySelector("#actions #sortZA")
+actions
+  .querySelector("#sortZA")
   .addEventListener("click", () => sortWatchList("ZA"));
 
 //* ------------------------------ Search ------------------------------ *//
@@ -297,24 +301,22 @@ const searchWatchList = () => {
       `;
 };
 //* Show the search input when clicking on the search icon
-document
-  .querySelector("#actions #search")
-  .addEventListener("click", function () {
-    // Toggle the search input
-    searchListInput.classList.toggle("show");
-    // Focus on the input
-    searchListInput.focus();
-    // Change the icon
-    searchListInput.classList.contains("show")
-      ? this.classList.replace(
-          "fa-magnifying-glass-plus",
-          "fa-magnifying-glass-minus"
-        )
-      : this.classList.replace(
-          "fa-magnifying-glass-minus",
-          "fa-magnifying-glass-plus"
-        );
-  });
+actions.querySelector("#search").addEventListener("click", function () {
+  // Toggle the search input
+  searchListInput.classList.toggle("show");
+  // Focus on the input
+  searchListInput.focus();
+  // Change the icon
+  searchListInput.classList.contains("show")
+    ? this.classList.replace(
+        "fa-magnifying-glass-plus",
+        "fa-magnifying-glass-minus"
+      )
+    : this.classList.replace(
+        "fa-magnifying-glass-minus",
+        "fa-magnifying-glass-plus"
+      );
+});
 //* Search when pressing enter
 searchListInput.addEventListener("keyup", (e) => {
   if (e.key === "Enter") {
@@ -325,8 +327,8 @@ searchListInput.addEventListener("keyup", (e) => {
     // Hide the input
     searchListInput.classList.remove("show");
     // Change the icon
-    document
-      .querySelector("#actions #search")
+    actions
+      .querySelector("#search")
       .classList.replace(
         "fa-magnifying-glass-minus",
         "fa-magnifying-glass-plus"

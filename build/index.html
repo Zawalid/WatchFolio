@@ -77,41 +77,9 @@
         </div>
       </div>
       <div
-        class="fixed bottom-0 left-0 z-[9999] flex w-full flex-col items-center justify-between md:hidden"
+        class="fixed bottom-0 left-0 z-[9999] flex w-full flex-col-reverse items-center justify-between md:hidden"
+        id="nav"
       >
-        <div
-          class="relative flex hidden w-full items-center justify-between px-5 py-2"
-          id="actions"
-        >
-          <i
-            class="fa-solid fa-download cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-            id="download"
-          ></i>
-          <i
-            class="fa-solid fa-eraser cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-            id="clear"
-          ></i>
-          <i
-            class="fa-solid fa-magnifying-glass-plus cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-            id="search"
-          ></i>
-          <i
-            class="fa-solid fa-arrow-down-a-z cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-            id="sortAZ"
-          ></i>
-          <i
-            class="fa-solid fa-arrow-down-z-a cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-            id="sortZA"
-          ></i>
-          <input
-            type="text"
-            name="search"
-            id="search_list"
-            autocomplete="off"
-            placeholder="Search for watched shows"
-            class="absolute bottom-0 left-0 -z-10 h-full w-full border-none bg-textColor2 px-5 font-semibold text-dark placeholder-dark opacity-0 transition-all duration-300 placeholder:font-bold focus:outline-none"
-          />
-        </div>
         <ul
           class="flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-2 backdrop-blur-[6px]"
         >
@@ -177,7 +145,7 @@
         id="shows"
       ></div>
       <div
-        class="relative flex items-center justify-between px-5 py-2"
+        class="relative flex hidden w-full items-center justify-between px-5 py-2"
         id="actions"
       >
         <i
