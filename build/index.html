@@ -77,31 +77,67 @@
         </div>
       </div>
       <ul
-        class="fixed bottom-0 left-0 z-[9999] flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-2 backdrop-blur-[6px] md:hidden"
+        class="fixed bottom-0 left-0 z-[9999] flex w-full flex-col items-center justify-between md:hidden"
       >
-        <li class="marker:text-transparent">
-          <a
-            href="index.html"
-            class="active flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+        <div
+          class="relative flex w-full items-center justify-between px-5 py-2"
+          id="actions"
+        >
+          <i
+            class="fa-solid fa-download cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="download"
+          ></i>
+          <i
+            class="fa-solid fa-eraser cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="clear"
+          ></i>
+          <i
+            class="fa-solid fa-magnifying-glass-plus cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="search"
+          ></i>
+          <i
+            class="fa-solid fa-arrow-down-a-z cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="sortAZ"
+          ></i>
+          <i
+            class="fa-solid fa-arrow-down-z-a cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="sortZA"
+          ></i>
+          <input
+            type="text"
+            name="search"
+            id="search_list"
+            autocomplete="off"
+            placeholder="Search for watched shows"
+            class="absolute bottom-0 left-0 -z-10 h-full w-full border-none bg-textColor2 px-5 font-semibold text-dark placeholder-dark opacity-0 transition-all duration-300 placeholder:font-bold focus:outline-none"
+          />
+        </div>
+        <ul
+          class="flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-2 backdrop-blur-[6px]"
+        >
+          <li class="marker:text-transparent">
+            <a
+              href="index.html"
+              class="active flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+            >
+              <i class="fa-solid fa-house cursor-pointer text-2xl"></i>
+              <span class="font-semibold">Home</span>
+            </a>
+          </li>
+          <li
+            class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
+            id="watchList_toggler"
           >
-            <i class="fa-solid fa-house cursor-pointer text-2xl"></i>
-            <span class="font-semibold">Home</span>
-          </a>
-        </li>
-
-        <li
-          class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
-          id="watchList_toggler"
-        >
-          <i class="fa-solid fa-clipboard-list cursor-pointer text-2xl"></i>
-          <span class="font-semibold">Watchlist</span>
-        </li>
-        <li
-          class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
-        >
-          <i class="fa-solid fa-user cursor-pointer text-2xl"></i>
-          <span class="font-semibold">Profile</span>
-        </li>
+            <i class="fa-solid fa-clipboard-list cursor-pointer text-2xl"></i>
+            <span class="font-semibold">Watchlist</span>
+          </li>
+          <li
+            class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
+          >
+            <i class="fa-solid fa-user cursor-pointer text-2xl"></i>
+            <span class="font-semibold">Profile</span>
+          </li>
+        </ul>
       </ul>
     </div>
     <div
@@ -137,10 +173,10 @@
         </button>
       </div>
       <div
-      class="me-2 mt-5 flex flex-1 flex-col gap-4 overflow-y-auto px-5 pb-5"
-      id="shows"
-    ></div>
-      <div
+        class="me-2 mt-5 flex flex-1 flex-col gap-4 overflow-y-auto px-5 pb-5"
+        id="shows"
+      ></div>
+      <!-- <div
         class="relative flex items-center justify-between px-5 py-2"
         id="actions"
       >
@@ -172,7 +208,7 @@
           placeholder="Search for watched shows"
           class="absolute bottom-0 left-0 -z-10 h-full w-full border-none bg-textColor2 px-5 font-semibold text-dark placeholder-dark opacity-0 transition-all duration-300 placeholder:font-bold focus:outline-none"
         />
-      </div>
+      </div> -->
       <div
         class="absolute inset-0 hidden h-full w-full items-center justify-center backdrop-blur-[2px]"
         id="clear_confirmation"
