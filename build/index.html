@@ -16,6 +16,7 @@
     />
     <script defer src="./js/main.js"></script>
     <script defer src="./js/watchList.js"></script>
+    <script defer src="./js/download.js"></script>
   </head>
   <body
     class="relative h-screen bg-gradient bg-cover before:absolute before:-z-10 before:h-full before:w-full before:bg-background before:bg-cover before:bg-no-repeat before:opacity-20 before:blur-[1px]"
@@ -133,8 +134,119 @@
         </button>
       </div>
       <div
+        class="absolute top-0 w-full bg-sky-500 px-5 pb-2 pt-5"
+        id="download_info"
+      >
+        <i
+          class="fa-solid fa-info-circle absolute left-2 top-1 text-xl text-textColor"
+        ></i>
+        <i
+          class="fa-solid fa-times absolute right-2 top-1 cursor-pointer text-lg text-textColor transition-colors duration-300 hover:text-secondaryAccent"
+        ></i>
+        <p class="text-center text-sm font-bold text-textColor">
+          Great news! You can now easily download your personalized TV shows
+          list in different formats!
+        </p>
+        <div
+          class="mx-auto mt-2 w-fit cursor-pointer rounded-2xl bg-dark px-5 py-1 text-sm font-bold text-textColor"
+          id="download"
+        >
+          Download
+        </div>
+      </div>
+      <div
         class="me-2 mt-5 h-[450px] overflow-y-auto px-5 pb-5 max-md:h-3/4 max-md:pb-[76px]"
       ></div>
+    </div>
+    <div
+      class="absolute inset-0 -z-10 flex h-full w-full bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-500 max-md:h-full max-md:items-center max-md:justify-center"
+      id="downloadList"
+    >
+      <div
+        class="relative overflow-y-auto rounded-2xl bg-white p-6 max-sm:h-full max-sm:w-full max-sm:rounded-none"
+      >
+        <i
+          class="fa-solid fa-xmark absolute right-4 top-4 cursor-pointer text-2xl text-dark"
+          id="close"
+        ></i>
+        <div class="">
+          <h2 class="w-5/6 text-2xl font-bold">Download your watchList</h2>
+          <p class="text-gray-600">Choose the format to download.</p>
+        </div>
+        <div class="my-8 flex flex-wrap justify-center gap-8">
+          <div
+            class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
+          >
+            <input
+              type="radio"
+              class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
+              name="format"
+              value="pdf"
+              checked
+            />
+            <div
+              class="flex w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+            >
+              <i class="fa-solid fa-file-pdf mb-2 text-4xl"></i>
+              <span class="text-sm">PDF</span>
+            </div>
+          </div>
+          <div
+            class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
+          >
+            <input
+              type="radio"
+              class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
+              name="format"
+              value="csv"
+            />
+            <div
+              class="flex w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+            >
+              <i class="fa-solid fa-file-csv mb-2 text-4xl"></i>
+              <span class="text-sm">CSV</span>
+            </div>
+          </div>
+          <div
+            class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
+          >
+            <input
+              type="radio"
+              class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
+              name="format"
+              value="text"
+            />
+            <div
+              class="flex w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+            >
+              <i class="fa-solid fa-file-lines mb-2 text-4xl"></i>
+              <span class="text-sm">Text</span>
+            </div>
+          </div>
+          <div
+            class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
+          >
+            <input
+              type="radio"
+              class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
+              name="format"
+              value="json"
+            />
+            <div
+              class="flex w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+            >
+              <img src="imgs/json.png" alt="" class="mb-2 w-10" />
+              <span class="text-sm">JSON</span>
+            </div>
+          </div>
+        </div>
+        <button
+          class="mx-auto block rounded-2xl bg-secondaryAccent px-5 py-2 text-sm font-bold text-textColor"
+          id="download"
+        >
+          Download
+        </button>
+      </div>
     </div>
   </body>
 </html>

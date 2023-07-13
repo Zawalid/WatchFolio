@@ -56,13 +56,21 @@ const getStars = (rating) => {
 //* Show the loading spinner and the container
 const showLoading = (container) => {
   container.classList.add("show");
-  container.firstElementChild.scrollIntoView({ behavior: "smooth" });
-  container.firstElementChild.innerHTML = `
+  if (container === showOverviewContainer) {
+    container.innerHTML = `
+    <i
+    class="fa-solid fa-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-4xl text-thirdAccent"
+  ></i>
+    `;
+  } else {
+    container.firstElementChild.scrollIntoView({ behavior: "smooth" });
+    container.firstElementChild.innerHTML = `
   <i
   class="fa-solid fa-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-4xl text-thirdAccent"
 ></i>
   `;
-  // animation.setSpeed(0.7);
+    // animation.setSpeed(0.7);
+  }
 };
 //* Display the overview container
 const displayOverview = (container, html, img = null) => {
@@ -99,6 +107,7 @@ const closeOverview = (container) => {
 const showOverviewContainer = document.getElementById("overview");
 const showOverview = async () => {
   try {
+    showLoading(showOverviewContainer);
     const res = await fetch(
       `https://api.tvmaze.com/shows/${window.location.search.split("=")[1]}`
     );
@@ -1022,3 +1031,5 @@ const activateWatchListButton = () => {
     });
   }
 };
+
+

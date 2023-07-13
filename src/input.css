@@ -16,11 +16,15 @@
   #season_overview.show {
     @apply z-30 opacity-100;
   }
-  #watchList button.active {
+  #watchList button:not(:last-of-type).active {
     @apply bg-secondaryAccent;
   }
   #watchList.show {
     @apply z-10 opacity-100 max-md:z-50;
+  }
+  #downloadList.show{
+    z-index: 99;
+    opacity: 1;
   }
 }
 
