@@ -293,7 +293,7 @@ downloadInfo.addEventListener("click", (e) => {
 });
 //* Close the download watchList container when clicking on the close button or the container and download the watchList when clicking on the download button
 downloadWatchListContainer.addEventListener("click", function (e) {
-  if (e.target.closest("#close") || e.target === e.currentTarget) {
+  if (e.target.closest("#close") || e.target === e.currentTarget || e.target.closest("ul")) {
     this.classList.remove("show");
   }
   if (e.target.closest("#download")) {
