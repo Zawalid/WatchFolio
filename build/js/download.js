@@ -1,11 +1,13 @@
 "use strict";
 // TODO: Make this script a module
 
-// Shows in the watchList
-const watched = window.localStorage.getItem("watched").split(",");
-const watching = window.localStorage.getItem("watching").split(",");
-const willWatch = window.localStorage.getItem("willWatch").split(",");
-
+// Retrieve shows
+const retrieveShows = async () => {
+  const watchedShows = await getShows([...watchLists.watched.shows]);
+  const watchingShows = await getShows([...watchLists.watching.shows]);
+  const willWatchShows = await getShows([...watchLists.willWatch.shows]);
+  return { watchedShows, watchingShows, willWatchShows };
+};
 // Get the shows from the watchList
 const getShows = async (shows) => {
   const showsData = [];
@@ -17,13 +19,6 @@ const getShows = async (shows) => {
   }
   return showsData;
 };
-
-// Get the shows
-// Until i make the script a module, i will use top level await and make them global variables
-// const watchedShows = await getShows(watched);
-// const watchingShows = await getShows(watching);
-// const willWatchShows = await getShows(willWatch);
-
 //* ------------------------------ Download as PDF ------------------------------ *//
 const downloadAsPDF = async (toDownload) => {
   // Generate the PDF using jsPDF
@@ -54,17 +49,17 @@ const downloadAsPDF = async (toDownload) => {
   };
   // Check if the user wants to download all the watchList or just one of the lists
   if (toDownload === "all") {
+    // Get the shows
+    const { watchedShows, watchingShows, willWatchShows } =
+      await retrieveShows();
     // Get the number of rows
     const trNumber = Math.max(
-      watched.length,
-      watching.length,
-      willWatch.length
+      watchedShows.length,
+      watchingShows.length,
+      willWatchShows.length
     );
     // Create the table rows
     const createTr = async () => {
-      const watchedShows = await getShows(watched);
-      const watchingShows = await getShows(watching);
-      const willWatchShows = await getShows(willWatch);
       const tr = [];
       for (let i = 0; i < trNumber; i++) {
         tr.push(`

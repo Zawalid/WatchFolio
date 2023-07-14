@@ -239,6 +239,9 @@ downloadWatchListContainer.addEventListener("click", function (e) {
     this.classList.remove("show");
     window.location.pathname.includes("show.html") &&
       document.body.classList.remove("h-screen", "overflow-hidden");
+      document
+      .getElementById("downloadAllContainer")
+      .classList.add("translate-y-full");
   }
   if (e.target.closest("#download")) {
     downloadList(
