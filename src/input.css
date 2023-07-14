@@ -23,7 +23,7 @@
     @apply z-10 opacity-100 max-md:z-50;
   }
   #downloadList.show {
-    z-index: 99;
+    z-index: 99999;
     opacity: 1;
   }
   #search_list.show {

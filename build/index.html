@@ -144,11 +144,10 @@
         class="me-2 mt-5 flex h-[400px] flex-col gap-4 overflow-y-auto px-5 pb-5 max-md:h-[72%] max-md:pb-[76px]"
         id="shows"
       ></div>
-      <div
-        class="relative  hidden w-full "
-        id="actions"
-      >
-        <div class="items-center justify-between px-5 py-2 max-md:bg-gradient flex">
+      <div class="relative hidden w-full" id="actions">
+        <div
+          class="flex items-center justify-between px-5 py-2 max-md:bg-gradient"
+        >
           <i
             class="fa-solid fa-download cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
             id="download"
@@ -195,7 +194,7 @@
               Yes
             </button>
             <button
-              class="mx-auto block rounded-2xl bg-sky-500 px-5 py-2 font-bold text-textColor"
+              class="mx-auto block rounded-2xl bg-thirdAccent px-5 py-2 font-bold text-textColor"
               id="no"
             >
               No
@@ -208,13 +207,15 @@
       class="absolute inset-0 -z-10 flex h-full w-full items-center justify-center bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-300 max-md:h-full"
       id="downloadList"
     >
-      <div class="relative overflow-y-auto rounded-2xl bg-white p-6">
+      <div class="relative overflow-hidden rounded-2xl bg-white p-6 pb-12">
         <i
           class="fa-solid fa-xmark absolute right-4 top-2 cursor-pointer text-2xl text-dark"
           id="close"
         ></i>
         <div class="">
-          <h2 class="text-2xl font-bold">Download your watchList</h2>
+          <h2 class="text-2xl font-bold">
+            Download your <span id="listName"></span> list
+          </h2>
           <p class="text-gray-600">Choose the format to download.</p>
         </div>
         <div class="my-8 flex flex-wrap justify-center gap-8">
@@ -290,6 +291,28 @@
         >
           Download
         </button>
+        <i
+          class="fa-sharp fa-solid fa-chevron-up absolute bottom-1 left-1/2 -translate-x-1/2 cursor-pointer text-xl text-dark"
+          id="showDownloadAll"
+        ></i>
+        <div
+          class="absolute bottom-0 left-0 w-full translate-y-full bg-gradient pb-3 pt-7 transition-transform duration-500"
+          id="downloadAllContainer"
+        >
+          <i
+            class="fa-sharp fa-solid fa-chevron-down absolute left-1/2 top-0 -translate-x-1/2 cursor-pointer text-xl text-textColor2"
+            id="hideDownloadAll"
+          ></i>
+          <p class="mb-2 text-center text-sm font-bold text-textColor">
+            Download All Your Lists
+          </p>
+          <button
+            class="mx-auto block rounded-2xl bg-secondaryAccent px-5 py-2 font-bold text-textColor"
+            id="downloadAll"
+          >
+            Download
+          </button>
+        </div>
       </div>
     </div>
   </body>

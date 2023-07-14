@@ -198,8 +198,39 @@ retrieveAndStoreLists(watchLists.willWatch, "willWatch");
 //* ------------------------------ Actions ------------------------------ *//
 
 //* ------------------------------ Download ------------------------------ *//
+const downloadWatchListContainer = document.getElementById("downloadList");
+//* Show the download watchList container
 actions.querySelector("#download").addEventListener("click", (e) => {
+  (window.matchMedia("(min-width: 768px)").matches &&
+    document.body.classList.add("h-screen", "overflow-hidden")) ||
+    window.scrollTo(0, 0);
+  document.getElementById("listName").innerHTML =
+    watchLists[watchListContainer.dataset.current_list].name;
   downloadWatchListContainer.classList.add("show");
+});
+//* Close the download watchList container when clicking on the close button or the container and download the watchList when clicking on the download button
+downloadWatchListContainer.addEventListener("click", function (e) {
+  if (
+    e.target.closest("#close") ||
+    e.target === e.currentTarget ||
+    e.target.closest("ul")
+  ) {
+    this.classList.remove("show");
+    window.location.pathname.includes("show.html") &&
+      document.body.classList.remove("h-screen", "overflow-hidden");
+  }
+  if (e.target.closest("#download")) {
+    downloadList(
+      [...this.querySelectorAll("input")].find((input) => input.checked).value,
+      watchLists[watchListContainer.dataset.current_list]
+    );
+  }
+  if (e.target.closest("#downloadAll")) {
+    downloadList(
+      [...this.querySelectorAll("input")].find((input) => input.checked).value,
+      "all"
+    );
+  }
 });
 
 //* ------------------------------ CLear ------------------------------ *//
@@ -304,8 +335,10 @@ const searchWatchList = () => {
 actions.querySelector("#search").addEventListener("click", function () {
   // Toggle the search input
   searchListInput.classList.toggle("show");
-  // Focus on the input
-  searchListInput.focus();
+  // Focus or blur out of the input
+  searchListInput.classList.contains("show")
+    ? searchListInput.focus()
+    : searchListInput.blur();
   // Change the icon
   searchListInput.classList.contains("show")
     ? this.classList.replace(

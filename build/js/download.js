@@ -25,7 +25,7 @@ const getShows = async (shows) => {
 // const willWatchShows = await getShows(willWatch);
 
 //* ------------------------------ Download as PDF ------------------------------ *//
-const downloadAsPDF = async () => {
+const downloadAsPDF = async (toDownload) => {
   // Generate the PDF using jsPDF
   const generatePDF = (el) => {
     const doc = new jspdf.jsPDF();
@@ -33,7 +33,7 @@ const downloadAsPDF = async () => {
     doc.html(elementHTML, {
       callback: function (doc) {
         // Save the PDF
-        doc.save("sample-document.pdf");
+        doc.save("watchList.pdf");
       },
       x: 15,
       y: 15,
@@ -144,21 +144,26 @@ const downloadAsPDF = async () => {
 };
 
 //* ------------------------------ Download as JSON ------------------------------ *//
-const downloadAsJSON = async () => {
+const downloadAsJSON = async (toDownload) => {
   const watchedShows = await getShows(watched);
   const watchingShows = await getShows(watching);
   const willWatchShows = await getShows(willWatch);
   // Create the JSON file
   async function createJSON() {
-    const json = {
-      watched: watchedShows,
-      watching: watchingShows,
-      willWatch: willWatchShows,
-    };
+    // Check if the user wants to download all the watchList or just one of the lists
+    const json =
+      toDownload === "all"
+        ? {
+            watched: watchedShows,
+            watching: watchingShows,
+            willWatch: willWatchShows,
+          }
+        : { [toDownload.name]: await getShows([...toDownload.shows]) };
     return json;
   }
   // Create the JSON file
   const json = await createJSON();
+  console.log(json);
   // Create the blob
   const blob = new Blob([JSON.stringify(json)], {
     type: "application/json",
@@ -168,131 +173,100 @@ const downloadAsJSON = async () => {
   // Create the link
   const a = document.createElement("a");
   a.href = url;
-  a.download = "watchList.json";
+  a.download = `${toDownload === "all" ? "watchList" : toDownload.name}.json`;
   // Click on the link
   a.click();
   // Remove the link
   a.remove();
 };
 
-//* ------------------------------ Download as CSV ------------------------------ *//
-const downloadAsCSV = async () => {
+//* ------------------------------ Download as Text OR CSV ------------------------------ *//
+const downloadAsTextOrCSV = async (format, toDownload) => {
   const watchedShows = await getShows(watched);
   const watchingShows = await getShows(watching);
   const willWatchShows = await getShows(willWatch);
-  // Create the CSV file
-  const createCSV = async () => {
-    const csv = [];
-    for (let i = 0; i < watchedShows.length; i++) {
-      csv.push(`
-      ${watchedShows[i].name},Watched
-      `);
+  // Create the text or CSV file
+  const createTextOrCSV = async () => {
+    const textOrCSV = [];
+    // Check if the user wants to download all the watchList or just one of the lists
+    if (toDownload === "all") {
+      // Create the header
+      textOrCSV.push(`Watched,Watching,Will Watch\n`);
+      // Create the rows
+      for (
+        let i = 0;
+        i < Math.max(watched.length, watching.length, willWatch.length);
+        i++
+      ) {
+        textOrCSV.push(`${watchedShows[i]?.name || ""},`);
+        textOrCSV.push(`${watchingShows[i]?.name || ""},`);
+        textOrCSV.push(`${willWatchShows[i]?.name || ""}\n`);
+      }
+    } else {
+      const listShows = await getShows([...toDownload.shows]);
+      // Create the header
+      textOrCSV.push(`${toDownload.name}\n`);
+      // Create the rows
+      for (let i = 0; i < listShows.length; i++) {
+        textOrCSV.push(`${listShows[i].name}\n`);
+      }
     }
-    for (let i = 0; i < watchingShows.length; i++) {
-      csv.push(`
-      ${watchingShows[i].name},Watching
-      `);
-    }
-    for (let i = 0; i < willWatchShows.length; i++) {
-      csv.push(`
-      ${willWatchShows[i].name},Will Watch
-      `);
-    }
-    return csv.join("");
-  };
-  // Create the CSV file
-  const csv = await createCSV();
-  // Create the blob
-  const blob = new Blob([csv], {
-    type: "text/csv",
-  });
-  // Create the URL
-  const url = URL.createObjectURL(blob);
-  // Create the link
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "watchList.csv";
-  // Click on the link
-  a.click();
-  // Remove the link
-  a.remove();
-};
 
-//* ------------------------------ Download as Text ------------------------------ *//
-const downloadAsText = async () => {
-  const watchedShows = await getShows(watched);
-  const watchingShows = await getShows(watching);
-  const willWatchShows = await getShows(willWatch);
-  // Create the text file
-  const createText = async () => {
-    const text = [];
-    for (let i = 0; i < watchedShows.length; i++) {
-      text.push(`
-      ${watchedShows[i].name}:Watched
-      `);
-    }
-    for (let i = 0; i < watchingShows.length; i++) {
-      text.push(`
-      ${watchingShows[i].name}:Watching
-      `);
-    }
-    for (let i = 0; i < willWatchShows.length; i++) {
-      text.push(`
-      ${willWatchShows[i].name}:Will Watch
-      `);
-    }
-    return text.join("");
+    return textOrCSV.join("");
   };
-  // Create the text file
-  const text = await createText();
+  // Create the text Or CSV file
+  const textOrCSV = await createTextOrCSV();
   // Create the blob
-  const blob = new Blob([text], {
-    type: "text/plain",
+  const blob = new Blob([textOrCSV], {
+    type: `text/${format === "csv" ? "csv" : "plain"}`,
   });
   // Create the URL
   const url = URL.createObjectURL(blob);
   // Create the link
   const a = document.createElement("a");
   a.href = url;
-  a.download = "watchList.txt";
+  a.download = `${
+    toDownload === "all" ? "watchList" : toDownload.name
+  }.${format}`;
   // Click on the link
   a.click();
   // Remove the link
   a.remove();
 };
 //* ------------------------------ Download watchList ------------------------------ *//
-const downloadList = (format) => {
+const downloadList = (format, toDownload) => {
   switch (format) {
     case "pdf":
-      downloadAsPDF();
+      downloadAsPDF(toDownload);
       break;
     case "json":
-      downloadAsJSON();
+      downloadAsJSON(toDownload);
       break;
     case "csv":
-      downloadAsCSV();
+      downloadAsTextOrCSV("csv", toDownload);
       break;
     case "text":
-      downloadAsText();
+      downloadAsTextOrCSV("txt", toDownload);
       break;
     default:
       break;
   }
 };
-const downloadWatchListContainer = document.getElementById("downloadList");
 
-//* Close the download watchList container when clicking on the close button or the container and download the watchList when clicking on the download button
-downloadWatchListContainer.addEventListener("click", function (e) {
-  if (
-    e.target.closest("#close") ||
-    e.target === e.currentTarget ||
-    e.target.closest("ul")
-  ) {
-    this.classList.remove("show");
-  }
-  if (e.target.closest("#download")) {
-    downloadList(
-      [...this.querySelectorAll("input")].find((input) => input.checked).value
-    );
-  }
-});
+//* Download all the lists 
+// SHow the download all modal
+downloadWatchListContainer
+  .querySelector("#showDownloadAll")
+  .addEventListener("click", () => {
+    document
+      .getElementById("downloadAllContainer")
+      .classList.remove("translate-y-full");
+  });
+// Hide the download all modal
+downloadWatchListContainer
+  .querySelector("#hideDownloadAll")
+  .addEventListener("click", () => {
+    document
+      .getElementById("downloadAllContainer")
+      .classList.add("translate-y-full");
+  });

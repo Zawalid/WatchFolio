@@ -172,7 +172,7 @@
               Yes
             </button>
             <button
-              class="mx-auto block rounded-2xl bg-sky-500 px-5 py-2 font-bold text-textColor"
+              class="mx-auto block rounded-2xl bg-thirdAccent px-5 py-2 font-bold text-textColor"
               id="no"
             >
               No
@@ -182,92 +182,116 @@
       </div>
     </div>
     <div
-      class="absolute inset-0 -z-10 flex h-full w-full items-center justify-center bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-300 max-md:h-full"
-      id="downloadList"
-    >
-      <div class="relative overflow-y-auto rounded-2xl bg-white p-6">
+    class=" absolute inset-0 -z-10 flex h-full w-full items-center justify-center bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-300 max-md:h-full"
+    id="downloadList"
+  >
+    <div class="relative rounded-2xl bg-white p-6 pb-12 overflow-hidden">
+      <i
+        class="fa-solid fa-xmark absolute right-4 top-2 cursor-pointer text-2xl text-dark"
+        id="close"
+      ></i>
+      <div class="">
+        <h2 class="text-2xl font-bold">
+          Download your <span id="listName"></span> list
+        </h2>
+        <p class="text-gray-600">Choose the format to download.</p>
+      </div>
+      <div class="my-8 flex flex-wrap justify-center gap-8">
+        <div
+          class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
+        >
+          <input
+            type="radio"
+            class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
+            name="format"
+            value="pdf"
+            checked
+          />
+          <div
+            class="flex w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+          >
+            <i class="fa-solid fa-file-pdf mb-2 text-4xl"></i>
+            <span class="text-sm">PDF</span>
+          </div>
+        </div>
+        <div
+          class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
+        >
+          <input
+            type="radio"
+            class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
+            name="format"
+            value="csv"
+          />
+          <div
+            class="flex w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+          >
+            <i class="fa-solid fa-file-csv mb-2 text-4xl"></i>
+            <span class="text-sm">CSV</span>
+          </div>
+        </div>
+        <div
+          class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
+        >
+          <input
+            type="radio"
+            class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
+            name="format"
+            value="text"
+          />
+          <div
+            class="flex w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+          >
+            <i class="fa-solid fa-file-lines mb-2 text-4xl"></i>
+            <span class="text-sm">Text</span>
+          </div>
+        </div>
+        <div
+          class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
+        >
+          <input
+            type="radio"
+            class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
+            name="format"
+            value="json"
+          />
+          <div
+            class="flex w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+          >
+            <img src="imgs/json.png" alt="" class="mb-2 w-10" />
+            <span class="text-sm">JSON</span>
+          </div>
+        </div>
+      </div>
+      <button
+        class="mx-auto block rounded-2xl bg-secondaryAccent px-5 py-2 font-bold text-textColor"
+        id="download"
+      >
+        Download
+      </button>
+      <i
+        class="fa-sharp fa-solid fa-chevron-up absolute bottom-1 left-1/2 -translate-x-1/2 cursor-pointer text-xl text-dark"
+        id="showDownloadAll"
+      ></i>
+      <div
+        class="absolute bottom-0 left-0 w-full translate-y-full bg-gradient pb-3 pt-7 transition-transform duration-500"
+        id="downloadAllContainer"
+      >
         <i
-          class="fa-solid fa-xmark absolute right-4 top-2 cursor-pointer text-2xl text-dark"
-          id="close"
+          class="fa-sharp fa-solid fa-chevron-down absolute left-1/2 top-0 -translate-x-1/2 cursor-pointer text-xl text-textColor2"
+          id="hideDownloadAll"
         ></i>
-        <div class="">
-          <h2 class="text-2xl font-bold">Download your watchList</h2>
-          <p class="text-gray-600">Choose the format to download.</p>
-        </div>
-        <div class="my-8 flex flex-wrap justify-center gap-8">
-          <div
-            class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
-          >
-            <input
-              type="radio"
-              class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
-              name="format"
-              value="pdf"
-              checked
-            />
-            <div
-              class="flex w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
-            >
-              <i class="fa-solid fa-file-pdf mb-2 text-4xl"></i>
-              <span class="text-sm">PDF</span>
-            </div>
-          </div>
-          <div
-            class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
-          >
-            <input
-              type="radio"
-              class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
-              name="format"
-              value="csv"
-            />
-            <div
-              class="flex w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
-            >
-              <i class="fa-solid fa-file-csv mb-2 text-4xl"></i>
-              <span class="text-sm">CSV</span>
-            </div>
-          </div>
-          <div
-            class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
-          >
-            <input
-              type="radio"
-              class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
-              name="format"
-              value="text"
-            />
-            <div
-              class="flex w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
-            >
-              <i class="fa-solid fa-file-lines mb-2 text-4xl"></i>
-              <span class="text-sm">Text</span>
-            </div>
-          </div>
-          <div
-            class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
-          >
-            <input
-              type="radio"
-              class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
-              name="format"
-              value="json"
-            />
-            <div
-              class="flex w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
-            >
-              <img src="imgs/json.png" alt="" class="mb-2 w-10" />
-              <span class="text-sm">JSON</span>
-            </div>
-          </div>
-        </div>
+        <p class="mb-2 text-center text-sm font-bold text-textColor">
+          Download All Your Lists
+        </p>
         <button
           class="mx-auto block rounded-2xl bg-secondaryAccent px-5 py-2 font-bold text-textColor"
-          id="download"
+          id="downloadAll"
         >
           Download
         </button>
       </div>
     </div>
+  </div>
   </body>
 </html>
