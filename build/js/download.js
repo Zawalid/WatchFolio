@@ -33,7 +33,7 @@ const downloadAsPDF = async (toDownload) => {
     doc.html(elementHTML, {
       callback: function (doc) {
         // Save the PDF
-        doc.save("watchList.pdf");
+        doc.save(`${toDownload === "all" ? "watchList" : toDownload.name}.pdf`);
       },
       x: 15,
       y: 15,
@@ -41,106 +41,208 @@ const downloadAsPDF = async (toDownload) => {
       windowWidth: 650, //window width in CSS pixels
     });
   };
-  // Get the number of rows
-  const trNumber = Math.max(watched.length, watching.length, willWatch.length);
-  // Create the table rows
-  const createTr = async () => {
-    const watchedShows = await getShows(watched);
-    const watchingShows = await getShows(watching);
-    const willWatchShows = await getShows(willWatch);
-    const tr = [];
-    for (let i = 0; i < trNumber; i++) {
-      tr.push(`
-    <tr>
-      ${
-        watchedShows[i]
-          ? `
-          <td class="border-r border-l border-gray-300 p-4">
-            <div class="flex flex-col items-center justify-center gap-3 py-5">
-              <img
-                src="${watchedShows[i].image.medium}"
-                alt=""
-                class="w-[100px] rounded-xl"
-              />
-              <h3 class="text-center text-lg font-bold text-textColor">
-                ${watchedShows[i].name}
-              </h3>
-            </div>
-          </td>
-          `
-          : "<td></td>"
-      }
-      ${
-        watchingShows[i]
-          ? `
-          <td class="border-r border-l border-gray-300 p-4">
-            <div class="flex flex-col items-center justify-center gap-3 py-5">
-              <img
-                src="${watchingShows[i].image.medium}"
-                alt=""
-                class="w-[100px] rounded-xl"
-              />
-              <h3 class="text-center text-lg font-bold text-textColor">
-                ${watchingShows[i].name}
-              </h3>
-            </div>
-          </td>
-          `
-          : "<td></td>"
-      }
-      ${
-        willWatchShows[i]
-          ? `
-          <td class="border-r border-l border-gray-300 p-4">
-            <div class="flex flex-col items-center justify-center gap-3 py-5">
-              <img
-                src="${willWatch[i].image.medium}"
-                alt=""
-                class="w-[100px] rounded-xl"
-              />
-              <h3 class="text-center text-lg font-bold text-textColor">
-                ${willWatch[i].name}
-              </h3>
-            </div>
-          </td>
-          `
-          : "<td></td>"
-      }
-    </tr>
-  `);
-    }
-    return tr.join("");
+  // create the table
+  const create = (table) => {
+    const el = document.createElement("table");
+    el.innerHTML = table;
+    el.className = "bg-gradient  w-full table-fixed border border-gray-300";
+    document.body.appendChild(el);
+    // Generate the PDF
+    generatePDF(el);
+    // Remove the table element
+    el.remove();
   };
-  // Create the table
-  const table = `
-  <table >
-    <thead>
+  // Check if the user wants to download all the watchList or just one of the lists
+  if (toDownload === "all") {
+    // Get the number of rows
+    const trNumber = Math.max(
+      watched.length,
+      watching.length,
+      willWatch.length
+    );
+    // Create the table rows
+    const createTr = async () => {
+      const watchedShows = await getShows(watched);
+      const watchingShows = await getShows(watching);
+      const willWatchShows = await getShows(willWatch);
+      const tr = [];
+      for (let i = 0; i < trNumber; i++) {
+        tr.push(`
       <tr>
-        <th class="border border-gray-300 p-5 pb-8 text-2xl text-textColor2">
-          Watched
-        </th>
-        <th class="border border-gray-300 p-5 pb-8 text-2xl text-textColor2">
-          Watching
-        </th>
-        <th class="border border-gray-300 p-5 pb-8 text-2xl text-textColor2">
-          Will Watch
-        </th>
+        ${
+          watchedShows[i]
+            ? `
+            <td class="border-r border-l border-gray-300 p-4">
+              <div class="flex flex-col items-center justify-center gap-3 py-5">
+                <img
+                  src="${watchedShows[i].image.medium}"
+                  alt=""
+                  class="w-[100px] rounded-xl"
+                />
+                <h3 class="text-center text-lg font-bold text-textColor">
+                  ${watchedShows[i].name}
+                </h3>
+              </div>
+            </td>
+            `
+            : "<td></td>"
+        }
+        ${
+          watchingShows[i]
+            ? `
+            <td class="p-4">
+              <div class="flex flex-col items-center justify-center gap-3 py-5">
+                <img
+                  src="${watchingShows[i].image.medium}"
+                  alt=""
+                  class="w-[100px] rounded-xl"
+                />
+                <h3 class="text-center text-lg font-bold text-textColor">
+                  ${watchingShows[i].name}
+                </h3>
+              </div>
+            </td>
+            `
+            : "<td></td>"
+        }
+        ${
+          willWatchShows[i]
+            ? `
+            <td class="border-r border-l border-gray-300 p-4">
+              <div class="flex flex-col items-center justify-center gap-3 py-5">
+                <img
+                  src="${willWatch[i].image.medium}"
+                  alt=""
+                  class="w-[100px] rounded-xl"
+                />
+                <h3 class="text-center text-lg font-bold text-textColor">
+                  ${willWatch[i].name}
+                </h3>
+              </div>
+            </td>
+            `
+            : "<td></td>"
+        }
       </tr>
-    </thead>
-    <tbody>
-      ${await createTr()}
-    </tbody>
-  </table>
-  `;
-  // Create the table element and set the table as its innerHTML
-  const el = document.createElement("table");
-  el.innerHTML = table;
-  el.className = "bg-gradient  w-full table-fixed border border-gray-300";
-  document.body.appendChild(el);
-  // Generate the PDF
-  generatePDF(el);
-  // Remove the table element
-  el.remove();
+    `);
+      }
+      return tr.join("");
+    };
+    // Create the table
+    const table = `
+    <table >
+      <thead>
+        <tr>
+          <th class="border border-gray-300 p-5 pb-8 text-2xl text-textColor2">
+            Watched
+          </th>
+          <th class="border border-gray-300 p-5 pb-8 text-2xl text-textColor2">
+            Watching
+          </th>
+          <th class="border border-gray-300 p-5 pb-8 text-2xl text-textColor2">
+            Will Watch
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        ${await createTr()}
+      </tbody>
+    </table>
+    `;
+    // Create the table element and set the table as its innerHTML
+    create(table);
+  } else {
+    // Get the shows
+    const shows = await getShows([...toDownload.shows]);
+    // Get the number of rows
+    const trNumber = shows.length / 3;
+    // Create the table rows
+    const createTr = async () => {
+      const tr = [];
+      for (let i = 0; i < trNumber; i++) {
+        tr.push(`
+      <tr>
+        ${
+          shows[i * 3]
+            ? ` 
+            <td class="border-r border-l border-gray-300 p-4">
+              <div class="flex flex-col items-center justify-center gap-3 py-5">
+                <img
+                  src="${shows[i * 3].image.medium}"
+                  alt=""
+                  class="w-[100px] rounded-xl"
+                />
+                <h3 class="text-center text-lg font-bold text-textColor">
+                  ${shows[i * 3].name}
+                </h3>
+              </div>
+            </td>
+            `
+            : "<td></td>"
+        }
+        ${
+          shows[i * 3 + 1]
+            ? `
+            <td class="border-r border-l border-gray-300 p-4">
+              <div class="flex flex-col items-center justify-center gap-3 py-5">
+                <img
+                  src="${shows[i * 3 + 1].image.medium}"
+
+                  alt=""
+                  class="w-[100px] rounded-xl"
+                />
+                <h3 class="text-center text-lg font-bold text-textColor">
+                  ${shows[i * 3 + 1].name}
+
+                </h3>
+              </div>
+            </td>
+            `
+            : "<td></td>"
+        }
+        ${
+          shows[i * 3 + 2]
+            ? `
+          <td class="p-4">
+            <div class="flex flex-col items-center justify-center gap-3 py-5">
+              <img
+                src="${shows[i * 3 + 2].image.medium}"
+
+                alt=""
+                class="w-[100px] rounded-xl"
+              />
+              <h3 class="text-center text-lg font-bold text-textColor">
+                ${shows[i * 3 + 2].name}
+
+              </h3>
+            </div>
+          </td>
+          `
+            : "<td></td>"
+        }
+      </tr>
+    `);
+      }
+      return tr.join("");
+    };
+    // Create the table
+    const table = `
+    <table >
+      <thead>
+        <tr>
+          <th class="border border-gray-300 p-5 pb-8 text-2xl text-textColor2" colspan="3">
+            ${toDownload.name}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        ${await createTr()}
+      </tbody>
+    </table>
+    `;
+    // Create the table element and set the table as its innerHTML
+    create(table);
+  }
 };
 
 //* ------------------------------ Download as JSON ------------------------------ *//
@@ -233,6 +335,7 @@ const downloadAsTextOrCSV = async (format, toDownload) => {
   // Remove the link
   a.remove();
 };
+
 //* ------------------------------ Download watchList ------------------------------ *//
 const downloadList = (format, toDownload) => {
   switch (format) {
@@ -253,7 +356,7 @@ const downloadList = (format, toDownload) => {
   }
 };
 
-//* Download all the lists 
+//* Download all the lists toggling
 // SHow the download all modal
 downloadWatchListContainer
   .querySelector("#showDownloadAll")
