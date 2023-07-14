@@ -242,9 +242,8 @@ const downloadAsPDF = async (toDownload) => {
 
 //* ------------------------------ Download as JSON ------------------------------ *//
 const downloadAsJSON = async (toDownload) => {
-  const watchedShows = await getShows(watched);
-  const watchingShows = await getShows(watching);
-  const willWatchShows = await getShows(willWatch);
+  // Get the shows
+  const { watchedShows, watchingShows, willWatchShows } = await retrieveShows();
   // Create the JSON file
   async function createJSON() {
     // Check if the user wants to download all the watchList or just one of the lists
@@ -260,7 +259,6 @@ const downloadAsJSON = async (toDownload) => {
   }
   // Create the JSON file
   const json = await createJSON();
-  console.log(json);
   // Create the blob
   const blob = new Blob([JSON.stringify(json)], {
     type: "application/json",
@@ -279,9 +277,8 @@ const downloadAsJSON = async (toDownload) => {
 
 //* ------------------------------ Download as Text OR CSV ------------------------------ *//
 const downloadAsTextOrCSV = async (format, toDownload) => {
-  const watchedShows = await getShows(watched);
-  const watchingShows = await getShows(watching);
-  const willWatchShows = await getShows(willWatch);
+  // Get the shows
+  const { watchedShows, watchingShows, willWatchShows } = await retrieveShows();
   // Create the text or CSV file
   const createTextOrCSV = async () => {
     const textOrCSV = [];
@@ -292,7 +289,12 @@ const downloadAsTextOrCSV = async (format, toDownload) => {
       // Create the rows
       for (
         let i = 0;
-        i < Math.max(watched.length, watching.length, willWatch.length);
+        i <
+        Math.max(
+          watchedShows.length,
+          watchingShows.length,
+          willWatchShows.length
+        );
         i++
       ) {
         textOrCSV.push(`${watchedShows[i]?.name || ""},`);
