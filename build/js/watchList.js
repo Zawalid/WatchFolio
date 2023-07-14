@@ -109,7 +109,19 @@ const displayShowsFromWatchList = async (list) => {
   watchListContainer
     .querySelector(`button[data-list='${list}'`)
     .classList.add("active");
+
   const showsIds = watchLists[list].shows;
+  // Disable the actions if the list is empty except the download button
+  showsIds.size === 0
+    ? [...actions.querySelectorAll("i")].slice(1).forEach((i) => {
+        i.classList.replace("text-textColor2", "text-[darkslategray]");
+        i.classList.replace("cursor-pointer", "cursor-not-allowed");
+      })
+    : [...actions.querySelectorAll("i")].slice(1).forEach((i) => {
+        i.classList.replace("text-[darkslategray]", "text-textColor2");
+        i.classList.replace("cursor-not-allowed", "cursor-pointer");
+      });
+
   const getShow = async (id) => {
     const res = await fetch(`https://api.tvmaze.com/shows/${id}`);
     const show = await res.json();
@@ -135,7 +147,6 @@ const displayShowsFromWatchList = async (list) => {
   <h2 class="font-bold text-textColor2 text-lg">List is empty</div>
   </div>
   `;
-
   let html =
     showsIds.size > 0
       ? (await Promise.all([...showsIds].map((id) => displayShow(id)))).join("")
@@ -206,7 +217,17 @@ actions.querySelector("#download").addEventListener("click", (e) => {
     window.scrollTo(0, 0);
   document.getElementById("listName").innerHTML =
     watchLists[watchListContainer.dataset.current_list].name;
+  watchLists[watchListContainer.dataset.current_list].shows.size === 0 &&
+    document
+      .getElementById("emptyListWarning")
+      .classList.replace("hidden", "flex");
   downloadWatchListContainer.classList.add("show");
+
+  setTimeout(() => {
+    document
+      .getElementById("emptyListWarning")
+      .classList.replace("flex", "hidden");
+  }, 3000);
 });
 //* Close the download watchList container when clicking on the close button or the container and download the watchList when clicking on the download button
 downloadWatchListContainer.addEventListener("click", function (e) {
@@ -238,7 +259,8 @@ downloadWatchListContainer.addEventListener("click", function (e) {
 const clearConfirmation = document.getElementById("clear_confirmation");
 const clearWatchList = () => {
   // SHow confirmation modal
-  clearConfirmation.classList.replace("hidden", "flex");
+  watchLists[watchListContainer.dataset.current_list].shows.size > 0 &&
+    clearConfirmation.classList.replace("hidden", "flex");
   clearConfirmation.addEventListener("click", (e) => {
     if (e.target.closest("#no")) {
       clearConfirmation.classList.replace("flex", "hidden");
@@ -334,7 +356,8 @@ const searchWatchList = () => {
 //* Show the search input when clicking on the search icon
 actions.querySelector("#search").addEventListener("click", function () {
   // Toggle the search input
-  searchListInput.classList.toggle("show");
+  watchLists[watchListContainer.dataset.current_list].shows.size > 0 &&
+    searchListInput.classList.toggle("show");
   // Focus or blur out of the input
   searchListInput.classList.contains("show")
     ? searchListInput.focus()

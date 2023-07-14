@@ -16,7 +16,7 @@
   #season_overview.show {
     @apply z-30 opacity-100;
   }
-  #watchList button:not(:last-of-type).active {
+  #listsButtons button.active {
     @apply bg-secondaryAccent;
   }
   #watchList.show {
