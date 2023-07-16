@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WatchFolio</title>
-
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="./css/all.min.css" />
     <link rel="stylesheet" href="./css/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -112,6 +112,38 @@
       class="container relative hidden h-auto min-h-[75vh] w-full grid-cols-[repeat(auto-fit,220px)] gap-6 bg-gradient py-5 max-sm:place-content-center max-sm:pb-24"
       id="search_results"
     ></div>
+    <div
+      class="container relative h-auto min-h-screen bg-gradient py-5"
+      id="explore_container"
+    >
+      <div
+        class="grid grid-cols-[repeat(3,150px)] place-content-center gap-5 overflow-x-auto px-2 py-5"
+        id="exploreTabs"
+      >
+        <button
+          class="active flex items-center justify-center gap-2 rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          data-explore="Trending"
+        >
+          Trending <i class="fa-solid fa-arrow-trend-up"></i>
+        </button>
+        <button
+          class="flex items-center justify-center gap-2 rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          data-explore="popular"
+        >
+          Popular <i class="fa-solid fa-people-group"></i>
+        </button>
+        <button
+          class="flex items-center justify-center gap-2 rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          data-explore="topRated"
+        >
+          Top Rated <i class="fa-solid fa-star"></i>
+        </button>
+      </div>
+      <div
+        class="mt-5 flex overflow-x-scroll gap-6"
+        id="shows"
+      ></div>
+    </div>
     <div
       class="absolute right-20 top-[75px] -z-10 h-[550px] w-[400px] rounded-xl bg-gradient opacity-0 transition-opacity duration-300 max-md:right-0 max-md:top-0 max-md:h-full max-md:w-full"
       id="watchList"

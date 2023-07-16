@@ -780,20 +780,16 @@ video {
   height: 100vh;
 }
 
-.min-h-\[100vh\] {
-  min-height: 100vh;
-}
-
 .min-h-\[500px\] {
   min-height: 500px;
 }
 
-.min-h-screen {
-  min-height: 100vh;
-}
-
 .min-h-\[75vh\] {
   min-height: 75vh;
+}
+
+.min-h-screen {
+  min-height: 100vh;
 }
 
 .w-10 {
@@ -926,6 +922,10 @@ video {
   grid-template-columns: repeat(2,105px) 122px;
 }
 
+.grid-cols-\[repeat\(3\2c 150px\)\] {
+  grid-template-columns: repeat(3,150px);
+}
+
 .grid-cols-\[repeat\(auto-fit\2c 110px\)\] {
   grid-template-columns: repeat(auto-fit,110px);
 }
@@ -1024,6 +1024,10 @@ video {
 
 .overflow-y-auto {
   overflow-y: auto;
+}
+
+.overflow-x-scroll {
+  overflow-x: scroll;
 }
 
 .rounded-2xl {
@@ -1137,10 +1141,6 @@ video {
 
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
-}
-
-.bg-\[url\(\'https\:\/\/image\.tmdb\.org\/t\/p\/original\/84XPpjGvxNyExjSuLQe0SzioErt\.jpg\'\)\] {
-  background-image: url('https://image.tmdb.org/t/p/original/84XPpjGvxNyExjSuLQe0SzioErt.jpg');
 }
 
 .bg-gradient {
@@ -1494,7 +1494,8 @@ li.active,
   opacity: 1;
 }
 
-#listsButtons button.active {
+#exploreTabs button.active ,
+  #listsButtons button.active {
   --tw-bg-opacity: 1;
   background-color: rgb(244 67 54 / var(--tw-bg-opacity));
 }
