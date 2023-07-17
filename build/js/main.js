@@ -46,7 +46,7 @@ const displayResults = async (query) => {
     // Create the elements
     const html = `
     <a href="show.html?id=${show.id}">
-    <div class="w-[210px] h-[270px] peer group relative overflow-hidden">
+    <div class="w-[210px] h-[270px] peer group relative overflow-hidden max-md:w-[150px] max-md:h-[200px]">
       <img
         src="${show.image?.medium || "./imgs/placeholder.png"}"
         alt="${show.name}"
