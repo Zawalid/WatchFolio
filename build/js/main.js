@@ -141,7 +141,7 @@ const explore = async (url, page = null) => {
         if (!show?.name || show.genres.includes("Anime")) return;
         return `
     <a href="show.html?id=${show?.id}">
-    <div class="w-[210px] h-[270px] peer group relative overflow-hidden">
+    <div class="w-[210px] h-[270px] peer group relative overflow-hidden max-md:w-[160px] max-md:h-[200px]">
       <img
         src="${show?.image?.medium || "./imgs/placeholder.png"}"
         alt="${show?.name}"

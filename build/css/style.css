@@ -1748,6 +1748,10 @@ html {
     display: block;
   }
 
+  .max-md\:h-\[200px\] {
+    height: 200px;
+  }
+
   .max-md\:h-\[300px\] {
     height: 300px;
   }
@@ -1762,6 +1766,10 @@ html {
 
   .max-md\:min-h-screen {
     min-height: 100vh;
+  }
+
+  .max-md\:w-\[160px\] {
+    width: 160px;
   }
 
   .max-md\:w-full {
