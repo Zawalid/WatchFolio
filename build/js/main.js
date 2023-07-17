@@ -271,10 +271,11 @@ pagination.addEventListener("click", async function (e) {
   }
 });
 
+//* Render the show html 
 const renderShow = (show) => {
   return `
   <a href="show.html?id=${show?.id}">
-  <div class="w-[210px] h-[270px] peer group relative overflow-hidden max-md:w-[150px] max-md:h-[200px]">
+  <div class="w-[210px] h-[270px] peer group relative overflow-hidden max-md:w-[140px] max-md:h-[200px]">
     <img
       src="${show?.image?.medium || "./imgs/placeholder.png"}"
       alt="${show?.name}"
