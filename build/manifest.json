@@ -3,6 +3,6 @@
   "short_name": "WatchFolio",
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "130F40",
-  "theme_color": "130F40"
+  "background_color": "#130F40",
+  "theme_color": "#130F40"
 }

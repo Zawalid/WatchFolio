@@ -707,6 +707,10 @@ video {
   margin-top: 1.5rem;
 }
 
+.mt-8 {
+  margin-top: 2rem;
+}
+
 .mt-9 {
   margin-top: 2.25rem;
 }
@@ -743,6 +747,10 @@ video {
   aspect-ratio: 3/2;
 }
 
+.h-10 {
+  height: 2.5rem;
+}
+
 .h-64 {
   height: 16rem;
 }
@@ -761,6 +769,10 @@ video {
 
 .h-\[550px\] {
   height: 550px;
+}
+
+.h-\[565px\] {
+  height: 565px;
 }
 
 .h-auto {
@@ -1026,10 +1038,6 @@ video {
   overflow-y: auto;
 }
 
-.overflow-x-scroll {
-  overflow-x: scroll;
-}
-
 .rounded-2xl {
   border-radius: 1rem;
 }
@@ -1040,6 +1048,10 @@ video {
 
 .rounded-\[20px\] {
   border-radius: 20px;
+}
+
+.rounded-full {
+  border-radius: 9999px;
 }
 
 .rounded-lg {
@@ -1494,7 +1506,7 @@ li.active,
   opacity: 1;
 }
 
-#exploreTabs button.active ,
+#explore_container button.active,
   #listsButtons button.active {
   --tw-bg-opacity: 1;
   background-color: rgb(244 67 54 / var(--tw-bg-opacity));
@@ -1574,9 +1586,9 @@ html {
   background-color: black;
 }
 
-.swiper {
-  width: 600px;
-  height: 300px;
+#exploreTabs::-webkit-scrollbar,
+#listsButtons::-webkit-scrollbar {
+  display: none;
 }
 
 .marker\:text-transparent *::marker {
@@ -1858,6 +1870,10 @@ html {
 }
 
 @media (min-width: 640px) {
+  .sm\:place-content-center {
+    place-content: center;
+  }
+
   .sm\:py-4 {
     padding-top: 1rem;
     padding-bottom: 1rem;

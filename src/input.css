@@ -16,7 +16,7 @@
   #season_overview.show {
     @apply z-30 opacity-100;
   }
-  #exploreTabs button.active ,
+  #explore_container button.active,
   #listsButtons button.active {
     @apply bg-secondaryAccent;
   }
@@ -53,7 +53,7 @@ html {
   background-color: black;
 }
 
-.swiper {
-  width: 600px;
-  height: 300px;
+#exploreTabs::-webkit-scrollbar,
+#listsButtons::-webkit-scrollbar {
+  display: none;
 }

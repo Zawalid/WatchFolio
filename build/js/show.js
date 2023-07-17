@@ -160,7 +160,7 @@ const showOverview = async () => {
     <div
       class="flex w-fit items-center gap-5 rounded-lg bg-dark bg-opacity-30 px-3 py-1 text-sm font-semibold text-textColor backdrop-blur-sm"
     >
-      <span>${show.rating.average}</span>
+      <span>${show.rating.average || "Unrated"}</span>
       <div class="flex gap-2">
         ${getStars(Math.round(show.rating.average))
           .map((star) => star.outerHTML)

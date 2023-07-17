@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WatchFolio</title>
-    <link rel="manifest" href="manifest.json">
+    <!-- <link rel="manifest" href="manifest.json" /> -->
     <link rel="stylesheet" href="./css/all.min.css" />
     <link rel="stylesheet" href="./css/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -113,36 +113,96 @@
       id="search_results"
     ></div>
     <div
-      class="container relative h-auto min-h-screen bg-gradient py-5"
+      class="container relative h-auto bg-gradient py-5 max-md:min-h-screen"
       id="explore_container"
     >
       <div
-        class="grid grid-cols-[repeat(3,150px)] place-content-center gap-5 overflow-x-auto px-2 py-5"
+        class="grid grid-cols-[repeat(3,150px)] gap-5 overflow-x-auto px-2 py-5 sm:place-content-center"
         id="exploreTabs"
       >
         <button
           class="active flex items-center justify-center gap-2 rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
-          data-explore="Trending"
+          data-name="trending"
+          data-url="trending/tv/day"
         >
           Trending <i class="fa-solid fa-arrow-trend-up"></i>
         </button>
         <button
           class="flex items-center justify-center gap-2 rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
-          data-explore="popular"
+          data-name="popular"
+          data-url="tv/popular"
         >
           Popular <i class="fa-solid fa-people-group"></i>
         </button>
         <button
           class="flex items-center justify-center gap-2 rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
-          data-explore="topRated"
+          data-name="topRated"
+          data-url="tv/top_rated"
         >
           Top Rated <i class="fa-solid fa-star"></i>
         </button>
       </div>
       <div
-        class="mt-5 flex overflow-x-scroll gap-6"
+        class="mt-5 flex h-[565px] flex-wrap items-start justify-center gap-6 overflow-y-auto"
         id="shows"
       ></div>
+      <div
+        class="mt-8 hidden items-center justify-center gap-2"
+        id="pagination"
+        data-current_page="1"
+      >
+        <button
+          class="h-10 w-10 rounded-full bg-dark text-center font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          id="first"
+        >
+          <i class="fa-solid fa-angles-left"></i>
+        </button>
+        <button
+          class="h-10 w-10 rounded-full bg-dark text-center font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          id="prev"
+        >
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <div id="numbers">
+          <button
+            class="active h-10 w-10 rounded-full bg-dark text-center font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          >
+            1
+          </button>
+          <button
+            class="h-10 w-10 rounded-full bg-dark text-center font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          >
+            2
+          </button>
+          <button
+            class="h-10 w-10 rounded-full bg-dark text-center font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          >
+            3
+          </button>
+          <button
+            class="h-10 w-10 rounded-full bg-dark text-center font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          >
+            4
+          </button>
+          <button
+            class="h-10 w-10 rounded-full bg-dark text-center font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          >
+            5
+          </button>
+        </div>
+        <button
+          class="h-10 w-10 rounded-full bg-dark text-center font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          id="next"
+        >
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        <button
+          class="h-10 w-10 rounded-full bg-dark text-center font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          id="last"
+        >
+          <i class="fa-solid fa-angles-right"></i>
+        </button>
+      </div>
     </div>
     <div
       class="absolute right-20 top-[75px] -z-10 h-[550px] w-[400px] rounded-xl bg-gradient opacity-0 transition-opacity duration-300 max-md:right-0 max-md:top-0 max-md:h-full max-md:w-full"
