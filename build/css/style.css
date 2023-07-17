@@ -1271,6 +1271,10 @@ video {
   padding-top: 1.75rem;
 }
 
+.pt-5 {
+  padding-top: 1.25rem;
+}
+
 .text-center {
   text-align: center;
 }
@@ -1815,6 +1819,10 @@ html {
 
   .max-md\:pt-14 {
     padding-top: 3.5rem;
+  }
+
+  .max-md\:pb-8 {
+    padding-bottom: 2rem;
   }
 
   .max-md\:text-center {
