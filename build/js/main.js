@@ -44,44 +44,14 @@ const displayResults = async (query) => {
     // Get the show object from the data array
     const { show } = obj;
     // Create the elements
-    const html = `
-    <a href="show.html?id=${show.id}">
-    <div class="w-[210px] h-[270px] peer group relative overflow-hidden max-md:w-[150px] max-md:h-[200px]">
-      <img
-        src="${show.image?.medium || "./imgs/placeholder.png"}"
-        alt="${show.name}"
-        class="w-full h-full object-cover rounded-md shadow-shadow1 mb-2"
-      />
-      <div
-        class="blur-[60px] top-0 absolute -z-10 flex h-full w-full flex-col gap-3 bg-dark p-3 transition-all duration-[.8s] group-hover:z-10 group-hover:bg-dark group-hover:bg-opacity-50 group-hover:blur-0"
-      >
-        <div
-          class="w-fit rounded-lg bg-thirdAccent px-3 text-sm font-semibold text-textColor"
-        >
-          ${show.genres[0] || "No genre"}
-        </div>
-        <div
-          class="flex w-fit items-center gap-1 rounded-lg bg-secondaryAccent px-3 text-sm font-semibold text-textColor"
-
-        >
-          ${
-            show.rating.average || "Not rated"
-          } <i class="fa-solid fa-star text-primaryAccent"></i>
-        </div>
-        <h3 class="mt-auto font-logo text-lg font-bold text-textColor">
-          ${show.name}
-        </h3>
-      </div>
-    </div>
-  </a>
-    `;
+    const html = renderShow(show);
     searchResultsContainer.innerHTML += html;
   }
 };
 //* Search for the show the user entered
 const search = (e) => {
   // If the user presses enter or clicks the search button
-  searchResultsContainer.classList.replace("hidden", "grid");
+  searchResultsContainer.classList.replace("hidden", "flex");
   // Scroll to the container
   searchResultsContainer.scrollIntoView({ behavior: "smooth" });
   // Display the data
@@ -139,37 +109,7 @@ const explore = async (url, page = null) => {
         );
         const show = await (await res).json();
         if (!show?.name || show.genres.includes("Anime")) return;
-        return `
-    <a href="show.html?id=${show?.id}">
-    <div class="w-[210px] h-[270px] peer group relative overflow-hidden max-md:w-[150px] max-md:h-[200px]">
-      <img
-        src="${show?.image?.medium || "./imgs/placeholder.png"}"
-        alt="${show?.name}"
-        class="w-full h-full object-cover rounded-md shadow-shadow1 mb-2"
-      />
-      <div
-        class="blur-[60px] top-0 absolute -z-10 flex h-full w-full flex-col gap-3 bg-dark p-3 transition-all duration-[.8s] group-hover:z-10 group-hover:bg-dark group-hover:bg-opacity-50 group-hover:blur-0"
-      >
-        <div
-          class="w-fit rounded-lg bg-thirdAccent px-3 text-sm font-semibold text-textColor"
-        >
-          ${show?.genres[0] || "No genre"}
-        </div>
-        <div
-          class="flex w-fit items-center gap-1 rounded-lg bg-secondaryAccent px-3 text-sm font-semibold text-textColor"
-
-        >
-          ${
-            show?.rating.average || "Not rated"
-          } <i class="fa-solid fa-star text-primaryAccent"></i>
-        </div>
-        <h3 class="mt-auto font-logo text-lg font-bold text-textColor">
-          ${show?.name}
-        </h3>
-      </div>
-    </div>
-  </a>
-    `;
+        return renderShow(show);
       } catch {}
     })
   );
@@ -330,3 +270,37 @@ pagination.addEventListener("click", async function (e) {
     explore(url, currentPage);
   }
 });
+
+const renderShow = (show) => {
+  return `
+  <a href="show.html?id=${show?.id}">
+  <div class="w-[210px] h-[270px] peer group relative overflow-hidden max-md:w-[150px] max-md:h-[200px]">
+    <img
+      src="${show?.image?.medium || "./imgs/placeholder.png"}"
+      alt="${show?.name}"
+      class="w-full h-full object-cover rounded-md shadow-shadow1 mb-2"
+    />
+    <div
+      class="blur-[60px] top-0 absolute -z-10 flex h-full w-full flex-col gap-3 bg-dark p-3 transition-all duration-[.8s] group-hover:z-10 group-hover:bg-dark group-hover:bg-opacity-50 group-hover:blur-0"
+    >
+      <div
+        class="w-fit rounded-lg bg-thirdAccent px-3 text-sm font-semibold text-textColor"
+      >
+        ${show?.genres[0] || "No genre"}
+      </div>
+      <div
+        class="flex w-fit items-center gap-1 rounded-lg bg-secondaryAccent px-3 text-sm font-semibold text-textColor"
+
+      >
+        ${
+          show?.rating.average || "Not rated"
+        } <i class="fa-solid fa-star text-primaryAccent"></i>
+      </div>
+      <h3 class="mt-auto font-logo text-lg font-bold text-textColor">
+        ${show?.name}
+      </h3>
+    </div>
+  </div>
+</a>
+  `;
+};
