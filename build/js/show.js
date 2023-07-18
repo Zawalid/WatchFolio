@@ -1,8 +1,7 @@
 "use strict";
 
-let showName, currentSeason;
 // TODO : add a initialize function to initialize the lists and the overview containers
-//* Initialize the watchLists if they don't exist 
+//* Initialize the watchLists if they don't exist
 ["watched", "watching", "willWatch"].forEach((list) => {
   !window.localStorage.getItem(list) && window.localStorage.setItem(list, "");
 });
@@ -105,6 +104,7 @@ const closeOverview = (container) => {
 
 //* ------------------------------ The show overview ------------------------------ *//
 const showOverviewContainer = document.getElementById("overview");
+let showName, currentSeason;
 const showOverview = async () => {
   try {
     showLoading(showOverviewContainer);
@@ -615,16 +615,17 @@ const getEpisodes = async () => {
   // Remove episodes with number null
   episodes = episodes.filter((episode) => episode.number);
   const html = episodes
-    .map((episode) => {
+    .map((episode, i, arr) => {
       return `
       <div
   " 
-  class="flex items-center gap-3 cursor-pointer" id="episode" data-info="${
+  class="flex items-center gap-3 cursor-pointer group" id="episode" data-info="${
     episode.name
   }|${episode.number}|${episode.rating.average}">
-        <h2 class="text-2xl font-bold text-center text-textColor2 w-7">${
-          episode.number || "Special"
-        }</h2>
+        <h2 class="text-2xl font-bold text-center text-textColor2 w-9 h-9 border group-hover:bg-secondaryAccent group-hover:border-secondaryAccent transition-colors duration-300 border-textColor2 rounded-full ${
+          arr.length - 1 !== i &&
+          "relative before:absolute before:h-[77px] max-sm:before:h-[65px] before:w-[2px] before:bg-textColor2 before:top-full before:left-1/2 before:-translate-x-1/2"
+        } ">${episode.number || "Special"}</h2>
         <img src="${
           episode.image?.original || "./imgs/placeholder.png"
         }" alt="" class="w-[150px] aspect-[3/2] object-cover rounded-xl max-sm:w-[100px]" />
@@ -1031,5 +1032,3 @@ const activateWatchListButton = () => {
     });
   }
 };
-
-

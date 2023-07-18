@@ -759,6 +759,10 @@ video {
   height: 1.75rem;
 }
 
+.h-9 {
+  height: 2.25rem;
+}
+
 .h-\[270px\] {
   height: 270px;
 }
@@ -832,8 +836,8 @@ video {
   width: 16rem;
 }
 
-.w-7 {
-  width: 1.75rem;
+.w-9 {
+  width: 2.25rem;
 }
 
 .w-\[100px\] {
@@ -1089,6 +1093,11 @@ video {
 .border-gray-300 {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
+}
+
+.border-textColor2 {
+  --tw-border-opacity: 1;
+  border-color: rgb(212 212 212 / var(--tw-border-opacity));
 }
 
 .bg-\[\#0005\] {
@@ -1608,9 +1617,24 @@ html {
   position: absolute;
 }
 
+.before\:left-1\/2::before {
+  content: var(--tw-content);
+  left: 50%;
+}
+
+.before\:top-full::before {
+  content: var(--tw-content);
+  top: 100%;
+}
+
 .before\:-z-10::before {
   content: var(--tw-content);
   z-index: -10;
+}
+
+.before\:h-\[77px\]::before {
+  content: var(--tw-content);
+  height: 77px;
 }
 
 .before\:h-full::before {
@@ -1618,9 +1642,26 @@ html {
   height: 100%;
 }
 
+.before\:w-\[2px\]::before {
+  content: var(--tw-content);
+  width: 2px;
+}
+
 .before\:w-full::before {
   content: var(--tw-content);
   width: 100%;
+}
+
+.before\:-translate-x-1\/2::before {
+  content: var(--tw-content);
+  --tw-translate-x: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.before\:bg-textColor2::before {
+  content: var(--tw-content);
+  --tw-bg-opacity: 1;
+  background-color: rgb(212 212 212 / var(--tw-bg-opacity));
 }
 
 .before\:bg-background::before {
@@ -1702,9 +1743,19 @@ html {
   z-index: 10;
 }
 
+.group:hover .group-hover\:border-secondaryAccent {
+  --tw-border-opacity: 1;
+  border-color: rgb(244 67 54 / var(--tw-border-opacity));
+}
+
 .group:hover .group-hover\:bg-dark {
   --tw-bg-opacity: 1;
   background-color: rgb(19 15 64 / var(--tw-bg-opacity));
+}
+
+.group:hover .group-hover\:bg-secondaryAccent {
+  --tw-bg-opacity: 1;
+  background-color: rgb(244 67 54 / var(--tw-bg-opacity));
 }
 
 .group:hover .group-hover\:bg-opacity-50 {
@@ -1874,6 +1925,11 @@ html {
   .max-sm\:text-3xl {
     font-size: 1.875rem;
     line-height: 2.25rem;
+  }
+
+  .max-sm\:before\:h-\[65px\]::before {
+    content: var(--tw-content);
+    height: 65px;
   }
 }
 

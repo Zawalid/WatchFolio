@@ -39,6 +39,7 @@ const renderShow = (show) => {
 </a>
   `;
 };
+
 //* ------------------------------ Search ------------------------------ *//
 const searchResultsContainer = document.getElementById("search_results");
 const searchInput = document.getElementById("search_input");
@@ -174,6 +175,9 @@ tabsButtons.forEach((button) => {
         .forEach((btn, i) => (btn.innerText = i + 1));
       // Add the active class to the first button
       addActiveClass(pagination.querySelectorAll("#numbers button")[0]);
+      // REduce the opacity of the prev and first buttons if the current page is 1
+      currentPage = 1;
+      reduceOpacity(1, [paginationButtons[0], paginationButtons[1]]);
     }
     // Get the explore shows (trending, popular, top rated) with the page null to get the first page
     explore(url);
