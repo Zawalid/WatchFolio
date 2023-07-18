@@ -43,9 +43,11 @@
             ></i>
           </li>
           <li>
-            <i
-              class="fa-solid fa-user cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
-            ></i>
+            <a href="index.html#explore">
+              <i
+                class="fa-solid fa-globe cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+              ></i>
+            </a>
           </li>
         </ul>
       </header>
@@ -100,10 +102,12 @@
             <span class="font-semibold">Watchlist</span>
           </li>
           <li
-            class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
+            class="marker:text-transparent"
           >
-            <i class="fa-solid fa-user cursor-pointer text-2xl"></i>
-            <span class="font-semibold">Profile</span>
+            <a href="index.html#explore" class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent">
+              <i class="fa-solid fa-globe cursor-pointer text-2xl"></i>
+              <span class="font-semibold">Explore</span>
+            </a>
           </li>
         </ul>
       </div>
@@ -114,7 +118,7 @@
     ></div>
     <div
       class="container relative h-auto bg-gradient py-5 max-md:min-h-screen max-md:pb-24"
-      id="explore_container"
+      id="explore"
     >
       <div
         class="grid grid-cols-[repeat(3,150px)] gap-5 overflow-x-auto px-2 py-5 sm:place-content-center"
@@ -163,7 +167,7 @@
         >
           <i class="fa-solid fa-chevron-left"></i>
         </button>
-        <div class="flex" id="numbers">
+        <div class="flex gap-2" id="numbers">
           <button
             class="active h-10 w-10 rounded-full bg-dark text-center font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
           >

@@ -5,6 +5,40 @@
   !window.localStorage.getItem(list) && window.localStorage.setItem(list, "");
 });
 
+//* Render the show html
+const renderShow = (show) => {
+  return `
+  <a href="show.html?id=${show?.id}">
+  <div class="w-[210px] h-[270px] peer group relative overflow-hidden max-md:w-[140px] max-md:h-[200px]">
+    <img
+      src="${show?.image?.medium || "./imgs/placeholder.png"}"
+      alt="${show?.name}"
+      class="w-full h-full object-cover rounded-md shadow-shadow1 mb-2"
+    />
+    <div
+      class="blur-[60px] top-0 absolute -z-10 flex h-full w-full flex-col gap-3 bg-dark p-3 transition-all duration-[.8s] group-hover:z-10 group-hover:bg-dark group-hover:bg-opacity-50 group-hover:blur-0"
+    >
+      <div
+        class="w-fit rounded-lg bg-thirdAccent px-3 text-sm font-semibold text-textColor"
+      >
+        ${show?.genres[0] || "No genre"}
+      </div>
+      <div
+        class="flex w-fit items-center gap-1 rounded-lg bg-secondaryAccent px-3 text-sm font-semibold text-textColor"
+
+      >
+        ${
+          show?.rating.average || "Not rated"
+        } <i class="fa-solid fa-star text-primaryAccent"></i>
+      </div>
+      <h3 class="mt-auto font-logo text-lg font-bold text-textColor">
+        ${show?.name}
+      </h3>
+    </div>
+  </div>
+</a>
+  `;
+};
 //* ------------------------------ Search ------------------------------ *//
 const searchResultsContainer = document.getElementById("search_results");
 const searchInput = document.getElementById("search_input");
@@ -82,9 +116,9 @@ const options = {
       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3OWUxNjZjMzNhZjE4ZmVlNTgzNWJiMDBiOGE5ZTA1NCIsInN1YiI6IjY0YTJiOTcxMTEzODZjMDBhZGM3OTQxMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.yxORg4upeOsiqCve7e9CDV4i-_Q2LfIpnqKKax3Fnw4",
   },
 };
-const exploreContainer = document.querySelector("#explore_container #shows");
+const exploreContainer = document.querySelector("#explore #shows");
 const tabsButtons = document.querySelectorAll("#exploreTabs button");
-const pagination = document.querySelector("#explore_container #pagination");
+const pagination = document.querySelector("#explore #pagination");
 
 //* Get the explore shows (trending, popular, top rated)
 const explore = async (url, page = null) => {
@@ -270,38 +304,3 @@ pagination.addEventListener("click", async function (e) {
     explore(url, currentPage);
   }
 });
-
-//* Render the show html 
-const renderShow = (show) => {
-  return `
-  <a href="show.html?id=${show?.id}">
-  <div class="w-[210px] h-[270px] peer group relative overflow-hidden max-md:w-[140px] max-md:h-[200px]">
-    <img
-      src="${show?.image?.medium || "./imgs/placeholder.png"}"
-      alt="${show?.name}"
-      class="w-full h-full object-cover rounded-md shadow-shadow1 mb-2"
-    />
-    <div
-      class="blur-[60px] top-0 absolute -z-10 flex h-full w-full flex-col gap-3 bg-dark p-3 transition-all duration-[.8s] group-hover:z-10 group-hover:bg-dark group-hover:bg-opacity-50 group-hover:blur-0"
-    >
-      <div
-        class="w-fit rounded-lg bg-thirdAccent px-3 text-sm font-semibold text-textColor"
-      >
-        ${show?.genres[0] || "No genre"}
-      </div>
-      <div
-        class="flex w-fit items-center gap-1 rounded-lg bg-secondaryAccent px-3 text-sm font-semibold text-textColor"
-
-      >
-        ${
-          show?.rating.average || "Not rated"
-        } <i class="fa-solid fa-star text-primaryAccent"></i>
-      </div>
-      <h3 class="mt-auto font-logo text-lg font-bold text-textColor">
-        ${show?.name}
-      </h3>
-    </div>
-  </div>
-</a>
-  `;
-};

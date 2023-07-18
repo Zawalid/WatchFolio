@@ -16,7 +16,7 @@
   #season_overview.show {
     @apply z-30 opacity-100;
   }
-  #explore_container button.active,
+  #explore button.active,
   #listsButtons button.active {
     @apply bg-secondaryAccent;
   }
