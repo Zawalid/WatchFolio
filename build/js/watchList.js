@@ -198,7 +198,7 @@ const retrieveAndStoreLists = (list, listName) => {
   // Get the shows from the local storage
   const lists = window.localStorage.getItem(listName)?.split(",");
   // Remove the empty string from the array (it's added when the list is empty)
-  lists[0] == "" && lists.splice(0, 1);
+  lists && lists[0] == "" && lists.splice(0, 1);
   // Store the shows in the list to manipulate them
   list.shows = new Set(lists);
 };

@@ -75,6 +75,9 @@ const showLoading = (container) => {
 const displayOverview = (container, html, img = null) => {
   setTimeout(() => {
     container.firstElementChild.innerHTML = html;
+    //* Change the episode icon (here because the episodes are just created))
+    changeEpisodeIcon();
+
     if (container === episodeOverviewContainer) {
       document.documentElement.style.setProperty("--episode-bg", `url(${img})`);
     }
@@ -617,12 +620,13 @@ const getEpisodes = async () => {
   const html = episodes
     .map((episode, i, arr) => {
       return `
-      <div
+      <a
+  href="#${episode.id}
   " 
   class="flex items-center gap-3 cursor-pointer group" id="episode" data-info="${
     episode.name
   }|${episode.number}|${episode.rating.average}">
-        <h2 class="text-2xl font-bold text-center text-textColor2 w-9 h-9 border group-hover:bg-secondaryAccent group-hover:border-secondaryAccent transition-colors duration-300 border-textColor2 rounded-full ${
+        <h2 class="text-2xl font-bold text-center text-textColor2 flex justify-center items-center w-9 h-9 border group-hover:bg-secondaryAccent group-hover:border-secondaryAccent transition-colors duration-300 border-textColor2 rounded-full ${
           arr.length - 1 !== i &&
           "relative before:absolute before:h-[77px] max-sm:before:h-[65px] before:w-[2px] before:bg-textColor2 before:top-full before:left-1/2 before:-translate-x-1/2"
         } ">${episode.number || "Special"}</h2>
@@ -654,7 +658,7 @@ const getEpisodes = async () => {
             }</span>
           </div>
         </div>
-      </div>
+      </a>
   `;
     })
     .join("");
@@ -899,7 +903,6 @@ const episodeOverview = async (showName, season, otherInfo) => {
     options
   );
   const episode = await res.json();
-  console.log(episode);
   const homePage = await getShowHomePage(showName);
   const episodePoster =
     `${baseUrl}original${episode.still_path}` || "../imgs/placeholder.png";
@@ -955,8 +958,9 @@ const episodeOverview = async (showName, season, otherInfo) => {
             </p>
 
             <a
-              href="${homePage || "#"}}"
+              href="${homePage || "#"}" target="_blank"
               class="mt-5 cursor-pointer rounded-3xl bg-secondaryAccent px-7 py-3 text-center font-bold text-textColor transition-colors duration-300 hover:bg-opacity-80"
+              id="watchNow"
             >
               Watch Now
             </a>
@@ -1031,4 +1035,104 @@ const activateWatchListButton = () => {
       }
     });
   }
+};
+
+//* ------------------------------ Episodes tracking ------------------------------ *//
+//* Watched and watching episodes
+const episodes = {
+  watchedEpisodes: {
+    episodes: new Set(),
+    icon: `<i class="fa-solid fa-eye text-lg"></i>`,
+  },
+  watchingEpisodes: {
+    episodes: new Set(),
+    icon: `<i class="fa-solid fa-play text-lg"></i>`,
+  },
+};
+//* Change the episode icon when clicking on the watch now button and store the watched and watching episodes in the local storage
+document.addEventListener("click", (e) => {
+  if (e.target.closest("#watchNow")) {
+    // Get the id of the episode
+    const episodeId = window.location.hash.slice(1);
+    // Store the episodes numbers in an array
+    const episodesNumbers = [...document.querySelectorAll("#episode h2")];
+    // Get the index of the current episode from the episodes numbers array using the episode id
+    const currEpIndex = episodesNumbers.indexOf(
+      episodesNumbers.find(
+        (h2) => h2.parentElement.href.split("#")[1] === episodeId
+      )
+    );
+    //? Loop trough the episodes and compare their indexes with the current episode index :
+    //?----- If the index is less than the current episode index then it means that the episode is already watched
+    //?----- If the index is equal to the current episode index and it is not already watched then it means that the episode is currently being watched
+
+    episodesNumbers.map((h2, i) => {
+      if (i < currEpIndex) {
+        // Change the icon to the watched icon (the eye icon)
+        h2.innerHTML = episodes.watchedEpisodes.icon;
+        // Remove the episode from the watching episodes and add it to the watched episodes
+        episodes.watchingEpisodes.episodes.has(
+          h2.parentElement.hash.split("#")[1]
+        ) &&
+          episodes.watchingEpisodes.episodes.delete(
+            h2.parentElement.hash.split("#")[1]
+          );
+        episodes.watchedEpisodes.episodes.add(
+          h2.parentElement.hash.split("#")[1]
+        );
+      }
+      if (
+        i === currEpIndex &&
+        !episodes.watchedEpisodes.episodes.has(
+          h2.parentElement.hash.split("#")[1]
+        )
+      ) {
+        // Add the episode to the watching episodes
+        episodes.watchingEpisodes.episodes.add(episodeId);
+        // Change the icon to the watching icon (the play icon)
+        h2.innerHTML = episodes.watchingEpisodes.icon;
+      }
+    });
+
+    // Store the episodes in the local storage
+    localStorage.setItem("watchingEpisodes", [
+      ...episodes.watchingEpisodes.episodes,
+    ]);
+    localStorage.setItem("watchedEpisodes", [
+      ...episodes.watchedEpisodes.episodes,
+    ]);
+  }
+});
+//* Retrieve episodes from local storage and store them back in the lists to manipulate them
+const retrieveAndStoreEpisodes = (episodes, episodesType) => {
+  // Get the episodes from the local storage
+  const eps = window.localStorage.getItem(episodesType)?.split(",");
+  // Remove the empty string from the array (it's added when the list is empty)
+  eps && eps[0] == "" && eps.splice(0, 1);
+  // Store the episodes in the list to manipulate them
+  episodes.episodes = new Set(eps);
+};
+retrieveAndStoreEpisodes(episodes.watchedEpisodes, "watchedEpisodes");
+retrieveAndStoreEpisodes(episodes.watchingEpisodes, "watchingEpisodes");
+//* Change the episode icon when the page loads
+const changeEpisodeIcon = () => {
+  // Get the episodes numbers
+  const episodesNumbers = [...document.querySelectorAll("#episode h2")];
+  console.log(episodesNumbers);
+  episodesNumbers.map((h2) => {
+    if (
+      episodes.watchedEpisodes.episodes.has(h2.parentElement.hash.split("#")[1])
+    ) {
+      // Change the icon to the watched icon (the eye icon)
+      h2.innerHTML = episodes.watchedEpisodes.icon;
+    }
+    if (
+      episodes.watchingEpisodes.episodes.has(
+        h2.parentElement.hash.split("#")[1]
+      )
+    ) {
+      // Change the icon to the watching icon (the play icon)
+      h2.innerHTML = episodes.watchingEpisodes.icon;
+    }
+  });
 };
