@@ -109,7 +109,7 @@ const closeOverview = (container) => {
 
 //* ------------------------------ The show overview ------------------------------ *//
 const showOverviewContainer = document.getElementById("overview");
-let showName, currentSeason;
+let showName, currentSeason, showsSeasons;
 const showOverview = async () => {
   try {
     showLoading(showOverviewContainer);
@@ -273,6 +273,8 @@ const showOverview = async () => {
       "beforeend",
       recommendations.length !== 0 ? recommendations : ""
     );
+    // Get the seasons
+    showsSeasons = [...document.querySelectorAll("#season")];
   } catch (err) {
     console.log(err);
     showOverviewContainer.innerHTML = noResults();
@@ -514,8 +516,6 @@ const seasonOverview = async (id) => {
   const key = await getSeasonTrailer(showName, season.number);
   // Fix the summary
   season.summary = season.summary?.replace(/<p>/g, "");
-  // Get the seasons
-  const seasons = [...document.querySelectorAll("#season")]
   const html = `
   <i
     class="fa-solid fa-xmark text-textColor2 absolute right-4 top-4 cursor-pointer text-2xl"
@@ -600,9 +600,7 @@ const seasonOverview = async (id) => {
   <button class="flex justify-center items-center gap-2 rounded-lg bg-secondaryAccent px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80" id="previousSeason">
   <i class="fa-solid fa-chevron-left"></i>
   <span>${window.matchMedia("(min-width: 768px)").matches ? "Season" : ""} ${
-    seasons[currentSeason - 2]
-      ? currentSeason - 1
-      : seasons.length
+    showsSeasons[currentSeason - 2] ? currentSeason - 1 : showsSeasons.length
   }</span>
   </button>
   <button class="flex justify-center items-center gap-2 rounded-lg bg-secondaryAccent px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80" id="seasonWatched">
@@ -611,9 +609,7 @@ const seasonOverview = async (id) => {
   </button>
   <button class="flex justify-center items-center gap-2 rounded-lg bg-secondaryAccent px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80" id="nextSeason">
   <span>${window.matchMedia("(min-width: 768px)").matches ? "Season" : ""} ${
-    seasons[currentSeason + 1]
-      ? currentSeason + 1
-      : 1
+    showsSeasons[currentSeason + 1] ? currentSeason + 1 : 1
   }</span>
   <i class="fa-solid fa-chevron-right"></i>
   </button>
@@ -1180,19 +1176,17 @@ const addShowToWatchingList = () => {
 //* ------------------------------ Season Switching ------------------------------ *//
 //* Switch between the seasons when clicking on the previous or next season button
 document.addEventListener("click", (e) => {
-  // Get the seasons
-  const seasons = [...document.querySelectorAll("#season")];
   if (e.target.closest("#previousSeason")) {
     // Check if the previous season exists and show it if so else show the last season
-    seasons[currentSeason - 2]
-      ? seasonOverview(seasons[currentSeason - 2].hash.slice(1))
-      : seasonOverview(seasons[seasons.length - 1].hash.slice(1));
+    showsSeasons[currentSeason - 2]
+      ? seasonOverview(showsSeasons[currentSeason - 2].hash.slice(1))
+      : seasonOverview(showsSeasons[showsSeasons.length - 1].hash.slice(1));
   }
   if (e.target.closest("#nextSeason")) {
     // Check if the next season exists and show it if so else show the first season
-    seasons[currentSeason]
-      ? seasonOverview(seasons[currentSeason].hash.slice(1))
-      : seasonOverview(seasons[0].hash.slice(1));
+    showsSeasons[currentSeason]
+      ? seasonOverview(showsSeasons[currentSeason].hash.slice(1))
+      : seasonOverview(showsSeasons[0].hash.slice(1));
   }
 });
 //* Mark the season as watched when clicking on the season watched button
@@ -1243,8 +1237,7 @@ document.addEventListener("click", (e) => {
 });
 //* Hide or show the season buttons (previous and next)
 const hideOrShowSeasonButtons = () => {
-  const seasons = [...document.querySelectorAll("#season")];
-  seasons.length === 1
+  showsSeasons.length === 1
     ? [
         document.getElementById("previousSeason"),
         document.getElementById("nextSeason"),
