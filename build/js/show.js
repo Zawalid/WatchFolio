@@ -62,6 +62,7 @@ const showLoading = (container) => {
   ></i>
     `;
   } else {
+    container.firstElementChild.scrollIntoView({ behavior: "smooth" });
     container.firstElementChild.innerHTML = `
   <i
   class="fa-solid fa-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-4xl text-thirdAccent"
@@ -306,9 +307,9 @@ const getSeasons = async () => {
       ${seasons
         .map((season) => {
           return `
-      <a href="#${
+      <div data-id="${
         season.id
-      }" class="flex flex-col items-center gap-3"  id="season">
+      }" class="flex flex-col items-center gap-3 cursor-pointer"  id="season">
       <img
         src="${season.image?.medium || "./imgs/placeholder.png"}"
         alt=""
@@ -317,7 +318,7 @@ const getSeasons = async () => {
       <span class="text-lg font-semibold text-textColor">Season ${
         season.number
       }</span>
-    </a>
+    </div>
     `;
         })
         .join("")}
@@ -642,12 +643,10 @@ const getEpisodes = async (id) => {
   const html = episodes
     .map((episode, i, arr) => {
       return `
-      <a
-  href="#${episode.id}
-  " 
-  class="flex items-center gap-3 cursor-pointer group" id="episode" data-info="${
-    episode.name
-  }|${episode.number}|${episode.rating.average}">
+      <div
+  class="flex items-center gap-3 cursor-pointer group " id="episode" data-id="${
+    episode.id
+  }" data-info="${episode.name}|${episode.number}|${episode.rating.average}">
         <h2 class="text-2xl font-bold text-center text-textColor2 flex justify-center items-center w-9 h-9 border group-hover:bg-secondaryAccent group-hover:border-secondaryAccent transition-colors duration-300 border-textColor2 rounded-full ${
           arr.length - 1 !== i &&
           "relative before:absolute before:h-[77px] max-sm:before:h-[65px] before:w-[2px] before:bg-textColor2 before:top-full before:left-1/2 before:-translate-x-1/2"
@@ -682,7 +681,7 @@ const getEpisodes = async (id) => {
             }</span>
           </div>
         </div>
-      </a>
+      </div>
   `;
     })
     .join("");
@@ -691,7 +690,7 @@ const getEpisodes = async (id) => {
 //* Show the season overview when clicking on the season
 document.addEventListener("click", (e) => {
   if (e.target.closest("#season")) {
-    seasonOverview(e.target.closest("#season").hash.slice(1));
+    seasonOverview(e.target.closest("#season").dataset.id);
   }
 });
 //* Close the season overview when clicking on the close button or the container
@@ -1014,6 +1013,10 @@ document.addEventListener("click", (e) => {
       episodeRating: info.split("|")[2],
     };
     episodeOverview(showName, currentSeason, info);
+    localStorage.setItem(
+      "currentEpId",
+      e.target.closest("#episode").dataset.id
+    );
   }
 });
 //* Close the episode overview when clicking on the close button or the container
@@ -1081,14 +1084,12 @@ document.addEventListener("click", (e) => {
     // Add the show to the watching shows
     addShowToWatchingList();
     // Get the id of the episode
-    const episodeId = window.location.hash.slice(1);
+    const episodeId = localStorage.getItem("currentEpId");
     // Store the episodes numbers in an array
     const episodesNumbers = [...document.querySelectorAll("#episode h2")];
     // Get the index of the current episode from the episodes numbers array using the episode id
     const currEpIndex = episodesNumbers.indexOf(
-      episodesNumbers.find(
-        (h2) => h2.parentElement.href.split("#")[1] === episodeId
-      )
+      episodesNumbers.find((h2) => h2.parentElement.dataset.id === episodeId)
     );
     //? Loop trough the episodes and compare their indexes with the current episode index :
     //?----- If the index is less than the current episode index then it means that the episode is already watched
@@ -1099,21 +1100,15 @@ document.addEventListener("click", (e) => {
         // Change the icon to the watched icon (the eye icon)
         h2.innerHTML = episodes.watchedEpisodes.icon;
         // Remove the episode from the watching episodes and add it to the watched episodes
-        episodes.watchingEpisodes.episodes.has(
-          h2.parentElement.hash.split("#")[1]
-        ) &&
+        episodes.watchingEpisodes.episodes.has(h2.parentElement.dataset.id) &&
           episodes.watchingEpisodes.episodes.delete(
-            h2.parentElement.hash.split("#")[1]
+            h2.parentElement.dataset.id
           );
-        episodes.watchedEpisodes.episodes.add(
-          h2.parentElement.hash.split("#")[1]
-        );
+        episodes.watchedEpisodes.episodes.add(h2.parentElement.dataset.id);
       }
       if (
         i === currEpIndex &&
-        !episodes.watchedEpisodes.episodes.has(
-          h2.parentElement.hash.split("#")[1]
-        )
+        !episodes.watchedEpisodes.episodes.has(h2.parentElement.dataset.id)
       ) {
         // Add the episode to the watching episodes
         episodes.watchingEpisodes.episodes.add(episodeId);
@@ -1147,17 +1142,11 @@ const changeEpisodeIcon = () => {
   // Get the episodes numbers
   const episodesNumbers = [...document.querySelectorAll("#episode h2")];
   episodesNumbers.map((h2) => {
-    if (
-      episodes.watchedEpisodes.episodes.has(h2.parentElement.hash.split("#")[1])
-    ) {
+    if (episodes.watchedEpisodes.episodes.has(h2.parentElement.dataset.id)) {
       // Change the icon to the watched icon (the eye icon)
       h2.innerHTML = episodes.watchedEpisodes.icon;
     }
-    if (
-      episodes.watchingEpisodes.episodes.has(
-        h2.parentElement.hash.split("#")[1]
-      )
-    ) {
+    if (episodes.watchingEpisodes.episodes.has(h2.parentElement.dataset.id)) {
       // Change the icon to the watching icon (the play icon)
       h2.innerHTML = episodes.watchingEpisodes.icon;
     }
@@ -1179,14 +1168,14 @@ document.addEventListener("click", (e) => {
   if (e.target.closest("#previousSeason")) {
     // Check if the previous season exists and show it if so else show the last season
     showsSeasons[currentSeason - 2]
-      ? seasonOverview(showsSeasons[currentSeason - 2].hash.slice(1))
-      : seasonOverview(showsSeasons[showsSeasons.length - 1].hash.slice(1));
+      ? seasonOverview(showsSeasons[currentSeason - 2].dataset.id)
+      : seasonOverview(showsSeasons[showsSeasons.length - 1].dataset.id);
   }
   if (e.target.closest("#nextSeason")) {
     // Check if the next season exists and show it if so else show the first season
     showsSeasons[currentSeason]
-      ? seasonOverview(showsSeasons[currentSeason].hash.slice(1))
-      : seasonOverview(showsSeasons[0].hash.slice(1));
+      ? seasonOverview(showsSeasons[currentSeason].dataset.id)
+      : seasonOverview(showsSeasons[0].dataset.id);
   }
 });
 //* Mark the season as watched when clicking on the season watched button
@@ -1201,15 +1190,9 @@ document.addEventListener("click", (e) => {
       // Change the icon to the watched icon (the eye icon)
       h2.innerHTML = episodes.watchedEpisodes.icon;
       // Remove the episode from the watching episodes and add it to the watched episodes
-      episodes.watchingEpisodes.episodes.has(
-        h2.parentElement.hash.split("#")[1]
-      ) &&
-        episodes.watchingEpisodes.episodes.delete(
-          h2.parentElement.hash.split("#")[1]
-        );
-      episodes.watchedEpisodes.episodes.add(
-        h2.parentElement.hash.split("#")[1]
-      );
+      episodes.watchingEpisodes.episodes.has(h2.parentElement.dataset.id) &&
+        episodes.watchingEpisodes.episodes.delete(h2.parentElement.dataset.id);
+      episodes.watchedEpisodes.episodes.add(h2.parentElement.dataset.id);
     });
     // Store the episodes in the local storage
     localStorage.setItem("watchingEpisodes", [
