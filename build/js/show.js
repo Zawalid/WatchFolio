@@ -62,7 +62,6 @@ const showLoading = (container) => {
   ></i>
     `;
   } else {
-    container.firstElementChild.scrollIntoView({ behavior: "smooth" });
     container.firstElementChild.innerHTML = `
   <i
   class="fa-solid fa-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-4xl text-thirdAccent"
@@ -75,8 +74,11 @@ const showLoading = (container) => {
 const displayOverview = (container, html, img = null) => {
   setTimeout(() => {
     container.firstElementChild.innerHTML = html;
-    //* Change the episode icon (here because the episodes are just created))
+    //?  The next actions are here because the elements are just created
+    //* Change the episode icon
     changeEpisodeIcon();
+    //* Hide or show the next and previous season buttons based on the current season
+    hideOrShowSeasonButtons();
 
     if (container === episodeOverviewContainer) {
       document.documentElement.style.setProperty("--episode-bg", `url(${img})`);
@@ -227,7 +229,9 @@ const showOverview = async () => {
       </div>
       <div class="mt-3 flex items-center gap-4 text-lg">
         <span class="font-semibold text-textColor2">Status :</span>
-        <span class="text-textColor">${show.status || "Unknown"}</span>
+        <span class="text-textColor" id="showStatus">${
+          show.status || "Unknown"
+        }</span>
       </div>
       <div class="mt-3 flex items-center gap-4 text-lg">
         <span class="font-semibold text-textColor2">Network :</span>
@@ -585,10 +589,32 @@ const seasonOverview = async (id) => {
       <summary class="mb-5 text-xl font-bold text-thirdAccent">
         Episodes
       </summary>
-      <div class="my-7 flex flex-col md:h-[300px] md:overflow-y-scroll  gap-3 max-md:pb-7">
-      ${await getEpisodes()}
+      <div class="mt-7 flex flex-col md:h-[300px] md:overflow-y-scroll  gap-3">
+      ${await getEpisodes(id)}
       </div>
     </details>
+  </div>
+  <div class="flex justify-evenly items-center  max-md:pb-7"> 
+  <button class="flex justify-center items-center gap-2 rounded-lg bg-secondaryAccent px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80" id="previousSeason">
+  <i class="fa-solid fa-chevron-left"></i>
+  <span>${window.matchMedia("(min-width: 768px)").matches ? "Season" : ""} ${
+    [...document.querySelectorAll("#season")][currentSeason - 2]
+      ? currentSeason - 1
+      : [...document.querySelectorAll("#season")].length
+  }</span>
+  </button>
+  <button class="flex justify-center items-center gap-2 rounded-lg bg-secondaryAccent px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80" id="seasonWatched">
+  <i class="fa-solid fa-check"></i>
+  <span>Season watched</span>
+  </button>
+  <button class="flex justify-center items-center gap-2 rounded-lg bg-secondaryAccent px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80" id="nextSeason">
+  <span>${window.matchMedia("(min-width: 768px)").matches ? "Season" : ""} ${
+    [...document.querySelectorAll("#season")][currentSeason + 1]
+      ? currentSeason + 1
+      : 1
+  }</span>
+  <i class="fa-solid fa-chevron-right"></i>
+  </button>
   </div>
   `;
   displayOverview(seasonOverviewContainer, html);
@@ -609,10 +635,8 @@ const getSeasonTrailer = async (showName, season) => {
   return key;
 };
 //* Get the episodes
-const getEpisodes = async () => {
-  const res = await fetch(
-    `https://api.tvmaze.com/seasons/${window.location.hash.slice(1)}/episodes`
-  );
+const getEpisodes = async (id) => {
+  const res = await fetch(`https://api.tvmaze.com/seasons/${id}/episodes`);
   //   Convert the response to json
   let episodes = await res.json();
   // Remove episodes with number null
@@ -635,7 +659,7 @@ const getEpisodes = async () => {
         }" alt="" class="w-[150px] aspect-[3/2] object-cover rounded-xl max-sm:w-[100px]" />
         <div class="flex flex-1 flex-col gap-2">
           <h3 class="text-lg font-bold text-textColor h-7 overflow-y-auto">
-           ${episode.name}
+           ${episode.name || "Unknown"}
           </h3>
           <div
             class="flex w-fit items-center gap-1 text-sm font-semibold text-textColor2"
@@ -650,11 +674,13 @@ const getEpisodes = async () => {
           <div class="flex items-center gap-2">
             <i class="fa-solid fa-clock text-textColor2"></i>
             <span class="font-semibold text-textColor">${
-              episode.runtime > 60
-                ? `${Math.floor(episode.runtime / 60)}h ${Math.floor(
-                    episode.runtime % 60
-                  )}min `
-                : episode.runtime + "min"
+              episode.runtime
+                ? episode.runtime > 60
+                  ? `${Math.floor(episode.runtime / 60)}h ${Math.floor(
+                      episode.runtime % 60
+                    )}min `
+                  : episode.runtime + "min"
+                : "Unknown"
             }</span>
           </div>
         </div>
@@ -931,7 +957,7 @@ const episodeOverview = async (showName, season, otherInfo) => {
               <div
                 class="flex w-fit items-center gap-5 rounded-lg bg-dark bg-opacity-30 px-3 py-1 text-sm font-semibold text-textColor backdrop-blur-sm"
               >
-                <span>${otherInfo.episodeRating}</span>
+                <span>${otherInfo.episodeRating || "Unrated"}</span>
                 <div class="flex gap-2">
                   ${getStars(otherInfo.episodeRating)
                     .map((star) => star.outerHTML)
@@ -944,11 +970,13 @@ const episodeOverview = async (showName, season, otherInfo) => {
               <div class="flex items-center gap-2 text-textColor">
                 <i class="fa-solid fa-clock"></i>
                 <span class="font-semibold">${
-                  episode.runtime > 60
-                    ? `${Math.floor(episode.runtime / 60)}h ${Math.floor(
-                        episode.runtime % 60
-                      )}min `
-                    : episode.runtime + "min"
+                  episode.runtime
+                    ? episode.runtime > 60
+                      ? `${Math.floor(episode.runtime / 60)}h ${Math.floor(
+                          episode.runtime % 60
+                        )}min `
+                      : episode.runtime + "min"
+                    : "Unknown"
                 }</span>
               </div>
             </div>
@@ -1052,6 +1080,8 @@ const episodes = {
 //* Change the episode icon when clicking on the watch now button and store the watched and watching episodes in the local storage
 document.addEventListener("click", (e) => {
   if (e.target.closest("#watchNow")) {
+    // Add the show to the watching shows
+    addShowToWatchingList();
     // Get the id of the episode
     const episodeId = window.location.hash.slice(1);
     // Store the episodes numbers in an array
@@ -1118,7 +1148,6 @@ retrieveAndStoreEpisodes(episodes.watchingEpisodes, "watchingEpisodes");
 const changeEpisodeIcon = () => {
   // Get the episodes numbers
   const episodesNumbers = [...document.querySelectorAll("#episode h2")];
-  console.log(episodesNumbers);
   episodesNumbers.map((h2) => {
     if (
       episodes.watchedEpisodes.episodes.has(h2.parentElement.hash.split("#")[1])
@@ -1135,4 +1164,96 @@ const changeEpisodeIcon = () => {
       h2.innerHTML = episodes.watchingEpisodes.icon;
     }
   });
+};
+//* Add the show to the watching shows
+const addShowToWatchingList = () => {
+  addToWatchList(
+    window.location.search.split("=")[1],
+    watchLists.watching.shows
+  );
+  document.querySelector(`[data-list=watching]`).innerHTML =
+    watchLists.watching.activeButton;
+};
+
+//* ------------------------------ Season Switching ------------------------------ *//
+//* Switch between the seasons when clicking on the previous or next season button
+document.addEventListener("click", (e) => {
+  // Get the seasons
+  const seasons = [...document.querySelectorAll("#season")];
+  if (e.target.closest("#previousSeason")) {
+    // Check if the previous season exists and show it if so else show the last season
+    seasons[currentSeason - 2]
+      ? seasonOverview(seasons[currentSeason - 2].hash.slice(1))
+      : seasonOverview(seasons[seasons.length - 1].hash.slice(1));
+  }
+  if (e.target.closest("#nextSeason")) {
+    // Check if the next season exists and show it if so else show the first season
+    seasons[currentSeason]
+      ? seasonOverview(seasons[currentSeason].hash.slice(1))
+      : seasonOverview(seasons[0].hash.slice(1));
+  }
+});
+//* Mark the season as watched when clicking on the season watched button
+document.addEventListener("click", (e) => {
+  if (e.target.closest("#seasonWatched")) {
+    // Remove the text content from the button
+    document.querySelector("#seasonWatched span").remove();
+    // Get the episodes numbers
+    const episodesNumbers = [...document.querySelectorAll("#episode h2")];
+    // Loop through the episodes and mark them as watched
+    episodesNumbers.map((h2) => {
+      // Change the icon to the watched icon (the eye icon)
+      h2.innerHTML = episodes.watchedEpisodes.icon;
+      // Remove the episode from the watching episodes and add it to the watched episodes
+      episodes.watchingEpisodes.episodes.has(
+        h2.parentElement.hash.split("#")[1]
+      ) &&
+        episodes.watchingEpisodes.episodes.delete(
+          h2.parentElement.hash.split("#")[1]
+        );
+      episodes.watchedEpisodes.episodes.add(
+        h2.parentElement.hash.split("#")[1]
+      );
+    });
+    // Store the episodes in the local storage
+    localStorage.setItem("watchingEpisodes", [
+      ...episodes.watchingEpisodes.episodes,
+    ]);
+    localStorage.setItem("watchedEpisodes", [
+      ...episodes.watchedEpisodes.episodes,
+    ]);
+    // Add the show to the watched shows if the season is the last season or if it's the only season And that the show status is "Ended" else add it to the watching shows
+    if (
+      ([...document.querySelectorAll("#season")].length === 1 ||
+        currentSeason === [...document.querySelectorAll("#season")].length) &&
+      document.getElementById("showStatus").innerText === "Ended"
+    ) {
+      addToWatchList(
+        window.location.search.split("=")[1],
+        watchLists.watched.shows
+      );
+      document.querySelector(`[data-list=watched]`).innerHTML =
+        watchLists.watched.activeButton;
+    } else {
+      addShowToWatchingList();
+    }
+  }
+});
+//* Hide or show the season buttons (previous and next)
+const hideOrShowSeasonButtons = () => {
+  const seasons = [...document.querySelectorAll("#season")];
+  seasons.length === 1
+    ? [
+        document.getElementById("previousSeason"),
+        document.getElementById("nextSeason"),
+      ].forEach((btn) => btn.classList.replace("flex", "hidden"))
+    : [
+        document.getElementById("previousSeason"),
+        document.getElementById("nextSeason"),
+      ].forEach((btn) => btn.classList.replace("hidden", "flex"));
+
+  // Remove the text content from the button if all the episodes are watched
+  [...document.querySelectorAll("#episode h2")].every(
+    (h2) => h2.innerHTML === episodes.watchedEpisodes.icon
+  ) && document.querySelector("#seasonWatched span").remove();
 };

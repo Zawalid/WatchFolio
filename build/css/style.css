@@ -990,6 +990,10 @@ video {
   justify-content: space-between;
 }
 
+.justify-evenly {
+  justify-content: space-evenly;
+}
+
 .gap-1 {
   gap: 0.25rem;
 }
@@ -1584,11 +1588,11 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: white;
+  background-color: black;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: black;
+  background-color: white;
 }
 
 #exploreTabs::-webkit-scrollbar,
