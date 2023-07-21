@@ -1233,5 +1233,5 @@ const hideOrShowSeasonButtons = () => {
   // Remove the text content from the button if all the episodes are watched
   [...document.querySelectorAll("#episode h2")].every(
     (h2) => h2.innerHTML === episodes.watchedEpisodes.icon
-  ) && document.querySelector("#seasonWatched span").remove();
+  ) && document.querySelector("#seasonWatched span")?.remove();
 };
