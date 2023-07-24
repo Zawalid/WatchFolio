@@ -1,36 +1,39 @@
 "use strict";
 
-const CACHE_NAME = "shell-cache-v2";
+const staticCache = "static-cache-v1";
+const dynamicCache = "dynamic-cache-v1";
 
 const urlsToCache = [
   "/",
   "index.html",
   "offline.html",
   "css/style.css",
-  "css/all.min.css",
   "js/watchList.js",
   "js/main.js",
   "js/download.js",
   "imgs/offline.svg",
   "imgs/bg.jpg",
   "imgs/undraw_no_data_re_kwbl.svg",
-  "imgs/no result search icon.png",
+  "imgs/no_result.png",
   "imgs/json.png",
-  "webfonts/fa-solid-900.ttf",
-  "webfonts/fa-solid-900.woff2",
+  "imgs/wrong.svg",
+  "imgs/placeHolder.png",
+  "imgs/icons/favicon.ico",
+  "imgs/icons/favicon-16x16.png",
+  "imgs/icons/favicon-32x32.png",
+  "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
   "https://fonts.googleapis.com/css2?family=Bona+Nova:wght@700&display=swap",
+  "manifest.json",
+
 ];
 //* Install Service Worker
 self.addEventListener("install", (event) => {
   console.log("Service Worker: Installed");
   event.waitUntil(
-    caches
-      .open(CACHE_NAME)
-      .then((cache) => {
-        console.log("Service Worker: Caching Files");
-        cache.addAll(urlsToCache);
-      })
-      .catch((err) => console.log(err.message))
+    caches.open(staticCache).then((cache) => {
+      console.log("Service Worker: Caching Files");
+      cache.addAll(urlsToCache);
+    })
   );
 });
 
@@ -41,7 +44,7 @@ self.addEventListener("activate", (event) => {
     caches.keys().then((keys) => {
       return Promise.all(
         keys
-          .filter((key) => key !== CACHE_NAME)
+          .filter((key) => key !== staticCache && key !== dynamicCache)
           .map((key) => caches.delete(key))
       );
     })
@@ -57,13 +60,20 @@ self.addEventListener("fetch", (event) => {
         cacheRes ||
         fetch(event.request)
           .then((fetchRes) => {
-            return fetchRes;
+            return caches.open(dynamicCache).then((cache) => {
+              cache.put(event.request.url, fetchRes.clone());
+              return fetchRes;
+            });
           })
           .catch((err) => {
             console.log(err, event.request.url);
             if (event.request.url.includes(".html")) {
-              console.log(777);
               return caches.match("offline.html");
+            } else if (
+              event.request.url.includes(".png") ||
+              event.request.url.includes(".jpg")
+            ) {
+              return caches.match("imgs/placeHolder.png");
             }
           })
       );

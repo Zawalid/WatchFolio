@@ -5,8 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WatchFolio</title>
-    <!-- <link rel="manifest" href="manifest.json" /> -->
-    <link rel="stylesheet" href="./css/all.min.css" />
+    <link rel="apple-touch-icon" sizes="76x76" href="imgs/icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="imgs/icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="imgs/icons/favicon-16x16.png" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#F44336" />
+    <meta name="msapplication-TileColor" content="#F44336" />
+    <meta name="theme-color" content="#130F40" />
+    <link rel="manifest" href="manifest.json" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <link rel="stylesheet" href="./css/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -101,10 +110,11 @@
             <i class="fa-solid fa-clipboard-list cursor-pointer text-2xl"></i>
             <span class="font-semibold">Watchlist</span>
           </li>
-          <li
-            class="marker:text-transparent"
-          >
-            <a href="index.html#explore" class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent">
+          <li class="marker:text-transparent">
+            <a
+              href="index.html#explore"
+              class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+            >
               <i class="fa-solid fa-globe cursor-pointer text-2xl"></i>
               <span class="font-semibold">Explore</span>
             </a>
@@ -333,7 +343,7 @@
               checked
             />
             <div
-              class="flex w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+              class="flex h-full w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
             >
               <i class="fa-solid fa-file-pdf mb-2 text-4xl"></i>
               <span class="text-sm">PDF</span>
@@ -349,7 +359,7 @@
               value="csv"
             />
             <div
-              class="flex w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+              class="flex h-full w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
             >
               <i class="fa-solid fa-file-csv mb-2 text-4xl"></i>
               <span class="text-sm">CSV</span>
@@ -365,7 +375,7 @@
               value="text"
             />
             <div
-              class="flex w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+              class="flex h-full w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
             >
               <i class="fa-solid fa-file-lines mb-2 text-4xl"></i>
               <span class="text-sm">Text</span>
@@ -381,7 +391,7 @@
               value="json"
             />
             <div
-              class="flex w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+              class="flex h-full w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
             >
               <img src="imgs/json.png" alt="" class="mb-2 w-10" />
               <span class="text-sm">JSON</span>

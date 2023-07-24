@@ -353,7 +353,7 @@ const searchWatchList = () => {
     results.length > 0
       ? results.map((res) => res.parentElement.outerHTML).join("")
       : `<div class="flex flex-col items-center justify-center col-span-5 ml-[50%] mt-[50%] -translate-x-1/2 -translate-y-1/2">
-      <img src="./imgs/no result search icon.png" alt="" class="w-52" />
+      <img src="./imgs/no_result.png" alt="" class="w-52" />
       <h2 class="text-xl font-bold text-textColor2">No Shows Found</h2>
       </div>
       `;

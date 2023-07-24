@@ -46,6 +46,15 @@ const searchInput = document.getElementById("search_input");
 const searchBtn = document.getElementById("search_button");
 
 //* Display the results of the search
+const somethingWrong = `
+<div class="flex flex-col items-center justify-center col-span-5">
+<img src="./imgs/wrong.svg" alt="" class="h-64 w-64" />
+<h2 class="mb-3 text-xl font-bold text-thirdAccent">Something went wrong</h2>
+<h3 class="font-semibold text-textColor2 text-center">
+  Please try again later
+</h3>
+</div>
+`;
 const displayResults = async (query) => {
   try {
     // Show the loading spinner
@@ -62,7 +71,7 @@ const displayResults = async (query) => {
     // If there are no results
     const noResults = `
   <div class="flex flex-col items-center justify-center col-span-5">
-  <img src="./imgs/no result search icon.png" alt="" class="h-64 w-64" />
+  <img src="./imgs/no_result.png" alt="" class="h-64 w-44" />
   <h2 class="mb-3 text-xl font-bold text-thirdAccent">No Results Found</h2>
   <h3 class="font-semibold text-textColor2 text-center">
     We couldn't find any show matching your search
@@ -84,15 +93,7 @@ const displayResults = async (query) => {
       searchResultsContainer.innerHTML += html;
     }
   } catch {
-    searchResultsContainer.innerHTML = `
-  <div class="flex flex-col items-center justify-center col-span-5">
-  <img src="./imgs/json.png" alt="" class="h-64 w-64" />
-  <h2 class="mb-3 text-xl font-bold text-thirdAccent">Something went wrong</h2>
-  <h3 class="font-semibold text-textColor2 text-center">
-    Please try again later
-  </h3>
-</div>
-  `;
+    searchResultsContainer.innerHTML = somethingWrong;
   }
 };
 //* Search for the show the user entered
@@ -135,32 +136,36 @@ const pagination = document.querySelector("#explore #pagination");
 
 //* Get the explore shows (trending, popular, top rated)
 const explore = async (url, page = null) => {
-  // Show the loading spinner
-  exploreContainer.innerHTML = `
+  try {
+    // Show the loading spinner
+    exploreContainer.innerHTML = `
     <i
     class="fa-solid fa-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-4xl text-thirdAccent"
   ></i>
     `;
-  // Get the shows according to the url
-  const res = await fetch(
-    `https://api.themoviedb.org/3/${url}${page ? `?page=${page}` : ""}`,
-    options
-  );
-  const tvShows = await res.json();
-  // Get the info of each show using the TVmaze API
-  const html = await Promise.all(
-    tvShows.results.map(async (tvShow) => {
-      try {
-        const res = fetch(
-          `https://api.tvmaze.com/singlesearch/shows?q=${tvShow.name}`
-        );
-        const show = await (await res).json();
-        if (!show?.name || show.genres.includes("Anime")) return;
-        return renderShow(show);
-      } catch {}
-    })
-  );
-  exploreContainer.innerHTML = html.join("");
+    // Get the shows according to the url
+    const res = await fetch(
+      `https://api.themoviedb.org/3/${url}${page ? `?page=${page}` : ""}`,
+      options
+    );
+    const tvShows = await res.json();
+    // Get the info of each show using the TVmaze API
+    const html = await Promise.all(
+      tvShows.results.map(async (tvShow) => {
+        try {
+          const res = fetch(
+            `https://api.tvmaze.com/singlesearch/shows?q=${tvShow.name}`
+          );
+          const show = await (await res).json();
+          if (!show?.name || show.genres.includes("Anime")) return;
+          return renderShow(show);
+        } catch {}
+      })
+    );
+    exploreContainer.innerHTML = html.join("");
+  } catch {
+    exploreContainer.innerHTML = somethingWrong;
+  }
 };
 
 //* Get the trending shows by default
