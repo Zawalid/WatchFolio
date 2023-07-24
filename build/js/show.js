@@ -27,15 +27,6 @@ document.querySelectorAll("#overview")[1].firstElementChild.className =
   "relative flex min-h-[500px] w-4/5 cursor-auto flex-col gap-10 rounded-xl bg-gradient  bg-cover bg-center shadow-shadow1 max-md:left-0 max-md:h-full max-md:min-h-screen max-md:w-full max-md:translate-x-0 max-md:overflow-y-auto max-sm:rounded-none overflow-hidden";
 document.querySelectorAll("#overview")[1].id = "episode_overview";
 
-// todo : add the lottie loading animation here and the container in the html when you finish (I hate live server)
-//* ------------------------------ Loading Animation ------------------------------ *//
-// const animation = lottie.loadAnimation({
-//   container: document.getElementById("animation-container"),
-//   renderer: "svg",
-//   path: "js/loading.json",
-//   autoplay: true,
-//   loop: true,
-// });
 
 //* ------------------------------ Helpers Functions ------------------------------ *//
 //* Get the stars number based on the rating and create the stars
@@ -68,7 +59,6 @@ const showLoading = (container) => {
   class="fa-solid fa-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-4xl text-thirdAccent"
 ></i>
   `;
-    // animation.setSpeed(0.7);
   }
 };
 //* Display the overview container
