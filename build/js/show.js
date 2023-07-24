@@ -1225,3 +1225,16 @@ const hideOrShowSeasonButtons = () => {
     (h2) => h2.innerHTML === episodes.watchedEpisodes.icon
   ) && document.querySelector("#seasonWatched span")?.remove();
 };
+
+//* ------------------------------ Service worker ------------------------------ *//
+// Register the service worker
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("./service-worker.js")
+    .then((registration) => {
+      console.log("Service Worker Registered", registration);
+    })
+    .catch((err) => {
+      console.log("Service Worker Failed to Register", err);
+    });
+}

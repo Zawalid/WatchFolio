@@ -47,19 +47,20 @@ const searchBtn = document.getElementById("search_button");
 
 //* Display the results of the search
 const displayResults = async (query) => {
-  // Show the loading spinner
-  searchResultsContainer.innerHTML = `
+  try {
+    // Show the loading spinner
+    searchResultsContainer.innerHTML = `
     <i
     class="fa-solid fa-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-4xl text-thirdAccent"
   ></i>
     `;
-  // Fetch the data
-  const res = await fetch(` https://api.tvmaze.com/search/shows?q=${query}`);
-  //   Convert the response to json
-  const data = await res.json();
+    // Fetch the data
+    const res = await fetch(` https://api.tvmaze.com/search/shows?q=${query}`);
+    //   Convert the response to json
+    const data = await res.json();
 
-  // If there are no results
-  const noResults = `
+    // If there are no results
+    const noResults = `
   <div class="flex flex-col items-center justify-center col-span-5">
   <img src="./imgs/no result search icon.png" alt="" class="h-64 w-64" />
   <h2 class="mb-3 text-xl font-bold text-thirdAccent">No Results Found</h2>
@@ -68,19 +69,30 @@ const displayResults = async (query) => {
   </h3>
 </div>
   `;
-  if (data.length === 0) {
-    searchResultsContainer.innerHTML = noResults;
-    return;
-  }
-  // Clear the container
-  searchResultsContainer.innerHTML = "";
-  // Loop through the data array and create the each show element
-  for (const obj of data) {
-    // Get the show object from the data array
-    const { show } = obj;
-    // Create the elements
-    const html = renderShow(show);
-    searchResultsContainer.innerHTML += html;
+    if (data.length === 0) {
+      searchResultsContainer.innerHTML = noResults;
+      return;
+    }
+    // Clear the container
+    searchResultsContainer.innerHTML = "";
+    // Loop through the data array and create the each show element
+    for (const obj of data) {
+      // Get the show object from the data array
+      const { show } = obj;
+      // Create the elements
+      const html = renderShow(show);
+      searchResultsContainer.innerHTML += html;
+    }
+  } catch {
+    searchResultsContainer.innerHTML = `
+  <div class="flex flex-col items-center justify-center col-span-5">
+  <img src="./imgs/json.png" alt="" class="h-64 w-64" />
+  <h2 class="mb-3 text-xl font-bold text-thirdAccent">Something went wrong</h2>
+  <h3 class="font-semibold text-textColor2 text-center">
+    Please try again later
+  </h3>
+</div>
+  `;
   }
 };
 //* Search for the show the user entered
@@ -308,3 +320,16 @@ pagination.addEventListener("click", async function (e) {
     explore(url, currentPage);
   }
 });
+
+//* ------------------------------ Service worker ------------------------------ *//
+// Register the service worker
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("./service-worker.js")
+    .then((registration) => {
+      console.log("Service Worker Registered", registration);
+    })
+    .catch((err) => {
+      console.log("Service Worker Failed to Register", err);
+    });
+}

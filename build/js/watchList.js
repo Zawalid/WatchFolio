@@ -133,7 +133,7 @@ const displayShowsFromWatchList = async (list) => {
     <div class="flex items-center justify-between" >
   <a href="show.html?id=${show.id}" class="flex items-center gap-3 " >
   <img src="${
-    show.image.medium || "./imgs/placeholder.png"
+    show.image?.medium || "./imgs/placeholder.png"
   }" alt="" class="w-[100px] rounded-lg" >
   <h3 class="text-textColor font-bold text-lg">${show.name} </h3>
   </a>
