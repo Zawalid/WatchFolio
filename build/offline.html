@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>You are offline!</title>
+    <link rel="stylesheet" href="./css/all.min.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bona+Nova:wght@700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="h-screen bg-gradient">
+    <div class="container flex h-full flex-col">
+      <header class="flex items-center justify-between py-5">
+        <h2 class="font-logo text-4xl font-extrabold max-sm:text-3xl">
+          <span class="text-primaryAccent">Watch</span
+          ><span class="text-textColor">Folio</span>
+        </h2>
+        <ul class="flex items-center gap-7 max-sm:hidden">
+          <li>
+            <a href="index.html">
+              <i
+                class="fa-solid fa-house cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+              ></i>
+            </a>
+          </li>
+          <li id="watchList_toggler">
+            <i
+              class="fa-solid fa-clipboard-list cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+            ></i>
+          </li>
+          <li>
+            <a href="index.html#explore">
+              <i
+                class="fa-solid fa-globe cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+              ></i>
+            </a>
+          </li>
+        </ul>
+      </header>
+      <div class="flex flex-1 flex-col items-center justify-center gap-5">
+        <img src="imgs/offline.svg" alt="" class="h-[300px] w-[300px]" />
+        <h1 class="text-3xl font-bold text-textColor">You are offline!</h1>
+        <p class="text-center font-semibold text-textColor2">
+          Please check your internet connection.
+        </p>
+      </div>
+    </div>
+    <div
+      class="fixed bottom-0 left-0 z-[9999] flex w-full flex-col-reverse items-center justify-between md:hidden"
+      id="nav"
+    >
+      <ul
+        class="flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-2 backdrop-blur-[6px]"
+      >
+        <li class="marker:text-transparent">
+          <a
+            href="index.html"
+            class="active flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+          >
+            <i class="fa-solid fa-house cursor-pointer text-2xl"></i>
+            <span class="font-semibold">Home</span>
+          </a>
+        </li>
+        <li
+          class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
+          id="watchList_toggler"
+        >
+          <i class="fa-solid fa-clipboard-list cursor-pointer text-2xl"></i>
+          <span class="font-semibold">Watchlist</span>
+        </li>
+        <li class="marker:text-transparent">
+          <a
+            href="index.html#explore"
+            class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+          >
+            <i class="fa-solid fa-globe cursor-pointer text-2xl"></i>
+            <span class="font-semibold">Explore</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>
