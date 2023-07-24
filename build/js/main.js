@@ -308,3 +308,7 @@ pagination.addEventListener("click", async function (e) {
     explore(url, currentPage);
   }
 });
+
+window.addEventListener("resize", () => {
+  document.querySelector("h1").classList.toggle("hidden");
+});
