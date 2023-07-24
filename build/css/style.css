@@ -1578,7 +1578,7 @@ li.active,
 }
 
 #nav.toggle {
-  bottom: -5rem !important;
+  bottom: 0px !important;
 }
 
 :root {
