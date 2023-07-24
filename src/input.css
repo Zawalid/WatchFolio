@@ -30,9 +30,6 @@
   #search_list.show {
     @apply bottom-full z-10 opacity-100;
   }
-  #nav.toggle {
-    @apply bottom-0 !important;
-  }
 }
 
 html {

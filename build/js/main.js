@@ -308,7 +308,3 @@ pagination.addEventListener("click", async function (e) {
     explore(url, currentPage);
   }
 });
-
-window.addEventListener("resize", () => {
-  document.getElementById("nav").classList.toggle("toggle");
-});

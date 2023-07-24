@@ -1235,7 +1235,3 @@ const hideOrShowSeasonButtons = () => {
     (h2) => h2.innerHTML === episodes.watchedEpisodes.icon
   ) && document.querySelector("#seasonWatched span")?.remove();
 };
-
-window.addEventListener("resize", () => {
-  document.getElementById("nav").classList.toggle("toggle");
-});
