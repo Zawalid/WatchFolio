@@ -310,5 +310,5 @@ pagination.addEventListener("click", async function (e) {
 });
 
 window.addEventListener("resize", () => {
-  document.querySelector("h1").classList.toggle("hidden");
+  document.getElementById("nav").classList.toggle("toggle");
 });

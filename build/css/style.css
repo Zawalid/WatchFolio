@@ -570,6 +570,10 @@ video {
   inset: 0px;
 }
 
+.-bottom-20 {
+  bottom: -5rem;
+}
+
 .bottom-0 {
   bottom: 0px;
 }
@@ -705,6 +709,10 @@ video {
 
 .mt-6 {
   margin-top: 1.5rem;
+}
+
+.mt-7 {
+  margin-top: 1.75rem;
 }
 
 .mt-8 {
@@ -932,6 +940,10 @@ video {
 
 .cursor-zoom-out {
   cursor: zoom-out;
+}
+
+.resize {
+  resize: both;
 }
 
 .grid-cols-\[repeat\(2\2c 105px\)_122px\] {
@@ -1563,6 +1575,10 @@ li.active,
   bottom: 100%;
   z-index: 10;
   opacity: 1;
+}
+
+#nav.toggle {
+  bottom: -5rem !important;
 }
 
 :root {
