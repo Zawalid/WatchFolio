@@ -79,7 +79,7 @@ export const watchLists = {
   },
 };
 //* Add to the chosen list
-const addToWatchList = (id, list) => {
+export const addToWatchList = (id, list) => {
   // Remove the id from the other lists if it exists
   [
     watchLists.watched.shows,
@@ -100,7 +100,7 @@ const addToWatchList = (id, list) => {
   );
 };
 //* Remove from the chosen list
-const removeFromWatchList = (id, list) => {
+export const removeFromWatchList = (id, list) => {
   // Delete the id to from chosen list
   list.shows.delete(id);
   // Update the list in the local storage

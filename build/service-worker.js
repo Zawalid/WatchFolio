@@ -12,8 +12,9 @@ const urlsToCache = [
   "index.html",
   "offline.html",
   "css/style.css",
-  "js/watchList.js",
   "js/main.js",
+  "js/show.js",
+  "js/watchList.js",
   "js/download.js",
   "imgs/offline.svg",
   "imgs/bg.jpg",
@@ -59,7 +60,7 @@ self.addEventListener("activate", (event) => {
 
 //* Fetch Service Worker
 self.addEventListener("fetch", (event) => {
-  console.log("Service Worker: Fetching");
+  console.log(event.request.url);
   // Return the cached response if it's not cached then try to fetch it and cache it to the dynamic cache (online)
   // Return the offline.html page if the the requested resource is a page (show.html/ / ..) (offline)
   // Return the placeholder.png if the the the requested resource is an image (offline)

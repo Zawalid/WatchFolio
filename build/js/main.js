@@ -3,8 +3,6 @@
 //* ------------------ Imports ------------------ *//
 // watchLists
 import "./watchList.js";
-// Download
-import "./download.js";
 // TMDB API
 import { options } from "./TMDB.js";
 
@@ -337,3 +335,4 @@ if ("serviceWorker" in navigator) {
       console.log("Service Worker Failed to Register", err);
     });
 }
+

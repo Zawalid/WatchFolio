@@ -2,9 +2,12 @@
 
 //* ------------------ Imports ------------------ *//
 // watchLists
-import "./watchList.js";
-// Download
-import "./download.js";
+import {
+  watchLists,
+  addToWatchList,
+  removeFromWatchList,
+} from "./watchList.js";
+
 // TMDB API
 import { options, genders, baseUrl } from "./TMDB.js";
 
@@ -314,12 +317,12 @@ const showOverview = async () => {
     // Get the seasons
     showsSeasons = [...document.querySelectorAll("#season")];
   } catch (err) {
-    console.log(err);
-    // check if offline or online
-    if (!navigator.onLine) console.log("object");
-
+    console.log(navigator.onLine);
     showOverviewContainer.innerHTML = noResults();
-    // window.location.href = "./offline.html";
+    // Show the offline page when the user is offline instead of the error message
+    window.addEventListener("offline", () => {
+      window.location.href = "./offline.html";
+    });
     return;
   }
 };
@@ -457,7 +460,7 @@ const noResults = () => {
     class="absolute left-1/2 top-1/2 w-2/3 -translate-x-1/2 -translate-y-1/2 px-4 max-sm:w-full"
   >
     <img
-      src="imgs/no result search icon.png"
+      src="imgs/no_result.png"
       alt=""
       class="mx-auto w-[400px]"
     />
