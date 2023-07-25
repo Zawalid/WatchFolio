@@ -1,11 +1,19 @@
 "use strict";
 
+//* ------------------ Imports ------------------ *//
+// watchLists
+import "./watchList.js";
+// Download
+import "./download.js";
+// TMDB API
+import { options } from "./TMDB.js";
+
 //* Initialize the watchLists if they don't exist
 ["watched", "watching", "willWatch"].forEach((list) => {
   !window.localStorage.getItem(list) && window.localStorage.setItem(list, "");
 });
 
-//* Render the show html
+//* Render the show's html
 const renderShow = (show) => {
   return `
   <a href="show.html?id=${show?.id}">
@@ -45,9 +53,8 @@ const searchResultsContainer = document.getElementById("search_results");
 const searchInput = document.getElementById("search_input");
 const searchBtn = document.getElementById("search_button");
 
-//* Display the results of the search
 const somethingWrong = `
-<div class="flex flex-col items-center justify-center col-span-5">
+<div class="flex flex-col items-center justify-center col-span-5 h-full">
 <img src="./imgs/wrong.svg" alt="" class="h-64 w-64" />
 <h2 class="mb-3 text-xl font-bold text-thirdAccent">Something went wrong</h2>
 <h3 class="font-semibold text-textColor2 text-center">
@@ -55,6 +62,7 @@ const somethingWrong = `
 </h3>
 </div>
 `;
+//* Display the results of the search
 const displayResults = async (query) => {
   try {
     // Show the loading spinner
@@ -122,14 +130,6 @@ const nothingToSearch = () => {
 });
 
 //* ------------------------------ Explore ------------------------------ *//
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3OWUxNjZjMzNhZjE4ZmVlNTgzNWJiMDBiOGE5ZTA1NCIsInN1YiI6IjY0YTJiOTcxMTEzODZjMDBhZGM3OTQxMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.yxORg4upeOsiqCve7e9CDV4i-_Q2LfIpnqKKax3Fnw4",
-  },
-};
 const exploreContainer = document.querySelector("#explore #shows");
 const tabsButtons = document.querySelectorAll("#exploreTabs button");
 const pagination = document.querySelector("#explore #pagination");
@@ -326,8 +326,7 @@ pagination.addEventListener("click", async function (e) {
   }
 });
 
-//* ------------------------------ Service worker ------------------------------ *//
-// Register the service worker
+//* ------------------------------ Register the service worker ------------------------------ *//
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("./service-worker.js")

@@ -1,8 +1,12 @@
 "use strict";
 
+//*Static cache
 const staticCache = "static-cache-v1";
+
+//* Dynamic cache
 const dynamicCache = "dynamic-cache-v1";
 
+//* Assets to cache
 const urlsToCache = [
   "/",
   "index.html",
@@ -24,11 +28,12 @@ const urlsToCache = [
   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
   "https://fonts.googleapis.com/css2?family=Bona+Nova:wght@700&display=swap",
   "manifest.json",
-
 ];
+
 //* Install Service Worker
 self.addEventListener("install", (event) => {
   console.log("Service Worker: Installed");
+  // Wait until the assets are cached
   event.waitUntil(
     caches.open(staticCache).then((cache) => {
       console.log("Service Worker: Caching Files");
@@ -40,6 +45,7 @@ self.addEventListener("install", (event) => {
 //* Activate Service Worker
 self.addEventListener("activate", (event) => {
   console.log("Service Worker: Activated");
+  // Wait until the old caches are deleted
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
@@ -54,12 +60,16 @@ self.addEventListener("activate", (event) => {
 //* Fetch Service Worker
 self.addEventListener("fetch", (event) => {
   console.log("Service Worker: Fetching");
+  // Return the cached response if it's not cached then try to fetch it and cache it to the dynamic cache (online)
+  // Return the offline.html page if the the requested resource is a page (show.html/ / ..) (offline)
+  // Return the placeholder.png if the the the requested resource is an image (offline)
   event.respondWith(
     caches.match(event.request).then((cacheRes) => {
       return (
         cacheRes ||
         fetch(event.request)
           .then((fetchRes) => {
+            // We use the .clone() so that we can return the fetchRes (you can use it only once)
             return caches.open(dynamicCache).then((cache) => {
               cache.put(event.request.url, fetchRes.clone());
               return fetchRes;

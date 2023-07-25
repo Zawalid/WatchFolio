@@ -1,5 +1,10 @@
 "use strict";
-// TODO: Make this script a module
+
+//* ------------------------------ Imports ------------------------------ *//
+import { watchLists } from "./watchList.js";
+
+export const downloadWatchListContainer =
+  document.getElementById("downloadList");
 
 // Retrieve shows
 const retrieveShows = async () => {
@@ -8,7 +13,7 @@ const retrieveShows = async () => {
   const willWatchShows = await getShows([...watchLists.willWatch.shows]);
   return { watchedShows, watchingShows, willWatchShows };
 };
-// Get the shows from the watchList
+//* Get the shows from the watchList
 const getShows = async (shows) => {
   const showsData = [];
   if (shows[0] === "") return showsData;
@@ -19,6 +24,7 @@ const getShows = async (shows) => {
   }
   return showsData;
 };
+
 //* ------------------------------ Download as PDF ------------------------------ *//
 const downloadAsPDF = async (toDownload) => {
   // Generate the PDF using jsPDF
@@ -334,7 +340,7 @@ const downloadAsTextOrCSV = async (format, toDownload) => {
 };
 
 //* ------------------------------ Download watchList ------------------------------ *//
-const downloadList = (format, toDownload) => {
+export const downloadList = (format, toDownload) => {
   switch (format) {
     case "pdf":
       downloadAsPDF(toDownload);

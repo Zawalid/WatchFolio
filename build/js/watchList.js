@@ -1,6 +1,9 @@
 "use strict";
-// TODO: Make this script a module
-//* ------------------------------ WatchLists ------------------------------ *//
+
+//* ------------------------------ Imports ------------------------------ *//
+import { downloadList, downloadWatchListContainer } from "./download.js";
+
+//* ------------------------------ Main logic ------------------------------ *//
 const watchListContainer = document.getElementById("watchList");
 const listsButtons = document.querySelectorAll("#listsButtons button");
 const actions = document.getElementById("actions");
@@ -55,7 +58,7 @@ document.addEventListener("click", (e) => {
   }
 });
 //* WatchLists (watched, watching, willWatch)
-const watchLists = {
+export const watchLists = {
   watched: {
     name: "watched",
     defaultButton: "I Watched",
@@ -209,7 +212,6 @@ retrieveAndStoreLists(watchLists.willWatch, "willWatch");
 //* ------------------------------ Actions ------------------------------ *//
 
 //* ------------------------------ Download ------------------------------ *//
-const downloadWatchListContainer = document.getElementById("downloadList");
 //* Show the download watchList container
 actions.querySelector("#download").addEventListener("click", (e) => {
   (window.matchMedia("(min-width: 768px)").matches &&

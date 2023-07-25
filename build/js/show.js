@@ -1,10 +1,12 @@
 "use strict";
 
-// TODO : add a initialize function to initialize the lists and the overview containers
-//* Initialize the watchLists if they don't exist
-["watched", "watching", "willWatch"].forEach((list) => {
-  !window.localStorage.getItem(list) && window.localStorage.setItem(list, "");
-});
+//* ------------------ Imports ------------------ *//
+// watchLists
+import "./watchList.js";
+// Download
+import "./download.js";
+// TMDB API
+import { options, genders, baseUrl } from "./TMDB.js";
 
 //* ------------------ Creating overview containers (Avoid repetition) ------------------ *//
 const overviewContainer = `
@@ -20,13 +22,14 @@ id="overview"
 for (let i = 0; i < 3; i++) {
   document.body.insertAdjacentHTML("beforeend", overviewContainer);
 }
-
+// season overview
 document.querySelectorAll("#overview")[1].id = "season_overview";
+// person overview
 document.querySelectorAll("#overview")[1].id = "person_overview";
+// episode overview
 document.querySelectorAll("#overview")[1].firstElementChild.className =
   "relative flex min-h-[500px] w-4/5 cursor-auto flex-col gap-10 rounded-xl bg-gradient  bg-cover bg-center shadow-shadow1 max-md:left-0 max-md:h-full max-md:min-h-screen max-md:w-full max-md:translate-x-0 max-md:overflow-y-auto max-sm:rounded-none overflow-hidden";
 document.querySelectorAll("#overview")[1].id = "episode_overview";
-
 
 //* ------------------------------ Helpers Functions ------------------------------ *//
 //* Get the stars number based on the rating and create the stars
@@ -96,6 +99,50 @@ const closeOverview = (container) => {
       }
     }
   });
+};
+//* Get the show id using the TMDB API
+const getShowId = async (showName) => {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/search/tv?query=${showName}`,
+    options
+  );
+  const data = await res.json();
+  return data.results[0].id;
+};
+//* Get the show info using the first API
+const getShowsInfo = async (name) => {
+  try {
+    const res = await fetch(
+      `https://api.tvmaze.com/singlesearch/shows?q=${name}`
+    );
+    const show = await res.json();
+    const info = `
+    <div
+    class="blur-[60px] top-0 absolute -z-10 flex h-full w-full flex-col gap-3 bg-dark p-3 transition-all duration-[.8s] group-hover:z-10 group-hover:bg-dark group-hover:bg-opacity-50 group-hover:blur-0"
+  >
+          <div
+            class="w-fit rounded-lg bg-thirdAccent px-3 text-sm font-semibold text-textColor"
+          >
+            ${show.genres[0] || "No genre"}
+          </div>
+          <div
+            class="flex w-fit items-center gap-1 rounded-lg bg-secondaryAccent px-3 text-sm font-semibold text-textColor"
+          >
+            ${
+              show.rating.average || "Not rated"
+            } <i class="fa-solid fa-star text-primaryAccent"></i>
+          </div>
+          <h3 class="mt-auto font-logo text-lg font-bold text-textColor">
+          ${show.name}
+          </h3>
+          </div>
+       
+  `;
+    return {
+      info,
+      id: show.id,
+    };
+  } catch (err) {}
 };
 
 //* ------------------------------ The show overview ------------------------------ *//
@@ -268,7 +315,11 @@ const showOverview = async () => {
     showsSeasons = [...document.querySelectorAll("#season")];
   } catch (err) {
     console.log(err);
+    // check if offline or online
+    if (!navigator.onLine) console.log("object");
+
     showOverviewContainer.innerHTML = noResults();
+    // window.location.href = "./offline.html";
     return;
   }
 };
@@ -686,67 +737,6 @@ document.addEventListener("click", (e) => {
 //* Close the season overview when clicking on the close button or the container
 closeOverview(seasonOverviewContainer);
 
-//* ------------------------------ The TMDB API ------------------------------ *//
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3OWUxNjZjMzNhZjE4ZmVlNTgzNWJiMDBiOGE5ZTA1NCIsInN1YiI6IjY0YTJiOTcxMTEzODZjMDBhZGM3OTQxMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.yxORg4upeOsiqCve7e9CDV4i-_Q2LfIpnqKKax3Fnw4",
-  },
-};
-const baseUrl = "http://image.tmdb.org/t/p/";
-const genders = {
-  0: "Not Specified",
-  1: "Female",
-  2: "Male",
-  3: "Non Binary",
-};
-//* Get the show id using the TMDB API
-const getShowId = async (showName) => {
-  const res = await fetch(
-    `https://api.themoviedb.org/3/search/tv?query=${showName}`,
-    options
-  );
-  const data = await res.json();
-  return data.results[0].id;
-};
-//* Get the show info using the first API
-const getShowsInfo = async (name) => {
-  try {
-    const res = await fetch(
-      `https://api.tvmaze.com/singlesearch/shows?q=${name}`
-    );
-    const show = await res.json();
-    const info = `
-    <div
-    class="blur-[60px] top-0 absolute -z-10 flex h-full w-full flex-col gap-3 bg-dark p-3 transition-all duration-[.8s] group-hover:z-10 group-hover:bg-dark group-hover:bg-opacity-50 group-hover:blur-0"
-  >
-          <div
-            class="w-fit rounded-lg bg-thirdAccent px-3 text-sm font-semibold text-textColor"
-          >
-            ${show.genres[0] || "No genre"}
-          </div>
-          <div
-            class="flex w-fit items-center gap-1 rounded-lg bg-secondaryAccent px-3 text-sm font-semibold text-textColor"
-          >
-            ${
-              show.rating.average || "Not rated"
-            } <i class="fa-solid fa-star text-primaryAccent"></i>
-          </div>
-          <h3 class="mt-auto font-logo text-lg font-bold text-textColor">
-          ${show.name}
-          </h3>
-          </div>
-       
-  `;
-    return {
-      info,
-      id: show.id,
-    };
-  } catch (err) {}
-};
-
 //* ------------------------------ Person overview ------------------------------ *//
 const personOverviewContainer = document.getElementById("person_overview");
 const personOverview = async (name, character) => {
@@ -1013,7 +1003,6 @@ document.addEventListener("click", (e) => {
 closeOverview(episodeOverviewContainer);
 
 //* ------------------------------ WatchLists ------------------------------ *//
-// import "./watchList.js";
 //* Perform the right action when clicking  on a watchList button
 showOverviewContainer.addEventListener("click", (e) => {
   // Get the id of the show

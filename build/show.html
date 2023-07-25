@@ -5,29 +5,49 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WatchFolio</title>
-    <link rel="apple-touch-icon" sizes="76x76" href="imgs/icons/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="imgs/icons/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="imgs/icons/favicon-16x16.png" />
+    <!--* Favicons -->
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="imgs/icons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="imgs/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="imgs/icons/favicon-16x16.png"
+    />
+    <!--* PWA requirements  -->
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#F44336" />
     <meta name="msapplication-TileColor" content="#F44336" />
     <meta name="theme-color" content="#130F40" />
+    <!--* Font Awesome  -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <!--* Main Css  -->
     <link rel="stylesheet" href="./css/style.css" />
+    <!--* Google Fonts  -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--* Main JS script  -->
     <link
       href="https://fonts.googleapis.com/css2?family=Bona+Nova:wght@700&display=swap"
       rel="stylesheet"
     />
+    <!-- TODO : Download the libraries using npm and import them in download.js instead -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
 
-    <script defer src="./js/watchList.js"></script>
-    <script defer src="./js/show.js"></script>
-    <script defer src="./js/download.js"></script>
+    <script defer type="module" src="./js/show.js"></script>
   </head>
   <body
     id="showBody"
@@ -70,7 +90,7 @@
       id="nav"
     >
       <ul
-        class="flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-2 backdrop-blur-[6px]"
+        class="flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-3 backdrop-blur-[6px]"
       >
         <li class="marker:text-transparent">
           <a

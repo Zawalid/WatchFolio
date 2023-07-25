@@ -5,32 +5,53 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>You are offline</title>
-    <link rel="apple-touch-icon" sizes="76x76" href="imgs/icons/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="imgs/icons/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="imgs/icons/favicon-16x16.png" />
+    <!--* Favicons -->
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="imgs/icons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="imgs/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="imgs/icons/favicon-16x16.png"
+    />
+    <!--* PWA requirements  -->
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#F44336" />
     <meta name="msapplication-TileColor" content="#F44336" />
     <meta name="theme-color" content="#130F40" />
     <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!--* Main Css  -->
     <link rel="stylesheet" href="./css/style.css" />
+    <!--* Google Fonts  -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Bona+Nova:wght@700&display=swap"
       rel="stylesheet"
     />
-    <script defer src="js/watchList.js"></script>
+    <!--* JS scripts  -->
+    <script defer type="module" src="js/watchList.js"></script>
   </head>
   <body class="h-screen bg-gradient">
     <div class="container flex h-full flex-col">
-      <header class="flex items-center justify-between py-5">
-        <h2 class="font-logo text-4xl font-extrabold max-sm:text-3xl">
-          <span class="text-primaryAccent">Watch</span
-          ><span class="text-textColor">Folio</span>
-        </h2>
+      <header class="relative z-30 flex items-center justify-between py-5">
+        <a href="index.html">
+          <h2 class="font-logo text-4xl font-extrabold max-sm:text-3xl">
+            <span class="text-primaryAccent">Watch</span
+            ><span class="text-textColor">Folio</span>
+          </h2>
+        </a>
         <ul class="flex items-center gap-7 max-sm:hidden">
           <li>
             <a href="index.html">
@@ -157,7 +178,7 @@
       id="nav"
     >
       <ul
-        class="flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-2 backdrop-blur-[6px]"
+        class="flex w-full items-center justify-between bg-[rgba(11_,21_,49_,0.5)] px-5 py-3 backdrop-blur-[6px]"
       >
         <li class="marker:text-transparent">
           <a
@@ -185,6 +206,125 @@
           </a>
         </li>
       </ul>
+    </div>
+    <div
+      class="absolute inset-0 -z-10 flex h-full w-full items-center justify-center bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-300 max-md:h-full"
+      id="downloadList"
+    >
+      <div class="relative overflow-hidden rounded-2xl bg-white p-6 pb-12">
+        <div
+          class="absolute left-1/2 hidden -translate-x-1/2 items-center gap-2 rounded-2xl bg-red-700 px-5 py-2 font-bold text-textColor"
+          id="emptyListWarning"
+        >
+          <i class="fa-solid fa-triangle-exclamation"></i> List is empty
+        </div>
+
+        <i
+          class="fa-solid fa-xmark absolute right-4 top-2 cursor-pointer text-2xl text-dark"
+          id="close"
+        ></i>
+        <div class="">
+          <h2 class="text-2xl font-bold">
+            Download your <q id="listName"></q> list
+          </h2>
+          <p class="text-gray-600">Choose the format to download.</p>
+        </div>
+        <div class="my-8 flex flex-wrap justify-center gap-8">
+          <div
+            class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
+          >
+            <input
+              type="radio"
+              class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
+              name="format"
+              value="pdf"
+              checked
+            />
+            <div
+              class="flex h-full w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+            >
+              <i class="fa-solid fa-file-pdf mb-2 text-4xl"></i>
+              <span class="text-sm">PDF</span>
+            </div>
+          </div>
+          <div
+            class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
+          >
+            <input
+              type="radio"
+              class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
+              name="format"
+              value="csv"
+            />
+            <div
+              class="flex h-full w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+            >
+              <i class="fa-solid fa-file-csv mb-2 text-4xl"></i>
+              <span class="text-sm">CSV</span>
+            </div>
+          </div>
+          <div
+            class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
+          >
+            <input
+              type="radio"
+              class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
+              name="format"
+              value="text"
+            />
+            <div
+              class="flex h-full w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+            >
+              <i class="fa-solid fa-file-lines mb-2 text-4xl"></i>
+              <span class="text-sm">Text</span>
+            </div>
+          </div>
+          <div
+            class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
+          >
+            <input
+              type="radio"
+              class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
+              name="format"
+              value="json"
+            />
+            <div
+              class="flex h-full w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+            >
+              <img src="imgs/json.png" alt="" class="mb-2 w-10" />
+              <span class="text-sm">JSON</span>
+            </div>
+          </div>
+        </div>
+        <button
+          class="mx-auto block rounded-2xl bg-secondaryAccent px-5 py-2 font-bold text-textColor"
+          id="download"
+        >
+          Download
+        </button>
+        <i
+          class="fa-sharp fa-solid fa-chevron-up absolute bottom-1 left-1/2 -translate-x-1/2 cursor-pointer text-xl text-dark"
+          id="showDownloadAll"
+        ></i>
+        <div
+          class="absolute bottom-0 left-0 w-full translate-y-full bg-gradient pb-3 pt-7 transition-transform duration-500"
+          id="downloadAllContainer"
+        >
+          <i
+            class="fa-sharp fa-solid fa-chevron-down absolute left-1/2 top-0 -translate-x-1/2 cursor-pointer text-xl text-textColor2"
+            id="hideDownloadAll"
+          ></i>
+          <p class="mb-2 text-center text-sm font-bold text-textColor">
+            Download All Your Lists
+          </p>
+          <button
+            class="mx-auto block rounded-2xl bg-secondaryAccent px-5 py-2 font-bold text-textColor"
+            id="downloadAll"
+          >
+            Download
+          </button>
+        </div>
+      </div>
     </div>
   </body>
 </html>
