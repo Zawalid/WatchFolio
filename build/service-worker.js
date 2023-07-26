@@ -31,13 +31,22 @@ const urlsToCache = [
   "manifest.json",
 ];
 
+//* Limit the dynamic cache size function to 100 items
+const limitDynamicCacheSize = () => {
+  caches.open(dynamicCache).then((cache) => {
+    cache.keys().then((keys) => {
+      if (keys.length > 100) {
+        cache.delete(keys[0]).then(limitDynamicCacheSize);
+      }
+    });
+  });
+};
+
 //* Install Service Worker
 self.addEventListener("install", (event) => {
-  console.log("Service Worker: Installed");
   // Wait until the assets are cached
   event.waitUntil(
     caches.open(staticCache).then((cache) => {
-      console.log("Service Worker: Caching Files");
       cache.addAll(urlsToCache);
     })
   );
@@ -45,7 +54,6 @@ self.addEventListener("install", (event) => {
 
 //* Activate Service Worker
 self.addEventListener("activate", (event) => {
-  console.log("Service Worker: Activated");
   // Wait until the old caches are deleted
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -60,7 +68,6 @@ self.addEventListener("activate", (event) => {
 
 //* Fetch Service Worker
 self.addEventListener("fetch", (event) => {
-  console.log(event.request.url);
   // Return the cached response if it's not cached then try to fetch it and cache it to the dynamic cache (online)
   // Return the offline.html page if the the requested resource is a page (show.html/ / ..) (offline)
   // Return the placeholder.png if the the the requested resource is an image (offline)
@@ -72,12 +79,16 @@ self.addEventListener("fetch", (event) => {
           .then((fetchRes) => {
             // We use the .clone() so that we can return the fetchRes (you can use it only once)
             return caches.open(dynamicCache).then((cache) => {
+              if (
+                event.request.url.startsWith('chrome-extension') ||
+                event.request.url.includes('extension') 
+            ) return;
               cache.put(event.request.url, fetchRes.clone());
+              limitDynamicCacheSize();
               return fetchRes;
             });
           })
           .catch((err) => {
-            console.log(err, event.request.url);
             if (event.request.url.includes(".html")) {
               return caches.match("offline.html");
             } else if (

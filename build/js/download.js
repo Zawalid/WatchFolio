@@ -2,6 +2,8 @@
 
 //* ------------------------------ Imports ------------------------------ *//
 import { watchLists } from "./watchList.js";
+import "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+import "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js";
 
 export const downloadWatchListContainer =
   document.getElementById("downloadList");

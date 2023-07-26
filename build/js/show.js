@@ -71,11 +71,13 @@ const showLoading = (container) => {
 const displayOverview = (container, html, img = null) => {
   setTimeout(() => {
     container.firstElementChild.innerHTML = html;
-    //?  The next actions are here because the elements are just created
-    //* Change the episode icon
-    changeEpisodeIcon();
-    //* Hide or show the next and previous season buttons based on the current season
-    hideOrShowSeasonButtons();
+    if (container === episodeOverviewContainer) {
+      //?  The next actions are here because the elements are just created
+      //* Change the episode icon
+      changeEpisodeIcon();
+      //* Hide or show the next and previous season buttons based on the current season
+      hideOrShowSeasonButtons();
+    }
 
     if (container === episodeOverviewContainer) {
       document.documentElement.style.setProperty("--episode-bg", `url(${img})`);
