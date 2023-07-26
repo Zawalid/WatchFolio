@@ -33,10 +33,18 @@ const urlsToCache = [
 
 //* Limit the dynamic cache size function to 100 items
 const limitDynamicCacheSize = () => {
+  const cacheLimit = 100;
+
   caches.open(dynamicCache).then((cache) => {
     cache.keys().then((keys) => {
-      if (keys.length > 100) {
-        cache.delete(keys[0]).then(limitDynamicCacheSize);
+      const numKeys = keys.length;
+
+      if (numKeys > cacheLimit) {
+        const keysToDelete = keys.slice(0, numKeys - cacheLimit);
+        let deletePromises = keysToDelete.map((key) => cache.delete(key));
+
+        // Wait until all the delete operations are completed before calling the function again
+        Promise.all(deletePromises).then(() => limitDynamicCacheSize());
       }
     });
   });
@@ -79,10 +87,6 @@ self.addEventListener("fetch", (event) => {
           .then((fetchRes) => {
             // We use the .clone() so that we can return the fetchRes (you can use it only once)
             return caches.open(dynamicCache).then((cache) => {
-              if (
-                event.request.url.startsWith('chrome-extension') ||
-                event.request.url.includes('extension') 
-            ) return;
               cache.put(event.request.url, fetchRes.clone());
               limitDynamicCacheSize();
               return fetchRes;
