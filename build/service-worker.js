@@ -1,10 +1,10 @@
 "use strict";
 
 //*Static cache
-const staticCache = "static-cache-v";
+const staticCache = "static-cache-v1";
 
 //* Dynamic cache
-const dynamicCache = "dynamic-cache-v";
+const dynamicCache = "dynamic-cache-v1";
 
 //* Assets to cache
 const urlsToCache = [
@@ -14,6 +14,9 @@ const urlsToCache = [
   "404.html",
   "css/style.css",
   "js/main.js",
+  "js/auth.js",
+  "js/firebaseApp.js",
+  "js/TMDB.js",
   "js/show.js",
   "js/watchList.js",
   "js/download.js",
