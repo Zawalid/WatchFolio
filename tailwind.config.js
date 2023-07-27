@@ -26,6 +26,10 @@ module.exports = {
         textColor: "#fff",
         textColor2: "#D4D4D4",
         dark: "#130F40",
+
+        // Auth
+        nobleDark500: "#363A3D",
+        nobleDark600: "#1A1D21",
       },
       backgroundImage: {
         background: "url('../imgs/bg.jpg')",
@@ -40,6 +44,16 @@ module.exports = {
       screens: {
         wrap: "878px",
       },
+      animation: {
+        bgSlide: "bgSlide 20s linear alternate infinite",
+      },
+      keyframes: {
+        bgSlide: {
+          "0%" : { backgroundPosition: "left" },
+          "50%" : { backgroundPosition: "center" },
+          "100%" : { backgroundPosition: "right" },
+        }
+      }
     },
   },
   plugins: [],

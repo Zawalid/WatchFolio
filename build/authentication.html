@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WatchFolio - Login</title>
+    <!--* Favicons -->
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="imgs/icons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="imgs/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="imgs/icons/favicon-16x16.png"
+    />
+    <!--* PWA requirements  -->
+    <link
+      rel="mask-icon"
+      href="imgs/icons/safari-pinned-tab.svg"
+      color="#F44336"
+    />
+    <meta name="msapplication-TileColor" content="#F44336" />
+    <meta name="theme-color" content="#130F40" />
+    <!--* Font Awesome  -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!--* Main Css  -->
+    <link rel="stylesheet" href="./css/style.css" />
+    <!--* Google Fonts  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bona+Nova:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <!--* Main JS script  -->
+    <script defer type="module" src="js/auth.js"></script>
+  </head>
+  <body class="flex min-h-screen flex-col bg-gradient md:flex-row">
+    <div
+      class="container relative flex min-h-screen flex-col justify-between gap-12 bg-gradient py-5 lg:w-1/2"
+    >
+      <a href="index.html" class="w-fit">
+        <h2 class="font-logo text-4xl font-extrabold max-sm:text-3xl">
+          <span class="text-primaryAccent">Watch</span
+          ><span class="text-textColor">Folio</span>
+        </h2>
+      </a>
+      <div class="px-5" id="container">
+        <h1 class="mb-9 text-3xl font-bold text-white max-md:text-center">
+          Welcome <span class="text-primaryAccent">Back!</span>
+        </h1>
+
+        <form id="login_form">
+          <input
+            class="w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
+            type="text"
+            name="email"
+            placeholder="Email"
+            autocomplete="true"
+          />
+          <div class="relative">
+            <input
+              class="mt-5 w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
+              type="password"
+              name="password"
+              placeholder="Password"
+              autocomplete="true"
+            />
+            <i
+              class="fa-solid fa-eye eye-icon absolute right-3 top-1/2 cursor-pointer text-sm text-textColor2"
+              id="show_password"
+            ></i>
+           
+          </div>
+          <a class="my-9 block w-fit font-semibold text-thirdAccent" href="#"
+            >Forgot password?</a
+          >
+          <input
+            type="submit"
+            value="Login"
+            class="w-full cursor-pointer rounded-2xl bg-primaryAccent py-3 text-lg font-bold text-black transition hover:bg-opacity-80"
+          />
+        </form>
+
+        <div class="my-12 flex items-center justify-center gap-4">
+          <span class="h-[1px] w-full flex-1 bg-textColor2"></span>
+          <span class="text-textColor2">or continue with</span>
+          <span class="h-[1px] w-full flex-1 bg-textColor2"></span>
+        </div>
+        <button
+          class="flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl bg-white py-3 font-bold text-black"
+        >
+          <img src="./imgs/Google Logo.svg" alt="" />
+          <span class="font-semibold">Google Account</span>
+        </button>
+      </div>
+      <div class="flex justify-center gap-5" id="tabs">
+        <button
+          class="active flex items-center justify-center gap-2 rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          id="login"
+        >
+          Login <i class="fa-solid fa-right-to-bracket"></i>
+        </button>
+        <button
+          class="flex items-center justify-center gap-2 rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          id="signup"
+        >
+          Sign Up <i class="fa-solid fa-user-plus"></i>
+        </button>
+      </div>
+      <div
+        class="absolute -top-[100px] left-1/2 -translate-x-1/2 rounded-xl bg-red-700 px-5 py-3 text-center font-bold text-textColor transition-all duration-500"
+        id="error_message"
+      >
+        Wrong Password
+      </div>
+    </div>
+    <section
+      class="w-1/2 animate-bgSlide bg-background bg-cover bg-left max-md:hidden"
+    ></section>
+  </body>
+</html>

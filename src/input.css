@@ -17,6 +17,7 @@
     @apply z-30 opacity-100;
   }
   #explore button.active,
+  #tabs button.active,
   #listsButtons button.active {
     @apply bg-secondaryAccent;
   }
@@ -57,3 +58,15 @@ html {
 #listsButtons::-webkit-scrollbar {
   display: none;
 }
+@keyframes bgSlide {
+  0% {
+    background-position: left;
+  }
+  50% {
+    background-position: center;
+  }
+  100% {
+    background-position: right;
+  }
+}
+

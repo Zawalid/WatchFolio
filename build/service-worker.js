@@ -1,16 +1,17 @@
 "use strict";
 
 //*Static cache
-const staticCache = "static-cache-v1";
+const staticCache = "static-cache-v";
 
 //* Dynamic cache
-const dynamicCache = "dynamic-cache-v1";
+const dynamicCache = "dynamic-cache-v";
 
 //* Assets to cache
 const urlsToCache = [
   "/",
   "index.html",
   "offline.html",
+  "404.html",
   "css/style.css",
   "js/main.js",
   "js/show.js",
@@ -23,6 +24,7 @@ const urlsToCache = [
   "imgs/json.png",
   "imgs/wrong.svg",
   "imgs/placeHolder.png",
+  "imgs/urban-line-404-1.gif",
   "imgs/icons/favicon.ico",
   "imgs/icons/favicon-16x16.png",
   "imgs/icons/favicon-32x32.png",
