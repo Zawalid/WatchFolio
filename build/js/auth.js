@@ -2,8 +2,8 @@
 
 //* ------------------------------ Firebase ------------------------------ *//
 import firebase from "./firebaseApp.js";
-import "/__/firebase/8.10.1/firebase-auth.js";
 
+console.log(firebase);
 const auth = firebase.auth();
 
 //* ------------------------------ Change HTML on tab click ------------------------------ *//
@@ -242,7 +242,7 @@ document.addEventListener("submit", (e) => {
         });
     } else if (e.target.id === "signup_form") {
       if (!isValidPassword()) {
-        showError("Password is too weak. Please choose a stronger password.")
+        showError("Password is too weak. Please choose a stronger password.");
       } else {
         auth
           .createUserWithEmailAndPassword(email, password)

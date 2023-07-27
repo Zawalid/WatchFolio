@@ -1,5 +1,3 @@
-import "/__/firebase/8.10.1/firebase-app.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyC6En24MyhaNsRCU_bV8PRdI6hn3lon-Wc",
   authDomain: "watchfolio-93175.firebaseapp.com",
@@ -10,7 +8,6 @@ const firebaseConfig = {
   appId: "1:338374125620:web:ff6262fa8eb4d26ae14261",
   measurementId: "G-LEKBTCG8J3",
 };
-
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 export default firebase;
