@@ -68,9 +68,9 @@ const isValidPassword = () => {
 const showError = (message) => {
   const error = document.getElementById("error_message");
   error.textContent = message;
-  error.classList.replace("-top-[150px]", "top-5");
+  error.classList.replace("-top-1/2", "top-5");
   setTimeout(() => {
-    error.classList.replace("top-5", "-top-[150px]");
+    error.classList.replace("top-5", "-top-1/2");
   }, 3000);
 };
 

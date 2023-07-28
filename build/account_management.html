@@ -84,7 +84,7 @@
           class="fa-solid fa-spinner animate-spin text-4xl text-thirdAccent"
         ></i>
 
-        <h1 class="text-3xl font-bold text-textColor">Email Verification</h1>
+        <h1 class="text-center text-3xl font-bold text-textColor">Email Verification</h1>
         <p class="text-center font-semibold text-textColor2">
           Please wait while we verify your email address.
         </p> 
@@ -104,7 +104,7 @@
                   class="h-[300px] w-[300px]"
                 />
 
-                <h1 class="text-3xl font-bold text-textColor">Email Verified!</h1>
+                <h1 class="text-center text-3xl font-bold text-textColor">Email Verified!</h1>
                 <p class="text-center font-semibold text-textColor2">
                   Congratulations! Your email address has been successfully verified.
                   You can now fully enjoy all the features and benefits of
@@ -141,7 +141,7 @@
                   alt=""
                   class="h-[300px] w-[300px]"
                 />
-                <h1 class="text-3xl font-bold text-textColor">Email Verification Failed!</h1>
+                <h1 class="text-center text-3xl font-bold text-textColor">Email Verification Failed!</h1>
                 <p class="text-center font-semibold text-textColor2">
                 ${errorMessage}
                   </p>
@@ -152,7 +152,7 @@
         // CHange the UI to show password reset form
         container.innerHTML = `
         <form class="flex flex-col gap-5" id="resetPasswordForm">
-          <h1 class="text-3xl font-bold text-textColor">Reset Password</h1>
+          <h1 class="text-center text-3xl font-bold text-textColor">Reset Password</h1>
           <p class="font-semibold text-textColor2">
             Please enter your new password below.
           </p>
@@ -278,19 +278,17 @@
                       class="h-[300px] w-[300px]"
                     />
 
-                    <h1 class="text-3xl font-bold text-textColor">Password Reset Successful!</h1>
+                    <h1 class="text-center text-3xl font-bold text-textColor">Password Reset Successful!</h1>
                     <p class="text-center font-semibold text-textColor2">
                       Congratulations! Your password has been successfully reset.
                       You can now login with your new password.
                     </p>
                     <a
                     href="authentication.html"
-          class=" flex items-center justify-center gap-2 rounded-2xl px-5 py-2 font-bold text-textColor bg-secondaryAccent"
-          id="login"
-        >
-          Login <i class="fa-solid fa-right-to-bracket"></i>
-        </a
-        href="auth">
+                    class=" flex items-center justify-center gap-2 rounded-2xl px-5 py-2 font-bold text-textColor bg-secondaryAccent"
+                    id="login">
+                    Login <i class="fa-solid fa-right-to-bracket"></i>
+                    </a>
                   `;
                     document.title = "Password Reset Successful";
                   })
@@ -338,7 +336,7 @@
                          alt=""
                          class="h-[300px] w-[300px]"
                       />
-                      <h1 class="text-3xl font-bold text-textColor">Invalid reset link!</h1>
+                      <h1 class="text-3xl font-bold text-textColor text-center">Invalid reset link!</h1>
                       <p class="text-center font-semibold text-textColor2">
                         Sorry, the password reset link is invalid. Please try again later. 
                       </p>

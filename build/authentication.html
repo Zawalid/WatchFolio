@@ -50,9 +50,9 @@
     <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
     <script defer type="module" src="js/auth.js"></script>
   </head>
-  <body class="relative flex min-h-screen flex-col bg-gradient md:flex-row">
+  <body class="relative flex  flex-col bg-gradient md:flex-row">
     <div
-      class="container relative  flex min-h-screen flex-col justify-between gap-12 bg-gradient py-5 lg:w-1/2"
+      class="container relative  flex overflow-y-auto h-screen flex-col justify-between gap-12 bg-gradient py-5 lg:w-1/2"
     >
       <a href="index.html" class="w-fit">
         <h2 class="font-logo text-4xl font-extrabold max-sm:text-3xl">
@@ -131,7 +131,7 @@
       class="animate-bgSlide w-1/2 bg-background bg-cover bg-left max-md:hidden"
     ></section>
     <div
-      class="absolute -top-[150px] left-1/2 z-50 -translate-x-1/2 rounded-xl bg-red-700 px-5 py-3 text-center font-bold text-textColor transition-all duration-500"
+      class="absolute -top-1/2 left-1/2 z-50 -translate-x-1/2 rounded-xl bg-red-700 px-5 py-3 text-center font-bold text-textColor transition-all duration-500"
       id="error_message"
     >
       Error message
