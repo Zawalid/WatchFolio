@@ -11,6 +11,7 @@
   i.active {
     @apply text-primaryAccent;
   }
+  #forgot_password_container.show,
   #episode_overview.show,
   #person_overview.show,
   #season_overview.show {

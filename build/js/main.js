@@ -344,9 +344,9 @@ firebase.auth().onAuthStateChanged((user) => {
     //  Send verification email if the user is not verified
     if (!user.emailVerified) {
       const verificationMessage = document.getElementById("email_verification");
-      verificationMessage.classList.replace("-top-[100px]", "top-5");
+      verificationMessage.classList.replace("-top-[150px]", "top-5");
       setTimeout(() => {
-        verificationMessage.classList.replace("top-5", "-top-[100px]");
+        verificationMessage.classList.replace("top-5", "-top-[150px]");
       }, 5000);
       user.sendEmailVerification().catch((err) => console.log(err));
     }

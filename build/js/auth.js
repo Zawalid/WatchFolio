@@ -125,7 +125,7 @@ function getSignInErrorMessage(errorCode) {
     case "auth/network-request-failed":
       return "Network error. Please check your internet connection and try again.";
     case "auth/too-many-requests":
-      return "Too many sign-in attempts. Please try again later.";
+      return "Too many attempts. Please try again later.";
     case "auth/provider-already-linked":
       return "This provider is already linked to another account.";
     case "auth/account-exists-with-different-credential":
@@ -157,7 +157,10 @@ document.addEventListener("submit", (e) => {
   const email = e.target[0].value;
   const password = e.target[1].value;
 
-  if (email === "" || password === "") {
+  if (
+    (e.target.id !== "forgot_password_form" && email === "") ||
+    password === ""
+  ) {
     showError("Please fill in all the required fields.");
   } else {
     if (e.target.id === "login_form") {
@@ -199,21 +202,94 @@ document.addEventListener("click", (e) => {
 });
 
 //* ------------------------------ Forgot Password ------------------------------ *//
-// Send password reset email
+const forgotPassContainer = document.getElementById(
+  "forgot_password_container"
+);
+// Forgot password HTML (for resetting it later)
+const forgotPassHtml = forgotPassContainer.firstElementChild.innerHTML;
+// Show forgot password modal
 document.addEventListener("click", (e) => {
   if (e.target.id === "forgot_password") {
-    const email = document.querySelector("input[name='email']").value;
+    // Change back the html to the original one
+    forgotPassContainer.firstElementChild.innerHTML = forgotPassHtml;
+    forgotPassContainer.classList.add("show");
+    forgotPassContainer.querySelector("input").focus();
+  }
+});
+// Close forgot password modal
+forgotPassContainer.addEventListener("click", function (e) {
+  if (e.target.closest("#close") || e.target === e.currentTarget) {
+    this.classList.remove("show");
+  }
+});
+// Send password reset email (im using the document event listener because the form is dynamically added)
+document.addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (e.target.id == "forgot_password_form") {
+    const email = e.target.children[1].value;
     if (email === "") {
       showError("Please enter your email address.");
     } else {
       auth
         .sendPasswordResetEmail(email)
         .then(() => {
-          showError(
-            "Password reset email sent. Please check your inbox and follow the instructions."
-          );
+          // Change html to show loading animation
+          forgotPassContainer.firstElementChild.innerHTML = `
+          <i
+          class="fa-solid fa-paper-plane mx-auto animate-fadeIn text-4xl text-thirdAccent"
+        ></i>
+          `;
+          setTimeout(() => {
+            // Change html to show success message
+            forgotPassContainer.firstElementChild.innerHTML = `
+          <div class="mt-auto text-center">
+          <i
+            class="fa-solid fa-envelope-circle-check text-[60px] text-textColor max-sm:text-[100px]"
+          ></i>
+          <h1 class="mt-5 text-3xl font-bold text-white max-sm:mt-8">
+            Check Your Inbox
+          </h1>
+          <p class="mb-8 mt-5 font-semibold text-textColor2">
+            We've sent you an email with instructions on how to reset your
+            password.
+          </p>
+          <div class="flex flex-col items-center gap-5">
+            <a
+              href="mailto:${email}"
+              target="_blank"
+              class="w-32 cursor-pointer rounded-2xl bg-secondaryAccent py-2 text-center font-bold text-textColor transition hover:bg-thirdAccent"
+            >
+              Open Inbox
+            </a>
+            <button
+              class="cursor-pointer font-bold text-textColor transition hover:text-textColor2"
+              id="close"
+            >
+              Skip, I'll check later
+            </button>
+          </div>
+        </div>
+        <p
+          class="mt-12 text-center font-semibold text-textColor2 max-sm:mt-auto"
+        >
+          Didn't receive the email? Check your spam folder or
+          <span
+            class="cursor-pointer font-bold text-primaryAccent"
+            id="try_again"
+            >try again</span
+          >
+        </p>
+        `;
+          }, 1500);
         })
         .catch((error) => showError(getSignInErrorMessage(error.code)));
     }
+  }
+});
+// Try again
+document.addEventListener("click", (e) => {
+  if (e.target.id === "try_again") {
+    // Change back the html to the original one
+    forgotPassContainer.firstElementChild.innerHTML = forgotPassHtml;
   }
 });

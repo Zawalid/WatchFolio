@@ -46,14 +46,19 @@ module.exports = {
       },
       animation: {
         bgSlide: "bgSlide 20s linear alternate infinite",
+        fadeIn: "fadeIn 1s linear alternate infinite",
       },
       keyframes: {
         bgSlide: {
-          "0%" : { backgroundPosition: "left" },
-          "50%" : { backgroundPosition: "center" },
-          "100%" : { backgroundPosition: "right" },
-        }
-      }
+          "0%": { backgroundPosition: "left" },
+          "50%": { backgroundPosition: "center" },
+          "100%": { backgroundPosition: "right" },
+        },
+        fadeIn: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+      },
     },
   },
   plugins: [],

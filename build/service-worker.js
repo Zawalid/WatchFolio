@@ -1,7 +1,7 @@
 "use strict";
 
 //*Static cache
-const staticCache = "static-cache-v2";
+const staticCache = "static-cache-v1";
 
 //* Dynamic cache
 const dynamicCache = "dynamic-cache-v2";
@@ -30,6 +30,7 @@ const urlsToCache = [
   "imgs/wrong.svg",
   "imgs/placeHolder.png",
   "imgs/urban-line-404-1.gif",
+  "imgs/Google Logo.svg",
   "imgs/icons/favicon.ico",
   "imgs/icons/favicon-16x16.png",
   "imgs/icons/favicon-32x32.png",
