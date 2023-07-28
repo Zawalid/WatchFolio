@@ -3,7 +3,6 @@
 //* ------------------------------ Firebase ------------------------------ *//
 import firebase from "./firebaseApp.js";
 
-console.log(firebase);
 const auth = firebase.auth();
 
 //* ------------------------------ Change HTML on tab click ------------------------------ *//
@@ -56,13 +55,14 @@ const signUpHtml = `
     />
   </form>
 
-  <div class="my-12 flex items-center justify-center gap-4">
+  <div class="my-8 flex items-center justify-center gap-4">
     <span class="h-[1px] w-full flex-1 bg-textColor2"></span>
     <span class="text-textColor2">or continue with</span>
     <span class="h-[1px] w-full flex-1 bg-textColor2"></span>
   </div>
   <button
     class="flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl bg-white py-3 font-bold text-black"
+    id="google_signup"
   >
     <img src="./imgs/Google Logo.svg" alt="" />
     <span class="font-semibold">Google Account</span>
@@ -220,6 +220,7 @@ function getSignUpErrorMessage(errorCode) {
 }
 
 //* ------------------------------ Login/Sign Up ------------------------------ *//
+// Sign in/up with Email and Password
 document.addEventListener("submit", (e) => {
   e.preventDefault();
   const email = e.target[0].value;
@@ -229,40 +230,46 @@ document.addEventListener("submit", (e) => {
     showError("Please fill in all the required fields.");
   } else {
     if (e.target.id === "login_form") {
-      auth
-        .signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          console.log(user);
-          // ...
-        })
-        .catch((error) => {
-          showError(getSignInErrorMessage(error.code));
-        });
+      // Using session persistence to keep user logged in until they sign out or close the browser
+      auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
+        auth
+          .signInWithEmailAndPassword(email, password)
+          .then(() => (window.location.href = "./index.html"))
+          .catch((error) => showError(getSignInErrorMessage(error.code)));
+      });
     } else if (e.target.id === "signup_form") {
       if (!isValidPassword()) {
         showError("Password is too weak. Please choose a stronger password.");
       } else {
-        auth
-          .createUserWithEmailAndPassword(email, password)
-          .then((userCredential) => {
-            // Signed in
-            const user = userCredential.user;
-            console.log(user);
-            // Switch to login tab
-            tabs.children[0].click();
-            // Wait for html to change and add email to input
-            setTimeout(() => {
-              console.log(document.querySelector("input"));
-              document.querySelector("input").focus();
-              document.querySelector("input").value = user.email;
-            }, 1100);
-          })
-          .catch((error) => {
-            showError(getSignUpErrorMessage(error.code));
-          });
+        auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
+          auth
+            .createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+              const user = userCredential.user;
+              // Switch to login tab
+              tabs.children[0].click();
+              // Wait for html to change and add email to input
+              setTimeout(() => {
+                console.log(document.querySelector("input"));
+                document.querySelector("input").focus();
+                document.querySelector("input").value = user.email;
+              }, 1100);
+            })
+            .catch((error) => showError(getSignUpErrorMessage(error.code)));
+        });
       }
     }
+  }
+});
+// Sign in/up with Google
+document.addEventListener("click", (e) => {
+  if (e.target.closest("#google_signup")) {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
+      auth
+        .signInWithPopup(provider)
+        .then(() => (window.location.href = "./index.html"))
+        .catch((error) => showError(getSignInErrorMessage(error.code)));
+    });
   }
 });

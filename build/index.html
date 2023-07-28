@@ -48,6 +48,7 @@
     />
     <!--* Main JS script  -->
     <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
     <script defer type="module" src="js/main.js"></script>
   </head>
   <body
@@ -448,6 +449,13 @@
           </button>
         </div>
       </div>
+    </div>
+    <div
+      class="absolute left-1/2 -top-[100px] -translate-x-1/2 rounded-xl bg-thirdAccent px-5 py-3 text-center font-bold text-textColor transition-all duration-500"
+      id="email_verification"
+    >
+        A verification email has been sent to your email address. Please check
+        your inbox and click the verification link to verify your email.
     </div>
   </body>
 </html>
