@@ -230,33 +230,28 @@ document.addEventListener("submit", (e) => {
     showError("Please fill in all the required fields.");
   } else {
     if (e.target.id === "login_form") {
-      // Using session persistence to keep user logged in until they sign out or close the browser
-      auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
-        auth
-          .signInWithEmailAndPassword(email, password)
-          .then(() => (window.location.href = "./index.html"))
-          .catch((error) => showError(getSignInErrorMessage(error.code)));
-      });
+      auth
+        .signInWithEmailAndPassword(email, password)
+        .then(() => (window.location.href = "./index.html"))
+        .catch((error) => showError(getSignInErrorMessage(error.code)));
     } else if (e.target.id === "signup_form") {
       if (!isValidPassword()) {
         showError("Password is too weak. Please choose a stronger password.");
       } else {
-        auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
-          auth
-            .createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-              const user = userCredential.user;
-              // Switch to login tab
-              tabs.children[0].click();
-              // Wait for html to change and add email to input
-              setTimeout(() => {
-                console.log(document.querySelector("input"));
-                document.querySelector("input").focus();
-                document.querySelector("input").value = user.email;
-              }, 1100);
-            })
-            .catch((error) => showError(getSignUpErrorMessage(error.code)));
-        });
+        auth
+          .createUserWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            // Switch to login tab
+            tabs.children[0].click();
+            // Wait for html to change and add email to input
+            setTimeout(() => {
+              console.log(document.querySelector("input"));
+              document.querySelector("input").focus();
+              document.querySelector("input").value = user.email;
+            }, 1100);
+          })
+          .catch((error) => showError(getSignUpErrorMessage(error.code)));
       }
     }
   }
@@ -265,11 +260,9 @@ document.addEventListener("submit", (e) => {
 document.addEventListener("click", (e) => {
   if (e.target.closest("#google_signup")) {
     const provider = new firebase.auth.GoogleAuthProvider();
-    auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
-      auth
-        .signInWithPopup(provider)
-        .then(() => (window.location.href = "./index.html"))
-        .catch((error) => showError(getSignInErrorMessage(error.code)));
-    });
+    auth
+      .signInWithPopup(provider)
+      .then(() => (window.location.href = "./index.html"))
+      .catch((error) => showError(getSignInErrorMessage(error.code)));
   }
 });
