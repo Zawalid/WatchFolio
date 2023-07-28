@@ -11,12 +11,14 @@ const urlsToCache = [
   "/",
   "index.html",
   "offline.html",
+  "authentication.html",
   "404.html",
   "css/style.css",
   "js/main.js",
   "js/auth.js",
   "js/firebaseApp.js",
   "js/TMDB.js",
+  "js/utilities.js",
   "js/show.js",
   "js/watchList.js",
   "js/download.js",
@@ -47,7 +49,6 @@ const limitDynamicCacheSize = () => {
       if (numKeys > cacheLimit) {
         const keysToDelete = keys.slice(0, numKeys - cacheLimit);
         let deletePromises = keysToDelete.map((key) => cache.delete(key));
-
         // Wait until all the delete operations are completed before calling the function again
         Promise.all(deletePromises).then(() => limitDynamicCacheSize());
       }
@@ -61,7 +62,7 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(staticCache).then((cache) => {
       cache.addAll(urlsToCache);
-    })
+    }).catch(err => console.log(err))
   );
 });
 
