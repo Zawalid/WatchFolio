@@ -164,8 +164,10 @@ const isValidPassword = () => {
     uppercaseValidation.className === unchecked ||
     lowercaseValidation.className === unchecked
   ) {
+    console.log(7);
     return false;
   }
+  return true;
 };
 
 //* ------------------------------ Error Handling ------------------------------ *//
@@ -173,9 +175,9 @@ const isValidPassword = () => {
 const showError = (message) => {
   const error = document.getElementById("error_message");
   error.textContent = message;
-  error.classList.replace("-top-[100px]", "top-5");
+  error.classList.replace("-top-[150px]", "top-5");
   setTimeout(() => {
-    error.classList.replace("top-5", "-top-[100px]");
+    error.classList.replace("top-5", "-top-[150px]");
   }, 3000);
 };
 // Get error message based on error code of sign in
@@ -266,3 +268,24 @@ document.addEventListener("click", (e) => {
       .catch((error) => showError(getSignInErrorMessage(error.code)));
   }
 });
+
+//* ------------------------------ Forgot Password ------------------------------ *//
+// Send password reset email
+document.addEventListener("click", (e) => {
+  if (e.target.id === "forgot_password") {
+    const email = document.querySelector("input[name='email']").value;
+    if (email === "") {
+      showError("Please enter your email address.");
+    } else {
+      auth
+        .sendPasswordResetEmail(email)
+        .then(() => {
+          showError(
+            "Password reset email sent. Please check your inbox and follow the instructions."
+          );
+        })
+        .catch((error) => showError(getSignInErrorMessage(error.code)));
+    }
+  }
+});
+
