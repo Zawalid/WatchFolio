@@ -530,30 +530,17 @@
     </div>
     <div id="g_id_onload"
     data-client_id="392703621413-3pd29t3c08n70gf89cergef24u2suh5i.apps.googleusercontent.com"
-    data-context="signin"
-    data-ux_mode="popup"
     data-login_uri="https://watchfolio.netlify.app"
-    data-auto_select="true"
-    data-itp_support="true">
-</div>
-
-<div class="g_id_signin"
-    data-type="standard"
-    data-shape="pill"
-    data-theme="outline"
-    data-text="signin_with"
-    data-size="large"
-    data-logo_alignment="left">
+    data-your_own_param_1_to_login="any_value"
+    data-your_own_param_2_to_login="any_value">
 </div>
 <script>
-  function initGoogleSignIn() {
-  console.log("Initializing Google One Tap...");
-  gapi.load("auth2", function () {
-    gapi.auth2.init({
-      client_id: "392703621413-3pd29t3c08n70gf89cergef24u2suh5i.apps.googleusercontent.com",
-    });
-  });
-}
+ window.gapi.client
+        .init({
+          clientId:'392703621413-3pd29t3c08n70gf89cergef24u2suh5i.apps.googleusercontent.com',
+          scope: "email",
+          plugin_name:'WatchFolio'
+        })
 
 // Call the initialization function on page load
 window.onload = function () {
