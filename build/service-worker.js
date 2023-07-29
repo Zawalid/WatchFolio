@@ -1,10 +1,10 @@
 "use strict";
 
 //*Static cache
-const staticCache = "static-cache-v6";
+const staticCache = "static-cache-v7";
 
 //* Dynamic cache
-const dynamicCache = "dynamic-cache-v6";
+const dynamicCache = "dynamic-cache-v7";
 
 //* Assets to cache
 const urlsToCache = [
@@ -38,6 +38,8 @@ const urlsToCache = [
   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
   "https://fonts.googleapis.com/css2?family=Bona+Nova:wght@700&display=swap",
   "manifest.json",
+  "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js",
+  "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js",
 ];
 
 //* Limit the dynamic cache size function to 100 items
@@ -62,9 +64,12 @@ const limitDynamicCacheSize = () => {
 self.addEventListener("install", (event) => {
   // Wait until the assets are cached
   event.waitUntil(
-    caches.open(staticCache).then((cache) => {
-      cache.addAll(urlsToCache);
-    }).catch(err => console.log(err))
+    caches
+      .open(staticCache)
+      .then((cache) => {
+        cache.addAll(urlsToCache);
+      })
+      .catch((err) => console.log(err))
   );
 });
 

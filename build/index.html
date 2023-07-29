@@ -52,7 +52,7 @@
   <body
     class="relative h-screen bg-gradient bg-cover before:absolute before:-z-10 before:h-full before:w-full before:bg-background before:bg-cover before:bg-no-repeat before:opacity-20 before:blur-[1px]"
   >
-    <div class="container relative h-full">
+    <div class="container relative h-full flex flex-col gap-12">
       <header class="flex items-center justify-between pt-5">
         <h2
           class="font-logo text-4xl font-extrabold max-md:pb-3 max-sm:text-3xl"
@@ -126,7 +126,7 @@
         </div>
       </header>
       <div
-        class="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 px-3 pt-20"
+        class="flex flex-col h-full justify-center"
       >
         <h1
           class="mx-auto w-2/3 text-center text-6xl font-extrabold text-primaryAccent max-sm:w-full max-sm:text-3xl"
@@ -494,7 +494,7 @@
       </div>
     </div>
     <div
-      class="absolute -top-1/2 left-1/2 -translate-x-1/2 rounded-xl bg-thirdAccent px-5 py-3 text-center font-bold text-textColor transition-all duration-500"
+      class="absolute -top-full left-1/2 -translate-x-1/2 rounded-xl bg-thirdAccent px-5 py-3 text-center font-bold text-textColor transition-all duration-500"
       id="email_verification"
     >
       A verification email has been sent to your email address. Please check

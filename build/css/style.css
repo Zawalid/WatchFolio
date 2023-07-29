@@ -582,6 +582,10 @@ video {
   top: -210px;
 }
 
+.-top-full {
+  top: -100%;
+}
+
 .bottom-0 {
   bottom: 0px;
 }
@@ -1436,10 +1440,6 @@ video {
 .ps-3 {
   -webkit-padding-start: 0.75rem;
           padding-inline-start: 0.75rem;
-}
-
-.pt-20 {
-  padding-top: 5rem;
 }
 
 .pt-5 {
