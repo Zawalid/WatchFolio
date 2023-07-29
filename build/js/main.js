@@ -5,8 +5,8 @@
 import "./watchList.js";
 // TMDB API
 import { options } from "./TMDB.js";
-// Firebase
-import firebase from "./firebaseApp.js";
+// Utilities
+import { handleUserAuth } from "./utilities.js";
 
 //* Initialize the watchLists if they don't exist
 ["watched", "watching", "willWatch"].forEach((list) => {
@@ -337,18 +337,4 @@ if ("serviceWorker" in navigator) {
 }
 
 //* ------------------------------ Authentication ------------------------------ *//
-
-firebase.auth().onAuthStateChanged((user) => {
-  console.log(user);
-  if (user) {
-    //  Send verification email if the user is not verified
-    if (!user.emailVerified) {
-      const verificationMessage = document.getElementById("email_verification");
-      verificationMessage.classList.replace("-top-[150px]", "top-5");
-      setTimeout(() => {
-        verificationMessage.classList.replace("top-5", "-top-[150px]");
-      }, 5000);
-      user.sendEmailVerification().catch((err) => console.log(err));
-    }
-  }
-});
+handleUserAuth();

@@ -47,40 +47,83 @@
       rel="stylesheet"
     />
     <!--* Main JS script  -->
-    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
     <script defer type="module" src="js/main.js"></script>
   </head>
   <body
     class="relative h-screen bg-gradient bg-cover before:absolute before:-z-10 before:h-full before:w-full before:bg-background before:bg-cover before:bg-no-repeat before:opacity-20 before:blur-[1px]"
   >
     <div class="container relative h-full">
-      <header class="flex items-center justify-between py-5">
-        <h2 class="font-logo text-4xl font-extrabold max-sm:text-3xl">
+      <header class="flex items-center justify-between pt-5">
+        <h2
+          class="font-logo text-4xl font-extrabold max-md:pb-3 max-sm:text-3xl"
+        >
           <span class="text-primaryAccent">Watch</span
           ><span class="text-textColor">Folio</span>
         </h2>
-        <ul class="flex items-center gap-7 max-sm:hidden">
+        <ul class="flex items-center gap-7 max-md:hidden">
           <li>
             <a href="index.html">
-              <i
-                class="fa-solid fa-house cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
-              ></i>
+              <span
+                class="cursor-pointer text-lg font-bold text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+                >Home</span
+              >
             </a>
           </li>
-          <li id="watchList_toggler">
-            <i
-              class="fa-solid fa-clipboard-list cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
-            ></i>
-          </li>
           <li>
-            <a href="index.html#explore">
-              <i
-                class="fa-solid fa-globe cursor-pointer text-2xl text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
-              ></i>
+            <a href="#explore">
+              <span
+                class="cursor-pointer text-lg font-bold text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+                >Explore</span
+              >
             </a>
           </li>
         </ul>
+        <div class="group relative pb-5" id="menu_toggler">
+          <img
+            src="./imgs/no profile.png"
+            alt=""
+            class="avatar h-10 w-10 cursor-pointer rounded-full"
+          />
+          <ul
+            class="absolute right-0 top-full -z-10 w-max min-w-[300px] rounded-xl bg-gradient p-5 opacity-0 transition-opacity duration-300 hover:z-10 hover:opacity-100 group-hover:z-10 group-hover:opacity-100"
+          >
+            <li
+              class="mb-5 flex items-center gap-3 border-b border-textColor2 pb-3"
+            >
+              <img
+                src="./imgs/no profile.png"
+                alt=""
+                class="avatar h-14 w-14 rounded-full"
+              />
+              <div>
+                <h3 class="font-bold text-textColor" id="username">Guest</h3>
+                <p class="text-textColor2" id="email"></p>
+              </div>
+            </li>
+            <li
+              class="flex cursor-pointer items-center gap-3 rounded-xl py-2 text-textColor2 transition-colors duration-300 hover:text-primaryAccent max-md:hidden"
+              id="watchList_toggler"
+            >
+              <i class="fa-solid fa-clipboard-list text-2xl"></i>
+              <span class="font-semibold">WatchList</span>
+            </li>
+            <li
+              class="my-3 flex cursor-pointer items-center gap-3 rounded-xl py-2 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+              id="settings_toggler"
+            >
+              <i class="fa-solid fa-gear text-2xl"></i>
+              <span class="font-semibold">Settings</span>
+            </li>
+            <li
+              class="flex cursor-pointer items-center gap-3 rounded-xl py-2 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+              id="sign"
+              data-sign="in"
+            >
+              <i class="fa-solid fa-sign-in text-2xl"></i>
+              <span class="font-semibold">Sign In</span>
+            </li>
+          </ul>
+        </div>
       </header>
       <div
         class="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 px-3 pt-20"
@@ -451,11 +494,35 @@
       </div>
     </div>
     <div
-      class="absolute left-1/2 -top-1/2 -translate-x-1/2 rounded-xl bg-thirdAccent px-5 py-3 text-center font-bold text-textColor transition-all duration-500"
+      class="absolute -top-1/2 left-1/2 -translate-x-1/2 rounded-xl bg-thirdAccent px-5 py-3 text-center font-bold text-textColor transition-all duration-500"
       id="email_verification"
     >
-        A verification email has been sent to your email address. Please check
-        your inbox and click the verification link to verify your email.
+      A verification email has been sent to your email address. Please check
+      your inbox and click the verification link to verify your email.
+    </div>
+    <div
+      class="absolute inset-0 -z-10 flex h-full w-full items-center justify-center bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-300"
+      id="signOut_confirmation"
+    >
+      <div class="rounded-2xl bg-white p-6">
+        <div class="">
+          <h2 class="text-xl font-bold">Are you sure you want to sign out?</h2>
+        </div>
+        <div class="mt-8 flex flex-wrap justify-center gap-8">
+          <button
+            class="mx-auto block rounded-2xl bg-secondaryAccent px-5 py-2 font-bold text-textColor"
+            id="yes"
+          >
+            Yes
+          </button>
+          <button
+            class="mx-auto block rounded-2xl bg-thirdAccent px-5 py-2 font-bold text-textColor"
+            id="no"
+          >
+            No
+          </button>
+        </div>
+      </div>
     </div>
   </body>
 </html>

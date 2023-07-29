@@ -6,23 +6,44 @@ import { showError, isValidPassword, showPassword } from "./utilities.js";
 showPassword();
 
 //* ------------------------------ Firebase ------------------------------ *//
-import firebase from "./firebaseApp.js";
-const auth = firebase.auth();
+import {
+  auth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  updateProfile,
+  sendPasswordResetEmail,
+} from "./firebaseApp.js";
 
-//* ------------------------------ Change HTML on tab click ------------------------------ *//
+//* ------------------------------ Change Form on tab click ------------------------------ *//
 const container = document.getElementById("container");
 const tabs = document.getElementById("tabs");
-// Login HTML
-const loginHtml = container.innerHTML;
+// signIn HTML
+const signInForm = container.innerHTML;
 // Sign Up HTML
-const signUpHtml = `
+const signUpForm = `
   <h1 class="mb-9 text-3xl font-bold text-white max-md:text-center">
     Sign Up & Begin Your
     <span class="text-primaryAccent">TV Show</span> Journey: Track and
     Curate with Ease
   </h1>
 
-  <form id="signup_form">
+  <form id="signUp_form">
+  <div class="flex gap-5 mb-5">
+  <input
+      class="w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
+      type="text"
+      name="first_name"
+      placeholder="First Name"
+    />
+  <input
+      class="w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
+      type="text"
+      name="last_name"
+      placeholder="Last Name"
+    />
+    </div>
     <input
       class="w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
       type="text"
@@ -91,14 +112,14 @@ const addActiveClass = (tab) => {
 };
 //* Switch between tabs
 tabs.addEventListener("click", (e) => {
-  if (e.target.id === "login") {
-    // If login tab is not active (current one), change html
-    e.target.classList.contains("active") || changeHtml(loginHtml);
-    document.title = "WatchFolio - Login";
+  if (e.target.id === "signIn") {
+    // If signIn tab is not active (current one), change html
+    e.target.classList.contains("active") || changeHtml(signInForm);
+    document.title = "WatchFolio - Sign In";
     addActiveClass(e.target);
   }
-  if (e.target.id === "signup") {
-    e.target.classList.contains("active") || changeHtml(signUpHtml);
+  if (e.target.id === "signUp") {
+    e.target.classList.contains("active") || changeHtml(signUpForm);
     document.title = "WatchFolio - Sign Up";
     addActiveClass(e.target);
     // Wait for html to change and satisfy password requirements
@@ -150,52 +171,64 @@ function getSignUpErrorMessage(errorCode) {
   }
 }
 
-//* ------------------------------ Login/Sign Up ------------------------------ *//
+//* ------------------------------ signIn/Sign Up ------------------------------ *//
 // Sign in/up with Email and Password
 document.addEventListener("submit", (e) => {
   e.preventDefault();
-  const email = e.target[0].value;
-  const password = e.target[1].value;
 
-  if (
-    (e.target.id !== "forgot_password_form" && email === "") ||
-    password === ""
-  ) {
-    showError("Please fill in all the required fields.");
-  } else {
-    if (e.target.id === "login_form") {
-      auth
-        .signInWithEmailAndPassword(email, password)
-        .then(() => (window.location.href = "./index.html"))
-        .catch((error) => showError(getSignInErrorMessage(error.code)));
-    } else if (e.target.id === "signup_form") {
-      if (!isValidPassword()) {
-        showError("Password is too weak. Please choose a stronger password.");
-      } else {
-        auth
-          .createUserWithEmailAndPassword(email, password)
-          .then((userCredential) => {
-            const user = userCredential.user;
-            // Switch to login tab
-            tabs.children[0].click();
-            // Wait for html to change and add email to input
-            setTimeout(() => {
-              console.log(document.querySelector("input"));
-              document.querySelector("input").focus();
-              document.querySelector("input").value = user.email;
-            }, 1100);
-          })
-          .catch((error) => showError(getSignUpErrorMessage(error.code)));
-      }
+  if (e.target.id === "signIn_form") {
+    const email = e.target[0].value;
+    const password = e.target[1].value;
+    if (email === "" || password === "") {
+      showError("Please enter your email and password.");
+      return;
+    }
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => (window.location.href = "./index.html"))
+      .catch((error) => showError(getSignInErrorMessage(error.code)));
+  } else if (e.target.id === "signUp_form") {
+    const firstName = e.target[0].value;
+    const lastName = e.target[1].value;
+    const email = e.target[2].value;
+    const password = e.target[3].value;
+    if (
+      email === "" ||
+      password === "" ||
+      firstName === "" ||
+      lastName === ""
+    ) {
+      showError("Please fill in all the fields.");
+      return;
+    }
+    if (!isValidPassword()) {
+      showError("Password is too weak. Please choose a stronger password.");
+    } else {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          // Update user's display name
+          updateProfile({
+            displayName: `${firstName} ${lastName}`,
+          }).catch((error) => showError(getSignUpErrorMessage(error.code)));
+
+          // Switch to signIn tab
+          tabs.children[0].click();
+          // Wait for html to change and add email to input
+          setTimeout(() => {
+            console.log(document.querySelector("input"));
+            document.querySelector("input").focus();
+            document.querySelector("input").value = user.email;
+          }, 1100);
+        })
+        .catch((error) => showError(getSignUpErrorMessage(error.code)));
     }
   }
 });
 // Sign in/up with Google
 document.addEventListener("click", (e) => {
   if (e.target.closest("#google_signup")) {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth
-      .signInWithPopup(provider)
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
       .then(() => (window.location.href = "./index.html"))
       .catch((error) => showError(getSignInErrorMessage(error.code)));
   }
@@ -230,8 +263,7 @@ document.addEventListener("submit", (e) => {
     if (email === "") {
       showError("Please enter your email address.");
     } else {
-      auth
-        .sendPasswordResetEmail(email)
+      sendPasswordResetEmail(auth, email)
         .then(() => {
           // Change html to show loading animation
           forgotPassContainer.firstElementChild.innerHTML = `

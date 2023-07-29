@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WatchFolio - Login</title>
+    <title>WatchFolio - Sign In</title>
     <!--* Favicons -->
     <link
       rel="apple-touch-icon"
@@ -46,8 +46,6 @@
       rel="stylesheet"
     />
     <!--* Main JS script  -->
-    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
     <script defer type="module" src="js/auth.js"></script>
   </head>
   <body class="relative flex flex-col bg-gradient md:flex-row">
@@ -65,7 +63,7 @@
           Welcome <span class="text-primaryAccent">Back!</span>
         </h1>
 
-        <form id="login_form">
+        <form id="signIn_form">
           <input
             class="w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
             type="text"
@@ -94,7 +92,7 @@
           </button>
           <input
             type="submit"
-            value="Login"
+            value="Sign In"
             class="w-full cursor-pointer rounded-2xl bg-primaryAccent py-3 text-lg font-bold text-black transition hover:bg-opacity-80"
           />
         </form>
@@ -115,13 +113,13 @@
       <div class="flex justify-center gap-5" id="tabs">
         <button
           class="active flex items-center justify-center gap-2 rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
-          id="login"
+          id="signIn"
         >
-          Login <i class="fa-solid fa-right-to-bracket"></i>
+          Sign In <i class="fa-solid fa-right-to-bracket"></i>
         </button>
         <button
           class="flex items-center justify-center gap-2 rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
-          id="signup"
+          id="signUp"
         >
           Sign Up <i class="fa-solid fa-user-plus"></i>
         </button>

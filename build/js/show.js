@@ -10,6 +10,8 @@ import {
 
 // TMDB API
 import { options, genders, baseUrl } from "./TMDB.js";
+// Utilities
+import { handleUserAuth } from "./utilities.js";
 
 //* ------------------ Creating overview containers (Avoid repetition) ------------------ *//
 const overviewContainer = `
@@ -193,7 +195,7 @@ const showOverview = async () => {
     alt=""
     class="w-[300px] rounded-lg shadow-shadow1 max-sm:w-[230px]"
   />
-  <div class="flex flex-1 flex-col gap-6 max-sm:items-center">
+  <div class="flex w-full flex-1 flex-col gap-6 max-sm:items-center">
     <h1
       class="font-logo text-4xl font-extrabold text-primaryAccent max-sm:text-3xl"
     >
@@ -215,7 +217,7 @@ const showOverview = async () => {
           .join("")}
     </div>
     </div>
-    <div class="mt-5  gap-6 w-3/4 max-sm:w-full  grid grid-cols-[repeat(auto-fit,minmax(152px,1fr))]">
+    <div class="mt-5 gap-6 w-3/4 max-sm:w-full  grid grid-cols-[repeat(auto-fit,minmax(152px,1fr))]">
       <button
         class=" cursor-pointer rounded-3xl bg-secondaryAccent px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80 flex items-baseline gap-2 justify-center
         " data-list="watched"
@@ -979,6 +981,7 @@ const episodeOverview = async (showName, season, otherInfo) => {
 `;
   displayOverview(episodeOverviewContainer, html, episodePoster);
 };
+
 //* Get the show official homepage
 const getShowHomePage = async (showName) => {
   const res = await fetch(
@@ -1219,3 +1222,6 @@ const hideOrShowSeasonButtons = () => {
     (h2) => h2.innerHTML === episodes.watchedEpisodes.icon
   ) && document.querySelector("#seasonWatched span")?.remove();
 };
+
+//* ------------------------------ Authentication ------------------------------ *//
+handleUserAuth();

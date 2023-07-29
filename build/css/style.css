@@ -642,6 +642,10 @@ video {
   top: 75px;
 }
 
+.top-full {
+  top: 100%;
+}
+
 .-z-10 {
   z-index: -10;
 }
@@ -658,16 +662,12 @@ video {
   z-index: 50;
 }
 
-.z-\[9999\] {
-  z-index: 9999;
-}
-
 .z-\[20\] {
   z-index: 20;
 }
 
-.z-\[30\] {
-  z-index: 30;
+.z-\[9999\] {
+  z-index: 9999;
 }
 
 .col-span-5 {
@@ -681,6 +681,11 @@ video {
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
+}
+
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .my-7 {
@@ -808,6 +813,10 @@ video {
   height: 2.5rem;
 }
 
+.h-14 {
+  height: 3.5rem;
+}
+
 .h-64 {
   height: 16rem;
 }
@@ -879,6 +888,10 @@ video {
 
 .w-10 {
   width: 2.5rem;
+}
+
+.w-14 {
+  width: 3.5rem;
 }
 
 .w-16 {
@@ -956,6 +969,15 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.w-max {
+  width: -moz-max-content;
+  width: max-content;
+}
+
+.min-w-\[300px\] {
+  min-width: 300px;
 }
 
 .flex-1 {
@@ -1155,6 +1177,10 @@ video {
   overflow-y: auto;
 }
 
+.rounded {
+  border-radius: 0.25rem;
+}
+
 .rounded-2xl {
   border-radius: 1rem;
 }
@@ -1193,6 +1219,10 @@ video {
 
 .border {
   border-width: 1px;
+}
+
+.border-b {
+  border-bottom-width: 1px;
 }
 
 .border-l {
@@ -1410,6 +1440,10 @@ video {
 
 .pt-20 {
   padding-top: 5rem;
+}
+
+.pt-5 {
+  padding-top: 1.25rem;
 }
 
 .pt-7 {
@@ -1666,7 +1700,8 @@ li.active,
   color: rgb(255 193 7 / var(--tw-text-opacity));
 }
 
-#forgot_password_container.\!show,
+#signOut_confirmation.\!show,
+  #forgot_password_container.\!show,
   #episode_overview.\!show,
   #person_overview.\!show,
   #season_overview.\!show {
@@ -1674,7 +1709,8 @@ li.active,
   opacity: 1;
 }
 
-#forgot_password_container.show,
+#signOut_confirmation.show,
+  #forgot_password_container.show,
   #episode_overview.show,
   #person_overview.show,
   #season_overview.show {
@@ -1682,7 +1718,8 @@ li.active,
   opacity: 1;
 }
 
-#forgot_password_container.\!show,
+#signOut_confirmation.\!show,
+  #forgot_password_container.\!show,
   #episode_overview.\!show,
   #person_overview.\!show,
   #season_overview.\!show {
@@ -1899,6 +1936,10 @@ html {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
+.hover\:z-10:hover {
+  z-index: 10;
+}
+
 .hover\:w-48:hover {
   width: 12rem;
 }
@@ -1935,6 +1976,10 @@ html {
 .hover\:text-textColor2:hover {
   --tw-text-opacity: 1;
   color: rgb(212 212 212 / var(--tw-text-opacity));
+}
+
+.hover\:opacity-100:hover {
+  opacity: 1;
 }
 
 .hover\:shadow-\[-19px_15px_20px_\#000\]:hover {
@@ -1974,6 +2019,10 @@ html {
 
 .group:hover .group-hover\:bg-opacity-50 {
   --tw-bg-opacity: 0.5;
+}
+
+.group:hover .group-hover\:opacity-100 {
+  opacity: 1;
 }
 
 .group:hover .group-hover\:blur-0 {
@@ -2070,6 +2119,10 @@ html {
     padding-bottom: 6rem;
   }
 
+  .max-md\:pb-3 {
+    padding-bottom: 0.75rem;
+  }
+
   .max-md\:pb-7 {
     padding-bottom: 1.75rem;
   }
@@ -2098,10 +2151,6 @@ html {
 
   .max-sm\:mt-auto {
     margin-top: auto;
-  }
-
-  .max-sm\:hidden {
-    display: none;
   }
 
   .max-sm\:h-\[250px\] {

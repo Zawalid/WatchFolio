@@ -1,3 +1,21 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+
+import {
+  getAuth,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  GoogleAuthProvider,
+  sendEmailVerification,
+  updateProfile,
+  verifyPasswordResetCode,
+  confirmPasswordReset,
+  applyActionCode,
+  sendPasswordResetEmail,
+} from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+
 const firebaseConfig = {
   apiKey: "AIzaSyC6En24MyhaNsRCU_bV8PRdI6hn3lon-Wc",
   authDomain: "watchfolio-93175.firebaseapp.com",
@@ -8,6 +26,24 @@ const firebaseConfig = {
   appId: "1:338374125620:web:ff6262fa8eb4d26ae14261",
   measurementId: "G-LEKBTCG8J3",
 };
+
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-export default firebase;
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth();
+
+export {
+  auth,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  GoogleAuthProvider,
+  sendEmailVerification,
+  updateProfile,
+  verifyPasswordResetCode,
+  confirmPasswordReset,
+  applyActionCode,
+  sendPasswordResetEmail,
+};

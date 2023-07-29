@@ -1,10 +1,10 @@
 "use strict";
 
 //*Static cache
-const staticCache = "static-cache-v5";
+const staticCache = "static-cache-v6";
 
 //* Dynamic cache
-const dynamicCache = "dynamic-cache-v5";
+const dynamicCache = "dynamic-cache-v6";
 
 //* Assets to cache
 const urlsToCache = [
@@ -27,6 +27,7 @@ const urlsToCache = [
   "imgs/undraw_no_data_re_kwbl.svg",
   "imgs/no_result.png",
   "imgs/json.png",
+  "imgs/no profile.png",
   "imgs/wrong.svg",
   "imgs/placeHolder.png",
   "imgs/urban-line-404-1.gif",

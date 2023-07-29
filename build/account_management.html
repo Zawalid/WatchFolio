@@ -35,8 +35,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
   </head>
   <body class="h-screen bg-gradient">
     <div class="container relative flex h-full flex-col py-5">
@@ -62,7 +60,11 @@
       </div>
     </div>
     <script type="module">
-      import firebase from "./js/firebaseApp.js";
+      import {
+        verifyPasswordResetCode,
+        confirmPasswordReset,
+        applyActionCode,
+      } from "./js/firebaseApp.js";
       import {
         showError,
         isValidPassword,
@@ -92,9 +94,7 @@
         // Change the page title
         document.title = "Verifying";
         // Verify the email
-        firebase
-          .auth()
-          .applyActionCode(oobCode)
+        applyActionCode(auth, oobCode)
           .then(() => {
             // Email verification successful
             container.innerHTML = `
@@ -260,15 +260,11 @@
               return;
             }
             // Check if the reset code is valid
-            firebase
-              .auth()
-              .verifyPasswordResetCode(oobCode)
+            verifyPasswordResetCode(auth, oobCode)
               .then((email) => {
                 // Valid reset code
                 // Reset the password after all the checks
-                firebase
-                  .auth()
-                  .confirmPasswordReset(oobCode, password)
+                confirmPasswordReset(auth, oobCode, password)
                   .then(() => {
                     // Password reset successful
                     container.innerHTML = `
