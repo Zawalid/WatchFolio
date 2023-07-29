@@ -7,11 +7,11 @@ const showPassword = () => {
       if (input.type == "password" && input.value != "") {
         input.type = "text";
         button.className =
-          "fa-solid fa-eye-slash absolute right-3 top-1/2 -translate-y-1/2  cursor-pointer text-sm text-textColor2";
+          "fa-solid fa-eye-slash absolute right-3 top-1/2 cursor-pointer text-sm text-textColor2";
       } else {
         input.type = "password";
         button.className =
-          "fa-solid fa-eye absolute right-3 top-1/2 -translate-y-1/2  cursor-pointer text-sm text-textColor2";
+          "fa-solid fa-eye absolute right-3 top-1/2 cursor-pointer text-sm text-textColor2";
       }
     }
     if (

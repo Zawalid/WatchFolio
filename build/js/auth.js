@@ -31,13 +31,13 @@ const signUpHtml = `
     />
     <div class="relative">
             <input
-              class="peer mt-5 w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
+              class="peer mt-5 relative z-[20] w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
               type="password"
               name="password"
               placeholder="Password"
             />
             <i
-              class="fa-solid fa-eye eye-icon  absolute right-3 top-1/2   cursor-pointer text-sm text-textColor2"
+              class="fa-solid fa-eye eye-icon  absolute right-3 top-1/2  z-30 cursor-pointer text-sm text-textColor2"
               id="show_password"
             ></i>
             <div class="absolute w-full sm:w-[325px]  rounded-xl shadow-shadow-1 bg-white p-5 -top-[210px] transition-opacity duration-500 opacity-0 -z-10 peer-focus:opacity-100 peer-focus:z-10" id="password_validation">

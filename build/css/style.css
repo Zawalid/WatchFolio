@@ -570,6 +570,10 @@ video {
   inset: 0px;
 }
 
+.-top-1\/2 {
+  top: -50%;
+}
+
 .-top-\[150px\] {
   top: -150px;
 }
@@ -638,10 +642,6 @@ video {
   top: 75px;
 }
 
-.-top-1\/2 {
-  top: -50%;
-}
-
 .-z-10 {
   z-index: -10;
 }
@@ -660,6 +660,14 @@ video {
 
 .z-\[9999\] {
   z-index: 9999;
+}
+
+.z-\[20\] {
+  z-index: 20;
+}
+
+.z-\[30\] {
+  z-index: 30;
 }
 
 .col-span-5 {

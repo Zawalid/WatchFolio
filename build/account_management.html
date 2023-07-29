@@ -158,18 +158,18 @@
           </p>
           <div class="relative">
             <input
-              class="peer w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
+              class="peer relative z-[20] mt-5 w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
               type="password"
               name="password"
               id="password"
               placeholder="New password"
             />
             <i
-              class="fa-solid fa-eye eye-icon absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-sm text-textColor2"
+              class="fa-solid fa-eye eye-icon absolute z-30 right-3 top-1/2 cursor-pointer text-sm text-textColor2"
               id="show_password"
             ></i>
             <div
-              class="shadow-shadow-1 absolute -top-[210px] -z-10 w-full rounded-xl bg-white p-5 opacity-0 transition-opacity duration-500 peer-focus:z-10 peer-focus:opacity-100 sm:w-[325px]"
+            class="absolute w-full sm:w-[325px]  rounded-xl shadow-shadow-1 bg-white p-5 -top-[210px] transition-opacity duration-500 opacity-0 -z-10 peer-focus:opacity-100 peer-focus:z-10"
               id="password_validation"
             >
               <h3 class="text-grey-700 font-bold">Password requirements</h3>
