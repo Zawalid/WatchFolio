@@ -39,6 +39,11 @@
     />
     <!--* Main Css  -->
     <link rel="stylesheet" href="./css/style.css" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.css"
+    />
     <!--* Google Fonts  -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -47,12 +52,13 @@
       rel="stylesheet"
     />
     <!--* Main JS script  -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script defer type="module" src="js/main.js"></script>
   </head>
   <body
     class="relative h-screen bg-gradient bg-cover before:absolute before:-z-10 before:h-full before:w-full before:bg-background before:bg-cover before:bg-no-repeat before:opacity-20 before:blur-[1px]"
   >
-    <div class="container relative h-full flex flex-col gap-12">
+    <div class="container relative flex h-full flex-col gap-12">
       <header class="flex items-center justify-between pt-5">
         <h2
           class="font-logo text-4xl font-extrabold max-md:pb-3 max-sm:text-3xl"
@@ -125,9 +131,7 @@
           </ul>
         </div>
       </header>
-      <div
-        class="flex flex-col h-full justify-center"
-      >
+      <div class="flex h-full flex-col justify-center">
         <h1
           class="mx-auto w-2/3 text-center text-6xl font-extrabold text-primaryAccent max-sm:w-full max-sm:text-3xl"
         >
@@ -524,5 +528,39 @@
         </div>
       </div>
     </div>
+    <div id="g_id_onload"
+    data-client_id="392703621413-3pd29t3c08n70gf89cergef24u2suh5i.apps.googleusercontent.com"
+    data-context="signin"
+    data-ux_mode="popup"
+    data-login_uri="https://watchfolio.netlify.app"
+    data-auto_select="true"
+    data-itp_support="true">
+</div>
+
+<div class="g_id_signin"
+    data-type="standard"
+    data-shape="pill"
+    data-theme="outline"
+    data-text="signin_with"
+    data-size="large"
+    data-logo_alignment="left">
+</div>
+<script>
+  function initGoogleSignIn() {
+  console.log("Initializing Google One Tap...");
+  gapi.load("auth2", function () {
+    gapi.auth2.init({
+      client_id: "392703621413-3pd29t3c08n70gf89cergef24u2suh5i.apps.googleusercontent.com",
+    });
+  });
+}
+
+// Call the initialization function on page load
+window.onload = function () {
+  initGoogleSignIn();
+};
+
+</script>
   </body>
+
 </html>

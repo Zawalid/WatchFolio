@@ -33,6 +33,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 
 export {
+  firebaseConfig,
   auth,
   onAuthStateChanged,
   createUserWithEmailAndPassword,

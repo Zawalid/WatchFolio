@@ -102,13 +102,11 @@ const handleUserAuth = () => {
   onAuthStateChanged(auth, (user) => {
     const signButton = document.getElementById("sign");
     // Check if the user is logged in or not
-    console.log(user);
     if (user) {
       //  Send verification email if the user is not verified and the user is in the home page
       if (
         (!user.emailVerified && window.location.pathname === "/") ||
         window.location.pathname === "/index.html"
-        
       ) {
         const verificationMessage =
           document.getElementById("email_verification");
@@ -120,17 +118,6 @@ const handleUserAuth = () => {
       }
       // Display the user's info
       displayUserInfo(user);
-      // Store the user's info in the session storage
-      const { displayName, email, photoURL, uid } = user;
-      sessionStorage.setItem(
-        "user",
-        JSON.stringify({
-          displayName,
-          email,
-          photoURL,
-          uid,
-        })
-      );
       // Change the text of the button to sign out
       signButton.innerHTML = `
     <i class="fa-solid fa-sign-out text-2xl"></i>
@@ -139,14 +126,11 @@ const handleUserAuth = () => {
       //  Change the data-sign of the button to out
       signButton.dataset.sign = "out";
     } else {
-      // Remove the user's info from the session storage
-      sessionStorage.removeItem("user");
       // Change the text of the button to sign in
       signButton.innerHTML = `
    <i class="fa-solid fa-sign-in text-2xl"></i>
    <span class="font-semibold">Sign In</span>
    `;
-
       //  Change the data-sign of the button to in
       signButton.dataset.sign = "in";
       // Hide the sign out confirmation
