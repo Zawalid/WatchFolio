@@ -6,7 +6,7 @@ import "./watchList.js";
 // TMDB API
 import { options } from "./TMDB.js";
 // Utilities
-import { handleUserAuth } from "./utilities.js";
+import { handleUserAuth, signInWithCredential } from "./utilities.js";
 
 //* Initialize the watchLists if they don't exist
 ["watched", "watching", "willWatch"].forEach((list) => {
@@ -338,3 +338,26 @@ if ("serviceWorker" in navigator) {
 
 //* ------------------------------ Authentication ------------------------------ *//
 handleUserAuth();
+google.accounts.id.initialize({
+  client_id:
+    "392703621413-3pd29t3c08n70gf89cergef24u2suh5i.apps.googleusercontent.com",
+  callback: handleCredentialResponse,
+});
+
+// Callback function to handle the One Tap response
+function handleCredentialResponse(response) {
+  console.log(response);
+  if (response["credential"]) {
+    // Send the credential to the Firebase Auth backend.
+    signInWithCredential(auth, response["credential"])
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user);
+        // ...
+      })
+      .catch((error) => {
+        // Handle error.
+      });
+  }
+}
