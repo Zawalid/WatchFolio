@@ -340,6 +340,7 @@ if ("serviceWorker" in navigator) {
 
 //* ------------------------------ Authentication ------------------------------ *//
 handleUserAuth();
+
 google.accounts.id.initialize({
   client_id:
     "392703621413-3pd29t3c08n70gf89cergef24u2suh5i.apps.googleusercontent.com",
