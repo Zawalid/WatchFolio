@@ -6,7 +6,9 @@ import "./watchList.js";
 // TMDB API
 import { options } from "./TMDB.js";
 // Utilities
-import { handleUserAuth, signInWithCredential } from "./utilities.js";
+import { handleUserAuth } from "./utilities.js";
+
+import {signInWithCredential} from "./firebaseApp.js";
 
 //* Initialize the watchLists if they don't exist
 ["watched", "watching", "willWatch"].forEach((list) => {
