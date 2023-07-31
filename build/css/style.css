@@ -570,6 +570,10 @@ video {
   inset: 0px;
 }
 
+.-bottom-24 {
+  bottom: -6rem;
+}
+
 .-top-1\/2 {
   top: -50%;
 }
@@ -648,6 +652,14 @@ video {
 
 .top-full {
   top: 100%;
+}
+
+.bottom-2 {
+  bottom: 0.5rem;
+}
+
+.bottom-24 {
+  bottom: 6rem;
 }
 
 .-z-10 {
@@ -1633,6 +1645,10 @@ video {
   opacity: 0;
 }
 
+.opacity-100 {
+  opacity: 1;
+}
+
 .shadow-shadow1 {
   --tw-shadow: -7px 11px 20px #000000a1;
   --tw-shadow-colored: -7px 11px 20px var(--tw-shadow-color);
@@ -1721,8 +1737,7 @@ li.active,
   color: rgb(255 193 7 / var(--tw-text-opacity));
 }
 
-#signOut_confirmation.\!show,
-  #forgot_password_container.\!show,
+#forgot_password_container.\!show,
   #episode_overview.\!show,
   #person_overview.\!show,
   #season_overview.\!show {
@@ -1730,8 +1745,7 @@ li.active,
   opacity: 1;
 }
 
-#signOut_confirmation.show,
-  #forgot_password_container.show,
+#forgot_password_container.show,
   #episode_overview.show,
   #person_overview.show,
   #season_overview.show {
@@ -1739,8 +1753,7 @@ li.active,
   opacity: 1;
 }
 
-#signOut_confirmation.\!show,
-  #forgot_password_container.\!show,
+#forgot_password_container.\!show,
   #episode_overview.\!show,
   #person_overview.\!show,
   #season_overview.\!show {

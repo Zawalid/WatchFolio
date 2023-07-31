@@ -150,16 +150,17 @@ const handleUserAuth = () => {
     if (e.target.closest("#sign")) {
       e.target.closest("#sign").dataset.sign === "in"
         ? (window.location.href = "./authentication.html")
-        : signOutConfirmation.classList.add("show");
+        : signOutConfirmation.classList.replace("-bottom-24", "bottom-0");
     }
   });
   // Sign out
   signOutConfirmation.addEventListener("click", (e) => {
+    if (e.target.tagName === "BUTTON") {
+      signOutConfirmation.classList.replace("bottom-0", "-bottom-24");
+    }
     if (e.target.id === "yes") {
       // Sign out the user
       signOut(auth);
-    } else if (e.target.id === "no") {
-      signOutConfirmation.classList.remove("show");
     }
   });
 };
