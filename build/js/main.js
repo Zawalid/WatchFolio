@@ -351,7 +351,7 @@ function handleGoogleOneTapSignIn() {
   });
   google.accounts.id.prompt();
 }
-
+console.log(auth);
 // Callback function to handle the One Tap response
 function handleCredentialResponse(response) {
   console.log(response);
@@ -367,9 +367,6 @@ function handleCredentialResponse(response) {
       })
       .catch((error) => {
         console.log(error);
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ...
       });
   }
 }
