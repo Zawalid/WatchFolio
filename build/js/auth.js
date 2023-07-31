@@ -12,6 +12,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
+  FacebookAuthProvider,
   updateProfile,
   sendPasswordResetEmail,
 } from "./firebaseApp.js";
@@ -84,13 +85,23 @@ const signUpForm = `
     <span class="text-textColor2">or continue with</span>
     <span class="h-[1px] w-full flex-1 bg-textColor2"></span>
   </div>
+  <div class="flex flex-wrap gap-3">
   <button
-    class="flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl bg-white py-3 font-bold text-black"
+    class="flex min-w-[200px] flex-1 cursor-pointer items-center justify-center gap-3 rounded-xl bg-white py-3 font-bold text-black"
     id="google_signup"
   >
     <img src="./imgs/Google Logo.svg" alt="" />
     <span class="font-semibold">Google Account</span>
   </button>
+  <button
+    class="flex min-w-[200px] flex-1 cursor-pointer items-center justify-center gap-3 rounded-xl bg-[#1877F2] py-3 font-bold text-textColor"
+    id="facebook_signup"
+  >
+    <i class="fa-brands fa-facebook text-[24px]"></i>
+    <span class="font-semibold">Facebook Account</span>
+  </button>
+  
+</div>
 `;
 //* Change HTML function
 const changeHtml = (html) => {
@@ -150,7 +161,7 @@ function getSignInErrorMessage(errorCode) {
     case "auth/provider-already-linked":
       return "This provider is already linked to another account.";
     case "auth/account-exists-with-different-credential":
-      return "You've already signed up with this provider. Please sign in with your original method.";
+      return "Uh-oh! It seems there's already an account with this email using a different method. Please sign in with the correct method. You can link this method to your account later in the settings.";
     default:
       return "An error occurred during sign-in. Please try again later.";
   }
@@ -224,15 +235,21 @@ document.addEventListener("submit", (e) => {
     }
   }
 });
-// Sign in/up with Google
-document.addEventListener("click", (e) => {
-  if (e.target.closest("#google_signup")) {
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
-      .then(() => (window.location.href = "./index.html"))
-      .catch((error) => showError(getSignInErrorMessage(error.code)));
-  }
-});
+// Sign in/up with Google, Facebook
+const signInWithProvider = (id, providerName) => {
+  document.addEventListener("click", (e) => {
+    if (e.target.closest(`#${id}`)) {
+      const provider = new providerName();
+      signInWithPopup(auth, provider)
+        .then(() => (window.location.href = "/"))
+        .catch((error) => showError(getSignInErrorMessage(error.code)));
+    }
+  });
+};
+signInWithProvider("google_signup", GoogleAuthProvider);
+signInWithProvider("facebook_signup", FacebookAuthProvider);
+
+
 
 //* ------------------------------ Forgot Password ------------------------------ *//
 const forgotPassContainer = document.getElementById(

@@ -14,11 +14,11 @@ const showPassword = () => {
       if (input.type == "password" && input.value != "") {
         input.type = "text";
         button.className =
-          "fa-solid fa-eye-slash absolute right-3 top-1/2 cursor-pointer text-sm text-textColor2";
+          "fa-solid fa-eye-slash absolute z-30 right-3 top-1/2 cursor-pointer text-sm text-textColor2";
       } else {
         input.type = "password";
         button.className =
-          "fa-solid fa-eye absolute right-3 top-1/2 cursor-pointer text-sm text-textColor2";
+          "fa-solid fa-eye absolute z-30 right-3 top-1/2 cursor-pointer text-sm text-textColor2";
       }
     }
     if (
@@ -28,7 +28,7 @@ const showPassword = () => {
     ) {
       input.type = "password";
       button.className =
-        "fa-solid fa-eye absolute right-3 top-1/2 -translate-y-1/2  cursor-pointer text-sm text-textColor2";
+        "fa-solid fa-eye absolute z-30 right-3 top-1/2 cursor-pointer text-sm text-textColor2";
     }
   });
 };
@@ -78,7 +78,7 @@ const showError = (message) => {
   error.classList.replace("-top-1/2", "top-5");
   setTimeout(() => {
     error.classList.replace("top-5", "-top-1/2");
-  }, 3000);
+  }, 4000);
 };
 
 //* Display user info
@@ -105,9 +105,11 @@ const handleUserAuth = () => {
     if (user) {
       //  Send verification email if the user is not verified and the user is in the home page
       if (
-        (!user.emailVerified && window.location.pathname === "/") ||
-        window.location.pathname === "/index.html"
+        !user.emailVerified &&
+        (window.location.pathname === "/" ||
+          window.location.pathname === "/index.html")
       ) {
+        console.log(user);
         const verificationMessage =
           document.getElementById("email_verification");
         verificationMessage.classList.replace("-top-[150px]", "top-5");

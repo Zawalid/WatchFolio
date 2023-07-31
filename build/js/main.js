@@ -349,7 +349,7 @@ handleUserAuth();
 function handleGoogleOneTapSignIn() {
   google.accounts.id.initialize({
     client_id:
-      "338374125620-1ivu3fro23h0aqc25b2m1l527h3jr4t6.apps.googleusercontent.com",
+      "338374125620-cd7p79tha3ehscal53eonfjt8n2m5gud.apps.googleusercontent.com",
     callback: handleCredentialResponse,
   });
   google.accounts.id.prompt();
