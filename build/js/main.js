@@ -8,7 +8,7 @@ import { options } from "./TMDB.js";
 // Utilities
 import { handleUserAuth } from "./utilities.js";
 // Firebase
-import { auth, signInWithCredential } from "./firebaseApp.js";
+import { auth, signInWithCredential , GoogleAuthProvider } from "./firebaseApp.js";
 
 //* Initialize the watchLists if they don't exist
 ["watched", "watching", "willWatch"].forEach((list) => {
