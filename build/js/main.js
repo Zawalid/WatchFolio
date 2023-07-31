@@ -362,9 +362,11 @@ function handleCredentialResponse(response) {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
+        console.log(user);
         // ...
       })
       .catch((error) => {
+        console.log(error);
         const errorCode = error.code;
         const errorMessage = error.message;
         // ...
