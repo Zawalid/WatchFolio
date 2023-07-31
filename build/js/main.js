@@ -8,7 +8,11 @@ import { options } from "./TMDB.js";
 // Utilities
 import { handleUserAuth } from "./utilities.js";
 // Firebase
-import { auth, signInWithCredential , GoogleAuthProvider } from "./firebaseApp.js";
+import {
+  auth,
+  signInWithCredential,
+  GoogleAuthProvider,
+} from "./firebaseApp.js";
 
 //* Initialize the watchLists if they don't exist
 ["watched", "watching", "willWatch"].forEach((list) => {
@@ -339,10 +343,9 @@ if ("serviceWorker" in navigator) {
 }
 
 //* ------------------------------ Authentication ------------------------------ *//
-//*
+//* Keep track of user authentication
 handleUserAuth();
 //* Sign in with google one tap
-
 function handleGoogleOneTapSignIn() {
   google.accounts.id.initialize({
     client_id:
@@ -351,26 +354,15 @@ function handleGoogleOneTapSignIn() {
   });
   google.accounts.id.prompt();
 }
-console.log(auth);
-// Callback function to handle the One Tap response
+//* Callback function to handle the One Tap response
 function handleCredentialResponse(response) {
   if (response.credential) {
     const idToken = response.credential;
     // Use the ID token to sign in with Firebase
-    signInWithCredential(auth, GoogleAuthProvider.credential(idToken))
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log('User signed in:', user);
-        // You can now use the user object or redirect the user to the app's main page.
-      })
-      .catch((error) => {
-        // Handle errors if any
-        console.error('Error signing in with credential:', error);
-      });
+    signInWithCredential(auth, GoogleAuthProvider.credential(idToken));
   }
 }
-// Automatically handle the Google One Tap sign-in when the page loads
+//* Automatically handle the Google One Tap sign-in when the page loads
 window.onload = function () {
   handleGoogleOneTapSignIn();
 };

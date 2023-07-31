@@ -47,6 +47,7 @@ module.exports = {
       animation: {
         bgSlide: "bgSlide 20s linear alternate infinite",
         fadeIn: "fadeIn 1s linear alternate infinite",
+        skeleton: "skeleton 1s linear alternate infinite",
       },
       keyframes: {
         bgSlide: {
@@ -58,6 +59,10 @@ module.exports = {
           "0%": { opacity: 0 },
           "100%": { opacity: 1 },
         },
+        skeleton: {
+          "0%": { backgroundColor: "rgb(212 212 212 / 60%)" },
+          "100%": { backgroundColor: "rgb(212 212 212 / 100%)" },
+        }
       },
     },
   },

@@ -157,17 +157,12 @@ const showOverviewContainer = document.getElementById("overview");
 let showName, currentSeason, showsSeasons;
 const showOverview = async () => {
   try {
-    showLoading(showOverviewContainer);
     const res = await fetch(
       `https://api.tvmaze.com/shows/${window.location.search.split("=")[1]}`
     );
     //   Convert the response to json
     const show = await res.json();
-    //   Set the background image
-    document.documentElement.style.setProperty(
-      "--bg",
-      `url(${show.image.original})`
-    );
+    // Set the show name to use it in the other functions
     showName = show.name;
     // Set the title
     document.title = show.name;
@@ -185,143 +180,131 @@ const showOverview = async () => {
     `;
       })
       .join("");
-
-    // Create the info div
-    const info = `
-  
-  <div class="mb-16 mt-9 flex w-full items-center gap-7 max-sm:flex-col">
-  <img
-    src="${show.image?.original || "./imgs/placeholder.png"}"
-    alt=""
-    class="w-[300px] rounded-lg shadow-shadow1 max-sm:w-[230px]"
-  />
-  <div class="flex w-full flex-1 flex-col gap-6 max-sm:items-center">
-    <h1
-      class="font-logo text-4xl font-extrabold text-primaryAccent max-sm:text-3xl"
-    >
-      ${show.name}
-      <span class="ms-2 font-mono text-lg font-semibold text-textColor"
-        >(${show.premiered.split("-")[0]})</span
-      >
-    </h1>
-    <div class="flex gap-5 flex-wrap max-sm:justify-center">
-      ${genres}
-    </div>
-    <div
-      class="flex w-fit items-center gap-5 rounded-lg bg-dark bg-opacity-30 px-3 py-1 text-sm font-semibold text-textColor backdrop-blur-sm"
-    >
-      <span>${show.rating.average || "Unrated"}</span>
-      <div class="flex gap-2">
-        ${getStars(Math.round(show.rating.average))
-          .map((star) => star.outerHTML)
-          .join("")}
-    </div>
-    </div>
-    <div class="mt-5 gap-6 w-3/4 max-sm:w-full  grid grid-cols-[repeat(auto-fit,minmax(152px,1fr))]">
-      <button
-        class=" cursor-pointer rounded-3xl bg-secondaryAccent px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80 flex items-baseline gap-2 justify-center
-        " data-list="watched"
-      >
-        I Watched
-      </button>
-      <button
-        class=" cursor-pointer rounded-3xl bg-dark px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80 flex items-baseline gap-2 justify-center
-        " data-list="watching"
-      >
-        I'm Watching
-      </button>
-      <button
-        class="max-wrap:col-span-full cursor-pointer rounded-3xl bg-thirdAccent px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80 flex items-baseline gap-2 justify-center
-        " data-list="willWatch"
-      >
-        I Will Watch
-      </button>
-    </div>
-  </div>
-</div>
-  `;
-    // Create the details div
-    const details = `
-  <div
-  class="my-7 flex w-full items-start justify-between max-sm:flex-col max-sm:gap-10"
->
-  <div class="w-[40%] max-sm:w-full">
-    <details open>
-      <summary class="mb-5 text-xl font-bold text-thirdAccent">
-        Storyline
-      </summary>
-      <p class="text-lg font-semibold leading-snug text-textColor2">
-       ${show.summary}
-      </p>
-    </details>
-  </div>
-  <div class="w-[40%] max-sm:w-full">
-    <details open>
-      <summary class="mb-5 text-xl font-bold text-thirdAccent">
-        Details
-      </summary>
-      <div class="flex items-center gap-4 text-lg">
-        <span class="font-semibold text-textColor2">Id :</span>
-        <span class="text-textColor">${show.id}</span>
-      </div>
-      <div class="mt-3 flex items-center gap-4 text-lg">
-        <span class="font-semibold text-textColor2">Language :</span>
-        <span class="text-textColor">${show.language || "Unknown"}</span>
-      </div>
-      <div class="mt-3 flex items-center gap-4 text-lg">
-        <span class="font-semibold text-textColor2">Release Date :</span>
-        <span class="text-textColor">${show.premiered || "Unknown"}</span>
-      </div>
-      <div class="mt-3 flex items-center gap-4 text-lg">
-        <span class="font-semibold text-textColor2">Status :</span>
-        <span class="text-textColor" id="showStatus">${
-          show.status || "Unknown"
-        }</span>
-      </div>
-      <div class="mt-3 flex items-center gap-4 text-lg">
-        <span class="font-semibold text-textColor2">Network :</span>
-        <span class="text-textColor capitalize">${
-          show.network?.name || show.officialSite?.split(".")[1] || "Unknown"
-        }</span>
-      </div>
-    </details>
-  </div>
-</div>
-  `;
-    //   Create the seasons div
+    // Get the seasons, cast, similar shows and recommendations
     const seasons = await getSeasons();
-    //   Create the cast div
     const cast = await getCast();
-    // Create the similar shows div
     const similarShows = await getRecommendationsOrSimilarShows(
       await getShowId(showName),
       "similar"
     );
-    // Create the recommendations div
     const recommendations = await getRecommendationsOrSimilarShows(
       await getShowId(showName),
       "recommendations"
     );
-    //   Insert the elements
-    showOverviewContainer.innerHTML = "";
-    showOverviewContainer.insertAdjacentHTML("beforeend", info);
+    // Create the overview
+    showOverviewContainer.innerHTML = `
+    <div class="mb-16 mt-9 flex w-full items-center gap-7 max-sm:flex-col">
+    <img
+      src="${show.image?.original || "./imgs/placeholder.png"}"
+      alt=""
+      class="w-[300px] rounded-lg shadow-shadow1 max-sm:w-[230px]"
+    />
+    <div class="flex w-full flex-1 flex-col gap-6 max-sm:items-center">
+      <h1
+        class="font-logo text-4xl font-extrabold text-primaryAccent max-sm:text-3xl"
+      >
+        ${show.name}
+        <span class="ms-2 font-mono text-lg font-semibold text-textColor"
+          >(${show.premiered.split("-")[0]})</span
+        >
+      </h1>
+      <div class="flex gap-5 flex-wrap max-sm:justify-center">
+        ${genres}
+      </div>
+      <div
+        class="flex w-fit items-center gap-5 rounded-lg bg-dark bg-opacity-30 px-3 py-1 text-sm font-semibold text-textColor backdrop-blur-sm"
+      >
+        <span>${show.rating.average || "Unrated"}</span>
+        <div class="flex gap-2">
+          ${getStars(Math.round(show.rating.average))
+            .map((star) => star.outerHTML)
+            .join("")}
+      </div>
+      </div>
+      <div class="mt-5 gap-6 w-3/4 max-sm:w-full  grid grid-cols-[repeat(auto-fit,minmax(152px,1fr))]">
+        <button
+          class=" cursor-pointer rounded-3xl bg-secondaryAccent px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80 flex items-baseline gap-2 justify-center
+          " data-list="watched"
+        >
+          I Watched
+        </button>
+        <button
+          class=" cursor-pointer rounded-3xl bg-dark px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80 flex items-baseline gap-2 justify-center
+          " data-list="watching"
+        >
+          I'm Watching
+        </button>
+        <button
+          class="max-wrap:col-span-full cursor-pointer rounded-3xl bg-thirdAccent px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80 flex items-baseline gap-2 justify-center
+          " data-list="willWatch"
+        >
+          I Will Watch
+        </button>
+      </div>
+    </div>
+  </div>
+    
+  
+<div
+class="my-7 flex w-full items-start justify-between max-sm:flex-col max-sm:gap-10"
+>
+<div class="w-[40%] max-sm:w-full">
+  <details open>
+    <summary class="mb-5 text-xl font-bold text-thirdAccent">
+      Storyline
+    </summary>
+    <p class="text-lg font-semibold leading-snug text-textColor2">
+     ${show.summary}
+    </p>
+  </details>
+</div>
+<div class="w-[40%] max-sm:w-full">
+  <details open>
+    <summary class="mb-5 text-xl font-bold text-thirdAccent">
+      Details
+    </summary>
+    <div class="flex items-center gap-4 text-lg">
+      <span class="font-semibold text-textColor2">Id :</span>
+      <span class="text-textColor">${show.id}</span>
+    </div>
+    <div class="mt-3 flex items-center gap-4 text-lg">
+      <span class="font-semibold text-textColor2">Language :</span>
+      <span class="text-textColor">${show.language || "Unknown"}</span>
+    </div>
+    <div class="mt-3 flex items-center gap-4 text-lg">
+      <span class="font-semibold text-textColor2">Release Date :</span>
+      <span class="text-textColor">${show.premiered || "Unknown"}</span>
+    </div>
+    <div class="mt-3 flex items-center gap-4 text-lg">
+      <span class="font-semibold text-textColor2">Status :</span>
+      <span class="text-textColor" id="showStatus">${
+        show.status || "Unknown"
+      }</span>
+    </div>
+    <div class="mt-3 flex items-center gap-4 text-lg">
+      <span class="font-semibold text-textColor2">Network :</span>
+      <span class="text-textColor capitalize">${
+        show.network?.name || show.officialSite?.split(".")[1] || "Unknown"
+      }</span>
+    </div>
+  </details>
+</div>
+</div>
+${seasons}
+${cast}
+${similarShows.length !== 0 ? similarShows : ""}
+${recommendations.length !== 0 ? recommendations : ""}
+      `;
+    // Set the background image after inserting the html
+    document.documentElement.style.setProperty(
+      "--bg",
+      `url(${show.image.original})`
+    );
     // Activate the watch list button after inserting the buttons
     activateWatchListButton();
-    showOverviewContainer.insertAdjacentHTML("beforeend", details);
-    showOverviewContainer.insertAdjacentHTML("beforeend", seasons);
-    showOverviewContainer.insertAdjacentHTML("beforeend", cast);
-    showOverviewContainer.insertAdjacentHTML(
-      "beforeend",
-      similarShows.length !== 0 ? similarShows : ""
-    );
-    showOverviewContainer.insertAdjacentHTML(
-      "beforeend",
-      recommendations.length !== 0 ? recommendations : ""
-    );
-    // Get the seasons
+    // Get the seasons elements after inserting the seasons
     showsSeasons = [...document.querySelectorAll("#season")];
   } catch (err) {
-    console.log(navigator.onLine);
     showOverviewContainer.innerHTML = noResults();
     // Show the offline page when the user is offline instead of the error message
     window.addEventListener("offline", () => {
@@ -890,7 +873,6 @@ const getOtherShows = async (id) => {
 
   return html;
 };
-
 //* Show the person overview when clicking on the person
 document.addEventListener("click", (e) => {
   if (e.target.closest("#person")) {
@@ -981,7 +963,6 @@ const episodeOverview = async (showName, season, otherInfo) => {
 `;
   displayOverview(episodeOverviewContainer, html, episodePoster);
 };
-
 //* Get the show official homepage
 const getShowHomePage = async (showName) => {
   const res = await fetch(

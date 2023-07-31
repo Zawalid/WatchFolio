@@ -833,8 +833,16 @@ video {
   height: 2.25rem;
 }
 
+.h-\[150px\] {
+  height: 150px;
+}
+
 .h-\[1px\] {
   height: 1px;
+}
+
+.h-\[210px\] {
+  height: 210px;
 }
 
 .h-\[270px\] {
@@ -910,6 +918,10 @@ video {
   width: 75%;
 }
 
+.w-3\/5 {
+  width: 60%;
+}
+
 .w-32 {
   width: 8rem;
 }
@@ -936,6 +948,10 @@ video {
 
 .w-\[100px\] {
   width: 100px;
+}
+
+.w-\[110px\] {
+  width: 110px;
 }
 
 .w-\[120px\] {
@@ -1416,6 +1432,11 @@ video {
   padding-bottom: 1.25rem;
 }
 
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
 .pb-12 {
   padding-bottom: 3rem;
 }
@@ -1779,7 +1800,7 @@ li.active,
 }
 
 :root {
-  --bg: url(../imgs/bg.jpg);
+  --bg: linear-gradient(306deg, #000 0%, #0b1531 100%);
   --episode-bg: linear-gradient(306deg, #000 0%, #0b1531 100%);
 }
 
@@ -1813,18 +1834,18 @@ html {
   display: none;
 }
 
-@keyframes bgSlide {
+@keyframes skeleton {
   0% {
-    background-position: left;
-  }
-
-  50% {
-    background-position: center;
+    background-color: rgb(212 212 212 / 60%);
   }
 
   100% {
-    background-position: right;
+    background-color: rgb(212 212 212 / 100%);
   }
+}
+
+#skeleton .bg-textColor2 {
+  animation: skeleton 1s linear alternate infinite;
 }
 
 .marker\:text-transparent *::marker {
@@ -2157,6 +2178,10 @@ html {
     height: 250px;
   }
 
+  .max-sm\:h-\[300px\] {
+    height: 300px;
+  }
+
   .max-sm\:h-full {
     height: 100%;
   }
@@ -2270,4 +2295,3 @@ html {
     width: 50%;
   }
 }
-
