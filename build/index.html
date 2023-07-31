@@ -536,43 +536,5 @@
       data-auto_select="true"
       data-itp_support="true"
     ></div>
-
-    <script>
-      // Function to handle the Google One Tap sign-in
-      function handleGoogleOneTapSignIn() {
-        google.accounts.id.initialize({
-          client_id:
-            "392703621413-3pd29t3c08n70gf89cergef24u2suh5i.apps.googleusercontent.com",
-          callback: handleCredentialResponse,
-        });
-        google.accounts.id.prompt();
-      }
-
-      // Callback function to handle the One Tap response
-      function handleCredentialResponse(response) {
-        console.log(response);
-        if (response["credential"]) {
-          const idToken = response.credential;
-          const decodedToken = JSON.parse(atob(idToken.split(".")[1]));
-          const userId = decodedToken.sub;
-          const userEmail = decodedToken.email;
-          const userGivenName = decodedToken.given_name;
-          const userFamilyName = decodedToken.family_name;
-          const userProfilePicture = decodedToken.profile_picture;
-          console.log(decodedToken);
-          console.log("User ID:", userId);
-          console.log("User Email:", userEmail);
-          console.log("User Given Name:", userGivenName);
-          console.log("User Family Name:", userFamilyName);
-          console.log("User Profile Picture URL:", userProfilePicture);
-          // ... (other actions you may want to perform with the user's information)
-        }
-      }
-
-      // Automatically handle the Google One Tap sign-in when the page loads
-      window.onload = function () {
-        handleGoogleOneTapSignIn();
-      };
-    </script>
   </body>
 </html>

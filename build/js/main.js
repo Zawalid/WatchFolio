@@ -7,7 +7,8 @@ import "./watchList.js";
 import { options } from "./TMDB.js";
 // Utilities
 import { handleUserAuth } from "./utilities.js";
-
+// Firebase
+import { auth, signInWithCustomToken } from "./firebaseApp.js";
 
 //* Initialize the watchLists if they don't exist
 ["watched", "watching", "willWatch"].forEach((list) => {
@@ -338,6 +339,39 @@ if ("serviceWorker" in navigator) {
 }
 
 //* ------------------------------ Authentication ------------------------------ *//
+//*
 handleUserAuth();
+//* Sign in with google one tap
 
+function handleGoogleOneTapSignIn() {
+  google.accounts.id.initialize({
+    client_id:
+      "392703621413-3pd29t3c08n70gf89cergef24u2suh5i.apps.googleusercontent.com",
+    callback: handleCredentialResponse,
+  });
+  google.accounts.id.prompt();
+}
 
+// Callback function to handle the One Tap response
+function handleCredentialResponse(response) {
+  console.log(response);
+  if (response["credential"]) {
+    const token = response.credential;
+    console.log(token);
+    signInWithCustomToken(auth, token)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ...
+      });
+  }
+}
+// Automatically handle the Google One Tap sign-in when the page loads
+window.onload = function () {
+  handleGoogleOneTapSignIn();
+};

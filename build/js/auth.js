@@ -228,8 +228,9 @@ document.addEventListener("submit", (e) => {
 document.addEventListener("click", (e) => {
   if (e.target.closest("#google_signup")) {
     const provider = new GoogleAuthProvider();
+    console.log(provider);
     signInWithPopup(auth, provider)
-      .then(() => (window.location.href = "./index.html"))
+      // .then(() => (window.location.href = "./index.html"))
       .catch((error) => showError(getSignInErrorMessage(error.code)));
   }
 });
