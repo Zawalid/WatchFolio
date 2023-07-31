@@ -53,7 +53,7 @@
     />
     <!--* Main JS script  -->
     <script defer type="module" src="js/main.js"></script>
-    <script src="https://accounts.google.com/gsi/client"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
   </head>
   <body
     class="relative h-screen bg-gradient bg-cover before:absolute before:-z-10 before:h-full before:w-full before:bg-background before:bg-cover before:bg-no-repeat before:opacity-20 before:blur-[1px]"
@@ -533,25 +533,34 @@
       data-client_id="392703621413-3pd29t3c08n70gf89cergef24u2suh5i.apps.googleusercontent.com"
       data-context="signin"
       data-ux_mode="popup"
-      data-login_uri="https://watchfolio.netlify.app"
       data-auto_select="true"
       data-itp_support="true"
     ></div>
 
     <script>
-      google.accounts.id.initialize({
-        client_id:
-          "392703621413-3pd29t3c08n70gf89cergef24u2suh5i.apps.googleusercontent.com",
-        callback: handleCredentialResponse,
-      });
-
+      // Function to handle the Google One Tap sign-in
+      function handleGoogleOneTapSignIn() {
+        google.accounts.id.initialize({
+          client_id: '392703621413-3pd29t3c08n70gf89cergef24u2suh5i.apps.googleusercontent.com',
+          callback: handleCredentialResponse,
+        });
+        google.accounts.id.prompt();
+      }
+  
       // Callback function to handle the One Tap response
       function handleCredentialResponse(response) {
         console.log(response);
-        if (response["credential"]) {
-          console.log(777);
+        if (response['credential']) {
+          // Here, you have the user's credential in response.credential.
+          // Log the credentials to the console.
+          console.log('User credentials:', response.credential);
         }
       }
+  
+      // Automatically handle the Google One Tap sign-in when the page loads
+      window.onload = function () {
+        handleGoogleOneTapSignIn();
+      };
     </script>
   </body>
 </html>
