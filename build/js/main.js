@@ -8,7 +8,7 @@ import { options } from "./TMDB.js";
 // Utilities
 import { handleUserAuth } from "./utilities.js";
 // Firebase
-import { auth, signInWithCustomToken } from "./firebaseApp.js";
+import { auth, signInWithCredential } from "./firebaseApp.js";
 
 //* Initialize the watchLists if they don't exist
 ["watched", "watching", "willWatch"].forEach((list) => {
@@ -354,19 +354,19 @@ function handleGoogleOneTapSignIn() {
 console.log(auth);
 // Callback function to handle the One Tap response
 function handleCredentialResponse(response) {
-  console.log(response);
-  if (response["credential"]) {
-    const token = response.credential;
-    console.log(token);
-    signInWithCustomToken(auth, token)
+  if (response.credential) {
+    const idToken = response.credential;
+    // Use the ID token to sign in with Firebase
+    signInWithCredential(auth, GoogleAuthProvider.credential(idToken))
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log(user);
-        // ...
+        console.log('User signed in:', user);
+        // You can now use the user object or redirect the user to the app's main page.
       })
       .catch((error) => {
-        console.log(error);
+        // Handle errors if any
+        console.error('Error signing in with credential:', error);
       });
   }
 }
