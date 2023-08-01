@@ -195,7 +195,7 @@ document.addEventListener("submit", (e) => {
       return;
     }
     signInWithEmailAndPassword(auth, email, password)
-      .then(() => (window.location.href = "./index.html"))
+      .then(() => (window.location.href = "/"))
       .catch((error) => showError(getSignInErrorMessage(error.code)));
   } else if (e.target.id === "signUp_form") {
     const firstName = e.target[0].value;
@@ -216,17 +216,16 @@ document.addEventListener("submit", (e) => {
     } else {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          const user = userCredential.user;
           // Update user's display name
-          updateProfile({
+          const user = userCredential.user;
+          console.log(user);
+          updateProfile(user, {
             displayName: `${firstName} ${lastName}`,
           }).catch((error) => showError(getSignUpErrorMessage(error.code)));
-
           // Switch to signIn tab
           tabs.children[0].click();
           // Wait for html to change and add email to input
           setTimeout(() => {
-            console.log(document.querySelector("input"));
             document.querySelector("input").focus();
             document.querySelector("input").value = user.email;
           }, 1100);
@@ -248,8 +247,6 @@ const signInWithProvider = (id, providerName) => {
 };
 signInWithProvider("google_signup", GoogleAuthProvider);
 signInWithProvider("facebook_signup", FacebookAuthProvider);
-
-
 
 //* ------------------------------ Forgot Password ------------------------------ *//
 const forgotPassContainer = document.getElementById(

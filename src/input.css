@@ -11,6 +11,8 @@
   i.active {
     @apply text-primaryAccent;
   }
+  #verify_user_container.show,
+  #settings.show,
   #forgot_password_container.show,
   #episode_overview.show,
   #person_overview.show,

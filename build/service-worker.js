@@ -1,10 +1,10 @@
 "use strict";
 
 //*Static cache
-const staticCache = "static-cache-v6";
+const staticCache = "static-cache-v7";
 
 //* Dynamic cache
-const dynamicCache = "dynamic-cache-v6";
+const dynamicCache = "dynamic-cache-v7";
 
 //* Assets to cache
 const urlsToCache = [
@@ -40,6 +40,7 @@ const urlsToCache = [
   "manifest.json",
   "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js",
   "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js",
+  "https://www.gstatic.com/firebasejs/10.1.0/firebase-storage.js",
 ];
 
 //* Limit the dynamic cache size function to 100 items

@@ -11,7 +11,7 @@ import {
 // TMDB API
 import { options, genders, baseUrl } from "./TMDB.js";
 // Utilities
-import { handleUserAuth } from "./utilities.js";
+import { handleUserAuth, handleSettings } from "./utilities.js";
 
 //* ------------------ Creating overview containers (Avoid repetition) ------------------ *//
 const overviewContainer = `
@@ -1206,3 +1206,6 @@ const hideOrShowSeasonButtons = () => {
 
 //* ------------------------------ Authentication ------------------------------ *//
 handleUserAuth();
+
+//* ------------------------------ Settings ------------------------------ *//
+handleSettings();

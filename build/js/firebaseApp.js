@@ -12,12 +12,21 @@ import {
   FacebookAuthProvider,
   sendEmailVerification,
   updateProfile,
+  updateEmail,
   verifyPasswordResetCode,
   confirmPasswordReset,
   applyActionCode,
   sendPasswordResetEmail,
+  reauthenticateWithCredential,
+  EmailAuthProvider
 } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
 
+import {
+  getStorage,
+  ref,
+  uploadString,
+  getDownloadURL,
+} from "https://www.gstatic.com/firebasejs/10.1.0/firebase-storage.js";
 const firebaseConfig = {
   apiKey: "AIzaSyC6En24MyhaNsRCU_bV8PRdI6hn3lon-Wc",
   authDomain: "watchfolio-93175.firebaseapp.com",
@@ -47,8 +56,15 @@ export {
   FacebookAuthProvider,
   sendEmailVerification,
   updateProfile,
+  updateEmail,
   verifyPasswordResetCode,
   confirmPasswordReset,
   applyActionCode,
   sendPasswordResetEmail,
+  getStorage,
+  ref,
+  uploadString,
+  getDownloadURL,
+  reauthenticateWithCredential,
+  EmailAuthProvider
 };

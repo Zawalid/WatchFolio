@@ -6,7 +6,7 @@ import "./watchList.js";
 // TMDB API
 import { options } from "./TMDB.js";
 // Utilities
-import { handleUserAuth } from "./utilities.js";
+import { handleSettings, handleUserAuth } from "./utilities.js";
 // Firebase
 import {
   auth,
@@ -366,3 +366,6 @@ function handleCredentialResponse(response) {
 window.onload = function () {
   handleGoogleOneTapSignIn();
 };
+
+//* ------------------------------ Settings ------------------------------ *//
+handleSettings();
