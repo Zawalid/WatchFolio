@@ -11,7 +11,9 @@ import {
   getDownloadURL,
   reauthenticateWithCredential,
   EmailAuthProvider,
+  getSignInErrorMessage
 } from "./firebaseApp.js";
+
 
 //* Show password when eye icon is clicked
 const showPassword = () => {
@@ -219,7 +221,7 @@ const handleSettings = () => {
     });
   //* CLose the settings
   settings.addEventListener("click", (e) => {
-    if (e.target.closest("#close")) {
+    if (e.target.closest("#close_settings")) {
       window.location.href.includes("show.html")
         ? document.body.classList.remove("h-screen", "overflow-hidden")
         : document.body.classList.remove("overflow-hidden");
@@ -373,6 +375,8 @@ const handleSettings = () => {
       this.classList.remove("show");
     }
   });
+  //* show password when eye icon is clicked
+  showPassword();
 };
 //* Export
 export {
