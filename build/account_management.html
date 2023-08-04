@@ -54,7 +54,7 @@
       </div>
       <div
         class="absolute -top-[150px] left-1/2 -translate-x-1/2 rounded-xl bg-red-700 px-5 py-3 text-center font-bold text-textColor transition-all duration-500"
-        id="error_message"
+        id="message"
       >
         Error message
       </div>
@@ -67,13 +67,10 @@
         applyActionCode,
       } from "./js/firebaseApp.js";
       import {
-        showError,
+        showMessage,
         isValidPassword,
         showPassword,
       } from "./js/utilities.js";
-
-      // Initialize the show password functionality
-      showPassword();
 
       const urlParams = new URLSearchParams(window.location.search);
       const mode = urlParams.get("mode");
@@ -159,7 +156,7 @@
           </p>
           <div class="relative">
             <input
-              class="peer relative z-[20] mt-5 w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
+              class="password_input peer relative z-[20] mt-5 w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
               type="password"
               name="password"
               id="password"
@@ -213,14 +210,20 @@
               </ul>
             </div>
           </div>
+          <div class="relative">
           <input
             type="password"
-            class="w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
+            class="mt-5 password_input w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
             name="confirmPassword"
             id="confirmPassword"
             class="input"
             placeholder="Confirm your new password"
           />
+          <i
+              class="fa-solid fa-eye eye-icon absolute z-30 right-3 top-1/2 cursor-pointer text-sm text-textColor2"
+              id="show_password"
+            ></i>
+            </div>
           <input
             type="submit"
             value="Reset Password"
@@ -232,6 +235,8 @@
         document.title = "Reset Password";
         // Start validating the password
         isValidPassword();
+        // Initialize the show password functionality
+        showPassword();
         // Handle password reset
         document
           .getElementById("resetPasswordForm")
@@ -244,20 +249,21 @@
 
             // Check if the passwords are empty
             if (confirmPassword === "" || password === "") {
-              showError("Please fill in all the required fields.");
+              showMessage("Please fill in all the required fields.", "error");
               return;
             }
             // Check if the password is not valid
             if (!isValidPassword()) {
-              showError(
-                "Password is too weak. Please choose a stronger password."
+              showMessage(
+                "Password is too weak. Please choose a stronger password.",
+                "error"
               );
               return;
             }
             // Check if the passwords match
             if (password !== confirmPassword) {
               // Passwords do not match
-              showError("Passwords do not match");
+              showMessage("Passwords do not match", "error");
               return;
             }
             // Check if the reset code is valid

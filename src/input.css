@@ -12,7 +12,7 @@
     @apply text-primaryAccent;
   }
   #verify_user_container.show,
-  #settings.show,
+  #account.show,
   #forgot_password_container.show,
   #episode_overview.show,
   #person_overview.show,

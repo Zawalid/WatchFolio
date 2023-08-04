@@ -1,7 +1,7 @@
 "use strict";
 
 //* ------------------------------ Utilities ------------------------------ *//
-import { showError, isValidPassword, showPassword } from "./utilities.js";
+import { showMessage, isValidPassword, showPassword } from "./utilities.js";
 // Initialize showPassword function
 showPassword();
 
@@ -12,7 +12,6 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
-  FacebookAuthProvider,
   updateProfile,
   sendPasswordResetEmail,
   getSignInErrorMessage,
@@ -55,7 +54,7 @@ const signUpForm = `
     />
     <div class="relative">
             <input
-              class="peer mt-5 relative z-[20] w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
+              class="password_input peer mt-5 relative z-[20] w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
               type="password"
               name="password"
               placeholder="Password"
@@ -87,23 +86,13 @@ const signUpForm = `
     <span class="text-textColor2">or continue with</span>
     <span class="h-[1px] w-full flex-1 bg-textColor2"></span>
   </div>
-  <div class="flex flex-wrap gap-3">
   <button
-    class="flex min-w-[200px] flex-1 cursor-pointer items-center justify-center gap-3 rounded-xl bg-white py-3 font-bold text-black"
+    class="flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl bg-white py-3 font-bold text-black"
     id="google_signup"
   >
     <img src="./imgs/Google Logo.svg" alt="" />
     <span class="font-semibold">Google Account</span>
   </button>
-  <button
-    class="flex min-w-[200px] flex-1 cursor-pointer items-center justify-center gap-3 rounded-xl bg-[#1877F2] py-3 font-bold text-textColor"
-    id="facebook_signup"
-  >
-    <i class="fa-brands fa-facebook text-[24px]"></i>
-    <span class="font-semibold">Facebook Account</span>
-  </button>
-  
-</div>
 `;
 //* Change HTML function
 const changeHtml = (html) => {
@@ -151,12 +140,14 @@ document.addEventListener("submit", (e) => {
     const email = e.target[0].value;
     const password = e.target[1].value;
     if (email === "" || password === "") {
-      showError("Please enter your email and password.");
+      showMessage("Please enter your email and password.", "error");
       return;
     }
     signInWithEmailAndPassword(auth, email, password)
       .then(() => (window.location.href = "/"))
-      .catch((error) => showError(getSignInErrorMessage(error.code)));
+      .catch((error) =>
+        showMessage(getSignInErrorMessage(error.code), "error")
+      );
   } else if (e.target.id === "signUp_form") {
     const firstName = e.target[0].value;
     const lastName = e.target[1].value;
@@ -168,11 +159,14 @@ document.addEventListener("submit", (e) => {
       firstName === "" ||
       lastName === ""
     ) {
-      showError("Please fill in all the fields.");
+      showMessage("Please fill in all the fields.", "error");
       return;
     }
     if (!isValidPassword()) {
-      showError("Password is too weak. Please choose a stronger password.");
+      showMessage(
+        "Password is too weak. Please choose a stronger password.",
+        "error"
+      );
     } else {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
@@ -181,7 +175,9 @@ document.addEventListener("submit", (e) => {
           console.log(user);
           updateProfile(user, {
             displayName: `${firstName} ${lastName}`,
-          }).catch((error) => showError(getSignUpErrorMessage(error.code)));
+          }).catch((error) =>
+            showMessage(getSignUpErrorMessage(error.code), "error")
+          );
           // Switch to signIn tab
           tabs.children[0].click();
           // Wait for html to change and add email to input
@@ -190,23 +186,23 @@ document.addEventListener("submit", (e) => {
             document.querySelector("input").value = user.email;
           }, 1100);
         })
-        .catch((error) => showError(getSignUpErrorMessage(error.code)));
+        .catch((error) =>
+          showMessage(getSignUpErrorMessage(error.code), "error")
+        );
     }
   }
 });
-// Sign in/up with Google, Facebook
-const signInWithProvider = (id, providerName) => {
-  document.addEventListener("click", (e) => {
-    if (e.target.closest(`#${id}`)) {
-      const provider = new providerName();
-      signInWithPopup(auth, provider)
-        .then(() => (window.location.href = "/"))
-        .catch((error) => showError(getSignInErrorMessage(error.code)));
-    }
-  });
-};
-signInWithProvider("google_signup", GoogleAuthProvider);
-signInWithProvider("facebook_signup", FacebookAuthProvider);
+// Sign in/up with Google
+document.addEventListener("click", (e) => {
+  if (e.target.closest(`#google_signup`)) {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then(() => (window.location.href = "/"))
+      .catch((error) =>
+        showMessage(getSignInErrorMessage(error.code), "error")
+      );
+  }
+});
 
 //* ------------------------------ Forgot Password ------------------------------ *//
 const forgotPassContainer = document.getElementById(
@@ -235,7 +231,7 @@ document.addEventListener("submit", (e) => {
   if (e.target.id == "forgot_password_form") {
     const email = e.target.children[1].value;
     if (email === "") {
-      showError("Please enter your email address.");
+      showMessage("Please enter your email address.", "error");
     } else {
       sendPasswordResetEmail(auth, email)
         .then(() => {
@@ -288,7 +284,9 @@ document.addEventListener("submit", (e) => {
         `;
           }, 1500);
         })
-        .catch((error) => showError(getSignInErrorMessage(error.code)));
+        .catch((error) =>
+          showMessage(getSignInErrorMessage(error.code), "error")
+        );
     }
   }
 });

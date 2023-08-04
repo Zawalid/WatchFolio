@@ -62,7 +62,7 @@ module.exports = {
         skeleton: {
           "0%": { backgroundColor: "rgb(212 212 212 / 60%)" },
           "100%": { backgroundColor: "rgb(212 212 212 / 100%)" },
-        }
+        },
       },
     },
   },

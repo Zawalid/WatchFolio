@@ -6,7 +6,7 @@ import "./watchList.js";
 // TMDB API
 import { options } from "./TMDB.js";
 // Utilities
-import { handleSettings, handleUserAuth } from "./utilities.js";
+import { handleAccount, handleUserAuth } from "./utilities.js";
 // Firebase
 import {
   auth,
@@ -85,7 +85,7 @@ const displayResults = async (query) => {
     // If there are no results
     const noResults = `
   <div class="flex flex-col items-center justify-center col-span-5">
-  <img src="./imgs/no_result.png" alt="" class="h-64 w-44" />
+  <img src="./imgs/no_result.png" alt="" class="h-64 " />
   <h2 class="mb-3 text-xl font-bold text-thirdAccent">No Results Found</h2>
   <h3 class="font-semibold text-textColor2 text-center">
     We couldn't find any show matching your search
@@ -367,5 +367,5 @@ window.onload = function () {
   handleGoogleOneTapSignIn();
 };
 
-//* ------------------------------ Settings ------------------------------ *//
-handleSettings();
+//* ------------------------------ Account ------------------------------ *//
+handleAccount();

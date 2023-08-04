@@ -590,10 +590,6 @@ video {
   top: -210px;
 }
 
-.-top-full {
-  top: -100%;
-}
-
 .bottom-0 {
   bottom: 0px;
 }
@@ -910,6 +906,14 @@ video {
   height: 100vh;
 }
 
+.h-\[5615px\] {
+  height: 5615px;
+}
+
+.h-\[615px\] {
+  height: 615px;
+}
+
 .min-h-\[500px\] {
   min-height: 500px;
 }
@@ -998,10 +1002,6 @@ video {
   width: 150px;
 }
 
-.w-\[200px\] {
-  width: 200px;
-}
-
 .w-\[210px\] {
   width: 210px;
 }
@@ -1036,24 +1036,12 @@ video {
   width: max-content;
 }
 
-.min-w-\[200px\] {
-  min-width: 200px;
+.min-w-\[170px\] {
+  min-width: 170px;
 }
 
 .min-w-\[300px\] {
   min-width: 300px;
-}
-
-.min-w-\[\] {
-  min-width: ;
-}
-
-.min-w-\[1\] {
-  min-width: 1;
-}
-
-.min-w-\[170px\] {
-  min-width: 170px;
 }
 
 .flex-1 {
@@ -1197,6 +1185,10 @@ video {
   justify-content: space-between;
 }
 
+.justify-around {
+  justify-content: space-around;
+}
+
 .justify-evenly {
   justify-content: space-evenly;
 }
@@ -1243,6 +1235,10 @@ video {
 
 .gap-8 {
   gap: 2rem;
+}
+
+.overflow-auto {
+  overflow: auto;
 }
 
 .overflow-hidden {
@@ -1301,6 +1297,11 @@ video {
   border-width: 1px;
 }
 
+.border-y {
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+
 .border-b {
   border-bottom-width: 1px;
 }
@@ -1311,6 +1312,10 @@ video {
 
 .border-r {
   border-right-width: 1px;
+}
+
+.border-t {
+  border-top-width: 1px;
 }
 
 .border-none {
@@ -1334,11 +1339,6 @@ video {
 
 .bg-\[\#0005\] {
   background-color: #0005;
-}
-
-.bg-\[\#1877F2\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(24 119 242 / var(--tw-bg-opacity));
 }
 
 .bg-\[rgba\(11_\2c 21_\2c 49_\2c 0\.5\)\] {
@@ -1573,10 +1573,6 @@ video {
   line-height: 1;
 }
 
-.text-\[24px\] {
-  font-size: 24px;
-}
-
 .text-\[60px\] {
   font-size: 60px;
 }
@@ -1805,7 +1801,7 @@ li.active,
 }
 
 #verify_user_container.\!show,
-  #settings.\!show,
+  #account.\!show,
   #forgot_password_container.\!show,
   #episode_overview.\!show,
   #person_overview.\!show,
@@ -1815,7 +1811,7 @@ li.active,
 }
 
 #verify_user_container.show,
-  #settings.show,
+  #account.show,
   #forgot_password_container.show,
   #episode_overview.show,
   #person_overview.show,
@@ -1825,7 +1821,7 @@ li.active,
 }
 
 #verify_user_container.\!show,
-  #settings.\!show,
+  #account.\!show,
   #forgot_password_container.\!show,
   #episode_overview.\!show,
   #person_overview.\!show,
@@ -2218,6 +2214,10 @@ html {
     overflow-y: scroll;
   }
 
+  .max-md\:rounded-none {
+    border-radius: 0px;
+  }
+
   .max-md\:bg-gradient {
     background-image: linear-gradient(306deg, #000 0%, #0B1531 100%);
   }
@@ -2284,6 +2284,10 @@ html {
     width: 100%;
   }
 
+  .max-sm\:flex-1 {
+    flex: 1 1 0%;
+  }
+
   .max-sm\:flex-col {
     flex-direction: column;
   }
@@ -2312,8 +2316,8 @@ html {
     border-radius: 0px;
   }
 
-  .max-sm\:pb-20 {
-    padding-bottom: 5rem;
+  .max-sm\:pb-8 {
+    padding-bottom: 2rem;
   }
 
   .max-sm\:text-3xl {

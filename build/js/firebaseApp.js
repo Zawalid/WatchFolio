@@ -9,16 +9,16 @@ import {
   signInWithPopup,
   signOut,
   GoogleAuthProvider,
-  FacebookAuthProvider,
   sendEmailVerification,
   updateProfile,
   updateEmail,
+  updatePassword,
   verifyPasswordResetCode,
   confirmPasswordReset,
   applyActionCode,
   sendPasswordResetEmail,
   reauthenticateWithCredential,
-  EmailAuthProvider
+  EmailAuthProvider,
 } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
 
 import {
@@ -65,6 +65,8 @@ function getSignInErrorMessage(errorCode) {
       return "This provider is already linked to another account.";
     case "auth/account-exists-with-different-credential":
       return "Uh-oh! It seems there's already an account with this email using a different method. Please sign in with the correct method. You can link this method to your account later in the settings.";
+    case "auth/user-mismatch":
+      return "Oops! It seems you're trying to sign in with the wrong account. Please sign in with the correct account.";
     default:
       return "An error occurred during sign-in. Please try again later.";
   }
@@ -95,10 +97,10 @@ export {
   signInWithPopup,
   signOut,
   GoogleAuthProvider,
-  FacebookAuthProvider,
   sendEmailVerification,
   updateProfile,
   updateEmail,
+  updatePassword,
   verifyPasswordResetCode,
   confirmPasswordReset,
   applyActionCode,

@@ -11,7 +11,7 @@ import {
 // TMDB API
 import { options, genders, baseUrl } from "./TMDB.js";
 // Utilities
-import { handleUserAuth, handleSettings } from "./utilities.js";
+import { handleUserAuth, handleAccount } from "./utilities.js";
 
 //* ------------------ Creating overview containers (Avoid repetition) ------------------ *//
 const overviewContainer = `
@@ -73,14 +73,13 @@ const showLoading = (container) => {
 const displayOverview = (container, html, img = null) => {
   setTimeout(() => {
     container.firstElementChild.innerHTML = html;
-    if (container === episodeOverviewContainer) {
+    if (container === seasonOverviewContainer) {
       //?  The next actions are here because the elements are just created
       //* Change the episode icon
       changeEpisodeIcon();
       //* Hide or show the next and previous season buttons based on the current season
       hideOrShowSeasonButtons();
     }
-
     if (container === episodeOverviewContainer) {
       document.documentElement.style.setProperty("--episode-bg", `url(${img})`);
     }
@@ -1207,5 +1206,5 @@ const hideOrShowSeasonButtons = () => {
 //* ------------------------------ Authentication ------------------------------ *//
 handleUserAuth();
 
-//* ------------------------------ Settings ------------------------------ *//
-handleSettings();
+//* ------------------------------ Account ------------------------------ *//
+handleAccount();

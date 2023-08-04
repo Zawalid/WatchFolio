@@ -2,44 +2,46 @@ import {
   auth,
   onAuthStateChanged,
   sendEmailVerification,
+  sendPasswordResetEmail,
   signOut,
   updateProfile,
   updateEmail,
+  updatePassword,
   getStorage,
   ref,
   uploadString,
   getDownloadURL,
   reauthenticateWithCredential,
   EmailAuthProvider,
-  getSignInErrorMessage
+  getSignInErrorMessage,
 } from "./firebaseApp.js";
-
 
 //* Show password when eye icon is clicked
 const showPassword = () => {
-  document.addEventListener("click", (e) => {
-    const button = document.getElementById("show_password");
-    let input = document.querySelector("input[name='password']");
-    if (e.target.id === "show_password") {
-      if (input.type == "password" && input.value != "") {
-        input.type = "text";
-        button.className =
-          "fa-solid fa-eye-slash absolute z-30 right-3 top-1/2 cursor-pointer text-sm text-textColor2";
-      } else {
+  document.querySelectorAll(".password_input").forEach((input) => {
+    const button = input.nextElementSibling;
+    document.addEventListener("click", (e) => {
+      if (e.target.id === "show_password") {
+        if (input.type == "password" && input.value != "") {
+          input.type = "text";
+          button.className =
+            "fa-solid fa-eye-slash absolute z-30 right-3 top-1/2 cursor-pointer text-sm text-textColor2";
+        } else {
+          input.type = "password";
+          button.className =
+            "fa-solid fa-eye absolute z-30 right-3 top-1/2 cursor-pointer text-sm text-textColor2";
+        }
+      }
+      if (
+        !input?.contains(e.target) &&
+        !button?.contains(e.target) &&
+        input?.type == "text"
+      ) {
         input.type = "password";
         button.className =
           "fa-solid fa-eye absolute z-30 right-3 top-1/2 cursor-pointer text-sm text-textColor2";
       }
-    }
-    if (
-      !input?.contains(e.target) &&
-      !button?.contains(e.target) &&
-      input?.type == "text"
-    ) {
-      input.type = "password";
-      button.className =
-        "fa-solid fa-eye absolute z-30 right-3 top-1/2 cursor-pointer text-sm text-textColor2";
-    }
+    });
   });
 };
 
@@ -82,12 +84,16 @@ const isValidPassword = () => {
 };
 
 //* Show error message
-const showError = (message) => {
-  const error = document.getElementById("error_message");
-  error.textContent = message;
-  error.classList.replace("-top-1/2", "top-5");
+const showMessage = (message, type) => {
+  const messageEl = document.getElementById("message");
+  type === "error"
+    ? messageEl.classList.replace("bg-thirdAccent", "bg-red-700")
+    : messageEl.classList.replace("bg-red-700", "bg-thirdAccent");
+
+  messageEl.textContent = message;
+  messageEl.classList.replace("-top-1/2", "top-5");
   setTimeout(() => {
-    error.classList.replace("top-5", "-top-1/2");
+    messageEl.classList.replace("top-5", "-top-1/2");
   }, 4000);
 };
 
@@ -125,13 +131,12 @@ const handleUserAuth = () => {
         (window.location.pathname === "/" ||
           window.location.pathname === "/index.html")
       ) {
-        const verificationMessage =
-          document.getElementById("email_verification");
-        verificationMessage.classList.replace("-top-[150px]", "top-5");
-        setTimeout(() => {
-          verificationMessage.classList.replace("top-5", "-top-[150px]");
-        }, 5000);
-        sendEmailVerification(user).catch((err) => console.log(err));
+        sendEmailVerification(user).then(() => {
+          showMessage(
+            "A verification email has been sent to your email address. Please check your inbox and click the verification link to verify your email.",
+            "info"
+          );
+        });
       }
       // Display the user's info
       displayUserInfo(user);
@@ -182,52 +187,79 @@ const handleUserAuth = () => {
   });
 };
 
-//* Handle user settings
-const handleSettings = () => {
-  //* Settings : Account Details
-  const settings = document.getElementById("settings");
-  const accountDetails = document.getElementById("Account Details");
-  const accountDetailsForm = accountDetails.querySelector("form");
-  const settingAction = settings.querySelector("[name='action']");
-  const changePicture = settings.querySelector("#change_picture");
-  const imageInput = settings.querySelector("[name='Image']");
-  const accountDetailsInputs = accountDetails.querySelectorAll("input");
-  const accountDetailsButton = accountDetails.querySelector("button");
-  const profilePicture = settings.querySelector("#profile_picture");
-  const cancelChanges = settings.querySelector("#cancel");
+//* Handle user account
+const handleAccount = () => {
+  const account = document.getElementById("account");
   const verifyUserContainer = document.getElementById("verify_user_container");
 
-  //* Show settings
-  const showSettings = (el) => {
+  //* Show account
+  document.getElementById("account_toggler").addEventListener("click", () => {
     if (auth.currentUser) {
-      // Click on the right tab
-      el.dispatchEvent(new Event("click"));
       window.scrollTo(0, 0);
       document.body.classList.add("h-screen", "overflow-hidden");
-      settings.classList.add("show");
+      account.classList.add("show");
     } else {
       window.location.href = "/authentication.html";
     }
-  };
-  // Show the settings when the user clicks on the settings li
-  document.getElementById("settings_toggler").addEventListener("click", () => {
-    showSettings(settings.querySelector("li[data-tab='Settings']"));
   });
-  // Show the account details when the user clicks on the account details li
-  document
-    .getElementById("accountDetails_toggler")
-    .addEventListener("click", () => {
-      showSettings(settings.querySelector("li[data-tab='Account Details']"));
-    });
-  //* CLose the settings
-  settings.addEventListener("click", (e) => {
-    if (e.target.closest("#close_settings")) {
+  //* CLose the account
+  account.addEventListener("click", (e) => {
+    if (e.target.closest("#close_account")) {
       window.location.href.includes("show.html")
         ? document.body.classList.remove("h-screen", "overflow-hidden")
         : document.body.classList.remove("overflow-hidden");
-      settings.classList.remove("show");
+      account.classList.remove("show");
     }
   });
+  //* cLose the verification container
+  verifyUserContainer.addEventListener("click", function (e) {
+    if (e.target.closest("#close")) {
+      accountDetailsAction.value === "save" && switchToEdit();
+      this.classList.remove("show");
+    }
+  });
+  //* Reauthenticate the user
+  const reauthenticate = async (func) => {
+    verifyUserContainer
+      .querySelector("form")
+      .addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (this.email.value === "") {
+          showMessage("Please enter your email", "error");
+          return;
+        }
+        if (this.password.value === "") {
+          showMessage("Please enter your password", "error");
+          return;
+        }
+        // Get the user's credential (email and password)
+        const credential = EmailAuthProvider.credential(
+          this.email.value,
+          this.password.value
+        );
+        // Reauthenticate the user
+        reauthenticateWithCredential(auth.currentUser, credential)
+          .then((res) => {
+            verifyUserContainer.classList.remove("show");
+            this.reset();
+            func();
+          })
+          .catch((error) =>
+            showMessage(getSignInErrorMessage(error.code), "error")
+          );
+      });
+  };
+  //* show password when eye icon is clicked
+  showPassword();
+  //* ----------------- Account Details -----------------
+  const accountDetailsForm = document.getElementById("accountDetails_form");
+  const accountDetailsAction = accountDetailsForm.action;
+  const changePicture = account.querySelector("#change_picture");
+  const imageInput = account.querySelector("[name='Image']");
+  const accountDetailsInputs = account.querySelectorAll("input");
+  const editDetailsButton = account.querySelector("button");
+  const profilePicture = account.querySelector("#profile_picture");
+  const cancelChanges = account.querySelector("#cancel");
 
   //* Get the uploaded image and Upload it to firebase storage and return the download url
   const getUploadedImage = async (img) => {
@@ -256,26 +288,13 @@ const handleSettings = () => {
     });
   }
 
-  //* Settings tabs
-  settings.querySelectorAll("#settings li").forEach((li) => {
-    li.addEventListener("click", () => {
-      document.getElementById(
-        document.querySelector("#settings .active").dataset.tab
-      ).style.display = "none";
-
-      document.querySelector("#settings .active").classList.remove("active");
-
-      document.getElementById(li.dataset.tab).style.display = "flex";
-      li.classList.add("active");
-    });
-  });
-
   //* Switch between edit and save
   const switchToEdit = () => {
     // change the action to edit
-    settingAction.value = "edit";
-    // change the button text to Edit Profile
-    accountDetailsButton.textContent = "Edit Profile";
+    accountDetailsAction.value = "edit";
+    // change the button text to Edit
+    editDetailsButton.textContent = "Edit";
+    editDetailsButton.classList.remove("max-sm:flex-1");
     // Make the inputs readonly
     accountDetailsInputs.forEach((input) => {
       input.setAttribute("readonly", "readonly");
@@ -284,12 +303,15 @@ const handleSettings = () => {
     changePicture.classList.replace("grid", "hidden");
     // Hide the cancel button
     cancelChanges.classList.replace("block", "hidden");
+    // restore the user info
+    displayUserInfo(auth.currentUser);
   };
   const switchToSave = () => {
     // change the action to save
-    settingAction.value = "save";
+    accountDetailsAction.value = "save";
     // change the button text to Save Changes
-    accountDetailsButton.textContent = "Save Changes";
+    editDetailsButton.textContent = "Save Changes";
+    editDetailsButton.classList.add("max-sm:flex-1");
     // Make the inputs editable
     accountDetailsInputs.forEach((input) => {
       input.removeAttribute("readonly");
@@ -301,7 +323,7 @@ const handleSettings = () => {
   };
   accountDetailsForm.addEventListener("submit", async function (e) {
     e.preventDefault();
-    if (settingAction.value === "edit") {
+    if (accountDetailsAction.value === "edit") {
       // switch to save
       switchToSave();
       // Add the change event listener to the image input to change the profile picture when the user chooses a new one
@@ -315,52 +337,40 @@ const handleSettings = () => {
           profilePicture.src = src;
         });
       });
-    } else if (settingAction.value === "save") {
+    } else if (accountDetailsAction.value === "save") {
       // Get the inputs
       const inputs = [
         ...document.querySelectorAll("#accountDetails_form input"),
       ];
       // Check if the user didn't leave any field empty
       if (inputs.some((input) => input.value == "")) {
-        showError("Please fill in all the fields");
+        showMessage("Please fill in all the fields", "error");
       } else {
         // show the verification container
         verifyUserContainer.classList.add("show");
-        verifyUserContainer
-          .querySelector("form")
-          .addEventListener("submit", async function (e) {
-            e.preventDefault();
-            if (this.email.value === "" || this.password.value === "") {
-              showError("Please fill in all the fields");
-              return;
-            }
-            // Get the user's credential (email and password)
-            const credential = EmailAuthProvider.credential(
-              this.email.value,
-              this.password.value
-            );
-            // Upload the profile picture to firebase storage and get the download url
-            const photoURL = profilePicture.src.includes("firebasestorage")
-              ? profilePicture.src
-              : await uploadProfileImage(profilePicture.src);
-
-            // Reauthenticate the user
-            reauthenticateWithCredential(auth.currentUser, credential)
-              .then((res) => {
-                verifyUserContainer.classList.remove("show");
-                // Update the user's display name and photoURL
-                updateProfile(auth.currentUser, {
-                  displayName: `${accountDetailsForm.firstName.value} ${accountDetailsForm.lastName.value}`,
-                  // Check if the user uploaded a new profile picture or not
-                  photoURL,
-                });
-                // Update the user's email
-                updateEmail(auth.currentUser, accountDetailsForm.email.value);
-                // Switch to edit
-                switchToEdit();
-              })
-              .catch((error) => showError(getSignInErrorMessage(error.code)));
+        // reauthenticate the user
+        reauthenticate(async () => {
+          // Upload the profile picture to firebase storage and get the download url
+          const photoURL = profilePicture.src.includes("firebasestorage")
+            ? profilePicture.src
+            : await uploadProfileImage(profilePicture.src);
+          // Update the user's display name and photoURL
+          updateProfile(auth.currentUser, {
+            displayName: `${accountDetailsForm.firstName.value} ${accountDetailsForm.lastName.value}`,
+            // Check if the user uploaded a new profile picture or not
+            photoURL,
           });
+          // Update the user's email
+          updateEmail(auth.currentUser, accountDetailsForm.email.value);
+          // Switch to edit
+          switchToEdit();
+          // Update the user's info
+          auth.currentUser
+            .reload()
+            .then(() => displayUserInfo(auth.currentUser));
+          // Show the success message
+          showMessage("Your account details have been updated successfully");
+        });
       }
     }
   });
@@ -368,21 +378,84 @@ const handleSettings = () => {
   //* Cancel the changes
   cancelChanges.addEventListener("click", () => switchToEdit());
 
-  //* cLose the verification container
-  verifyUserContainer.addEventListener("click", function (e) {
-    if (e.target.closest("#close")) {
-      switchToEdit();
-      this.classList.remove("show");
+  //* ----------------- Change Password -----------------
+  const changePasswordForm = document.getElementById("changePassword_form");
+  isValidPassword();
+  changePasswordForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (this.newPassword.value === "") {
+      showMessage("Please enter your new password", "error");
+      return;
     }
+    if (this.confirmNewPassword.value === "") {
+      showMessage("Please confirm your new password", "error");
+      return;
+    }
+    if (!isValidPassword()) {
+      showMessage(
+        "Password is too weak. Please choose a stronger password.",
+        "error"
+      );
+      return;
+    }
+    if (this.newPassword.value !== this.confirmNewPassword.value) {
+      showMessage("Passwords don't match", "error");
+      return;
+    }
+    // Show the verification container
+    verifyUserContainer.classList.add("show");
+    // Reauthenticate the user
+    reauthenticate(async () => {
+      // Update the user's password
+      updatePassword(auth.currentUser, this.newPassword.value)
+        .then(() => {
+          // Show the success message
+          showMessage("Your password has been changed successfully", "info");
+          // Clear the inputs
+          this.reset();
+        })
+        .catch((error) => showMessage(error.message, "error"));
+    });
   });
-  //* show password when eye icon is clicked
-  showPassword();
+
+  //* ----------------- Reset Password -----------------
+  const resetPasswordButton = document.getElementById("reset_password");
+  resetPasswordButton.addEventListener("click", () => {
+    // Send the password reset email
+    sendPasswordResetEmail(auth, auth.currentUser.email)
+      .then(() =>
+        showMessage(
+          "A password reset email has been sent to your email address",
+          "info"
+        )
+      )
+      .catch((error) => showMessage(error.message, "error"));
+  });
+
+  //* ----------------- Delete Account -----------------
+  const deleteAccountButton = document.getElementById("delete_account");
+  deleteAccountButton.addEventListener("click", () => {
+    // Show the verification container
+    verifyUserContainer.classList.add("show");
+    // Reauthenticate the user
+    reauthenticate(async () => {
+      // Delete the user's account
+      auth.currentUser
+        .delete()
+        .then(() => {
+          // Show the success message
+          showMessage("Your account has been deleted successfully", "info");
+          window.location.href = "/";
+        })
+        .catch((error) => showMessage(error.message, "error"));
+    });
+  });
 };
 //* Export
 export {
   showPassword,
   isValidPassword,
-  showError,
+  showMessage,
   handleUserAuth,
-  handleSettings,
+  handleAccount,
 };
