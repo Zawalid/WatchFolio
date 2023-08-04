@@ -256,9 +256,9 @@ const handleAccount = () => {
   const accountDetailsAction = accountDetailsForm.action;
   const changePicture = account.querySelector("#change_picture");
   const imageInput = account.querySelector("[name='Image']");
-  const accountDetailsInputs = account.querySelectorAll("input");
-  const editDetailsButton = account.querySelector("button");
-  const profilePicture = account.querySelector("#profile_picture");
+  const accountDetailsInputs = accountDetailsForm.querySelectorAll("input");
+  const editDetailsButton = accountDetailsForm.querySelector("button");
+  const profilePicture = account.querySelector("#edit")
   const cancelChanges = account.querySelector("#cancel");
 
   //* Get the uploaded image and Upload it to firebase storage and return the download url
