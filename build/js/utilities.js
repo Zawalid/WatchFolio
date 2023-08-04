@@ -258,7 +258,7 @@ const handleAccount = () => {
   const imageInput = account.querySelector("[name='Image']");
   const accountDetailsInputs = accountDetailsForm.querySelectorAll("input");
   const editDetailsButton = accountDetailsForm.querySelector("button");
-  const profilePicture = account.querySelector("#edit")
+  const profilePicture = account.querySelector("#edit");
   const cancelChanges = account.querySelector("#cancel");
 
   //* Get the uploaded image and Upload it to firebase storage and return the download url
@@ -294,7 +294,6 @@ const handleAccount = () => {
     accountDetailsAction.value = "edit";
     // change the button text to Edit
     editDetailsButton.textContent = "Edit";
-    editDetailsButton.classList.remove("max-sm:flex-1");
     // Make the inputs readonly
     accountDetailsInputs.forEach((input) => {
       input.setAttribute("readonly", "readonly");
@@ -311,7 +310,6 @@ const handleAccount = () => {
     accountDetailsAction.value = "save";
     // change the button text to Save Changes
     editDetailsButton.textContent = "Save Changes";
-    editDetailsButton.classList.add("max-sm:flex-1");
     // Make the inputs editable
     accountDetailsInputs.forEach((input) => {
       input.removeAttribute("readonly");
