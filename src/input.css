@@ -19,11 +19,13 @@
   #season_overview.show {
     @apply z-30 opacity-100;
   }
+  #favoritesListButtons button.active ,
   #explore button.active,
   #tabs button.active,
-  #listsButtons button.active {
+  #watchListButtons button.active {
     @apply bg-secondaryAccent;
   }
+  #favoritesList.show,
   #watchList.show {
     @apply z-10 opacity-100 max-md:z-50;
   }
@@ -56,9 +58,9 @@ html {
 ::-webkit-scrollbar-thumb {
   background-color: white;
 }
-
+#favoritesListButtons::-webkit-scrollbar,
 #exploreTabs::-webkit-scrollbar,
-#listsButtons::-webkit-scrollbar {
+#watchListButtons::-webkit-scrollbar {
   display: none;
 }
 

@@ -3,6 +3,8 @@
 //* ------------------ Imports ------------------ *//
 // watchLists
 import "./watchList.js";
+// Favorites list
+import "./favoritesList.js";
 // TMDB API
 import { options } from "./TMDB.js";
 // Utilities

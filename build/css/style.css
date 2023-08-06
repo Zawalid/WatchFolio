@@ -769,6 +769,10 @@ video {
   margin-top: 3rem;
 }
 
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
 .mt-24 {
   margin-top: 6rem;
 }
@@ -885,8 +889,8 @@ video {
   height: 550px;
 }
 
-.h-\[565px\] {
-  height: 565px;
+.h-\[615px\] {
+  height: 615px;
 }
 
 .h-auto {
@@ -904,14 +908,6 @@ video {
 
 .h-screen {
   height: 100vh;
-}
-
-.h-\[5615px\] {
-  height: 5615px;
-}
-
-.h-\[615px\] {
-  height: 615px;
 }
 
 .min-h-\[500px\] {
@@ -1038,6 +1034,10 @@ video {
 
 .min-w-\[170px\] {
   min-width: 170px;
+}
+
+.min-w-\[190px\] {
+  min-width: 190px;
 }
 
 .min-w-\[300px\] {
@@ -1472,11 +1472,6 @@ video {
   padding-right: 1.25rem;
 }
 
-.px-7 {
-  padding-left: 1.75rem;
-  padding-right: 1.75rem;
-}
-
 .px-8 {
   padding-left: 2rem;
   padding-right: 2rem;
@@ -1830,31 +1825,49 @@ li.active,
   opacity: 1;
 }
 
-#explore button.active,
+#favoritesListButtons button.active ,
+  #explore button.active,
   #tabs button.active,
-  #listsButtons button.active {
+  #watchListButtons button.active {
   --tw-bg-opacity: 1;
   background-color: rgb(244 67 54 / var(--tw-bg-opacity));
 }
 
-#watchList.\!show {
+#favoritesList.\!show,
+  #watchList.\!show {
   z-index: 10;
   opacity: 1;
 }
 
 @media not all and (min-width: 768px) {
+  #favoritesList.\!show,
   #watchList.\!show {
     z-index: 50;
   }
 }
 
-#watchList.show {
+#favoritesList.show,
+  #watchList.show {
   z-index: 10;
   opacity: 1;
 }
 
 @media not all and (min-width: 768px) {
+  #favoritesList.show,
   #watchList.show {
+    z-index: 50;
+  }
+}
+
+#favoritesList.\!show,
+  #watchList.\!show {
+  z-index: 10;
+  opacity: 1;
+}
+
+@media not all and (min-width: 768px) {
+  #favoritesList.\!show,
+  #watchList.\!show {
     z-index: 50;
   }
 }
@@ -1912,7 +1925,7 @@ html {
 }
 
 #exploreTabs::-webkit-scrollbar,
-#listsButtons::-webkit-scrollbar {
+#watchListButtons::-webkit-scrollbar {
   display: none;
 }
 
@@ -2039,8 +2052,8 @@ html {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
-.hover\:z-10:hover {
-  z-index: 10;
+.hover\:z-20:hover {
+  z-index: 20;
 }
 
 .hover\:w-48:hover {
@@ -2103,6 +2116,10 @@ html {
 
 .group:hover .group-hover\:z-10 {
   z-index: 10;
+}
+
+.group:hover .group-hover\:z-20 {
+  z-index: 20;
 }
 
 .group:hover .group-hover\:border-secondaryAccent {
@@ -2224,10 +2241,6 @@ html {
 
   .max-md\:pb-24 {
     padding-bottom: 6rem;
-  }
-
-  .max-md\:pb-3 {
-    padding-bottom: 0.75rem;
   }
 
   .max-md\:pb-7 {
@@ -2365,10 +2378,6 @@ html {
 
   .md\:h-\[300px\] {
     height: 300px;
-  }
-
-  .md\:w-\[200px\] {
-    width: 200px;
   }
 
   .md\:flex-row {

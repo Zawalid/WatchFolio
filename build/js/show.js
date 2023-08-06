@@ -8,6 +8,13 @@ import {
   removeFromWatchList,
 } from "./watchList.js";
 
+// FavoritesList
+import {
+  favoritesList,
+  addToFavoritesList,
+  removeFromFavoritesList,
+} from "./favoritesList.js";
+
 // TMDB API
 import { options, genders, baseUrl } from "./TMDB.js";
 // Utilities
@@ -153,7 +160,7 @@ const getShowsInfo = async (name) => {
 
 //* ------------------------------ The show overview ------------------------------ *//
 const showOverviewContainer = document.getElementById("overview");
-let showName, currentSeason, showsSeasons;
+let showName, currentSeason, showsSeasons,showImage
 const showOverview = async () => {
   try {
     const res = await fetch(
@@ -161,8 +168,9 @@ const showOverview = async () => {
     );
     //   Convert the response to json
     const show = await res.json();
-    // Set the show name to use it in the other functions
+    // Set the show name and image to use it in the other functions
     showName = show.name;
+    showImage = show.image?.medium || "./imgs/placeholder.png";
     // Set the title
     document.title = show.name;
     // Fix the summary
@@ -193,11 +201,19 @@ const showOverview = async () => {
     // Create the overview
     showOverviewContainer.innerHTML = `
     <div class="mb-16 mt-9 flex w-full items-center gap-7 max-sm:flex-col">
+    <div class="flex flex-col gap-3">
     <img
-      src="${show.image?.original || "./imgs/placeholder.png"}"
+      src="${showImage}"
       alt=""
       class="w-[300px] rounded-lg shadow-shadow1 max-sm:w-[230px]"
     />
+    <button class="flex justify-center items-center gap-2 rounded-lg bg-red-700 px-5 py-2 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80" id="addToFavorites"
+    data-favorite="shows"
+    data-id="${show.id}"
+    >
+      <i class="fa-solid fa-heart"></i>
+Add To Favorites      </button>
+      </div>
     <div class="flex w-full flex-1 flex-col gap-6 max-sm:items-center">
       <h1
         class="font-logo text-4xl font-extrabold text-primaryAccent max-sm:text-3xl"
@@ -341,7 +357,7 @@ const getSeasons = async () => {
         season.id
       }" class="flex flex-col items-center gap-3 cursor-pointer"  id="season">
       <img
-        src="${season.image?.medium || "./imgs/placeholder.png"}"
+        src="${season.image?.medium || showImage}"
         alt=""
         class="w-[150px] rounded-lg transition-all duration-500 hover:shadow-[-19px_15px_20px_#000] shadow-shadow1 flex-1"
       />
@@ -553,11 +569,19 @@ const seasonOverview = async (id) => {
     id="close"
   ></i>
   <div class="flex w-full items-start gap-7 max-sm:flex-col">
+  <div class="flex flex-col gap-3 max-sm:self-center">
     <img
-      src="${season.image?.original || "./imgs/placeholder.png"} "
+      src="${season.image?.medium || showImage} "
       alt=""
-      class="w-[230px] rounded-lg shadow-shadow1 max-sm:self-center"
+      class="w-[230px] rounded-lg shadow-shadow1 "
     />
+    <button class="flex justify-center items-center gap-2 rounded-lg bg-red-700 px-5 py-2 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80" id="addToFavorites"
+    data-favorite="seasons"
+    data-id="${season.id}"
+    >
+      <i class="fa-solid fa-heart"></i>
+Add To Favorites      </button>
+  </div>
     <div class="flex flex-1 flex-col gap-6 ">
       <h1
         class="font-logo text-4xl font-extrabold text-primaryAccent max-sm:text-3xl max-md:text-center"
@@ -949,14 +973,24 @@ const episodeOverview = async (showName, season, otherInfo) => {
               <span class="text-textColor2">Overview :</span>
               ${episode.overview || "No overview available"}
             </p>
-
+                <div class="flex gap-3 mt-5 flex-wrap">
             <a
               href="${homePage || "#"}" target="_blank"
-              class="mt-5 cursor-pointer rounded-3xl bg-secondaryAccent px-7 py-3 text-center font-bold text-textColor transition-colors duration-300 hover:bg-opacity-80"
+              class="flex-1 min-w-[190px] flex justify-center items-center gap-2 cursor-pointer rounded-lg bg-thirdAccent px-5 py-2 text-center font-bold text-textColor transition-colors duration-300 hover:bg-opacity-80"
               id="watchNow"
             >
+            <i class="fa-solid fa-play"></i>
               Watch Now
             </a>
+            <button class="flex-1 flex justify-center items-center gap-2 cursor-pointer rounded-lg bg-secondaryAccent px-5 py-2 text-center font-bold text-textColor transition-colors duration-300 hover:bg-opacity-80"
+            id="addToFavorites"
+            data-favorite="episodes"
+            data-id="${localStorage.getItem("currentEpId")}"
+            >
+            <i class="fa-solid fa-heart"></i>
+Add To Favorites            </button>
+
+          </div>
           </div>
         </div>
 `;
@@ -995,7 +1029,10 @@ closeOverview(episodeOverviewContainer);
 showOverviewContainer.addEventListener("click", (e) => {
   // Get the id of the show
   const id = window.location.search.split("=")[1];
-  const toggleIdToWatchList = (list) => {
+
+  if (e.target.tagName === "BUTTON" && e.target.hasAttribute("data-list")) {
+    const list = watchLists[e.target.dataset.list];
+    // Toggle the id to the list
     // Check if the show already added and remove it if so  else add it
     if (list.shows.has(id)) {
       removeFromWatchList(id, list);
@@ -1006,19 +1043,6 @@ showOverviewContainer.addEventListener("click", (e) => {
       // Set the text content to the active
       e.target.innerHTML = list.activeButton;
     }
-  };
-  if (e.target.tagName === "BUTTON" && e.target.dataset.list === "watched") {
-    toggleIdToWatchList(watchLists.watched);
-  } else if (
-    e.target.tagName === "BUTTON" &&
-    e.target.dataset.list === "watching"
-  ) {
-    toggleIdToWatchList(watchLists.watching);
-  } else if (
-    e.target.tagName === "BUTTON" &&
-    e.target.dataset.list === "willWatch"
-  ) {
-    toggleIdToWatchList(watchLists.willWatch);
   }
 });
 //* Activate the right button when the page loads if the show is already added to a watchList
@@ -1208,3 +1232,24 @@ handleUserAuth();
 
 //* ------------------------------ Account ------------------------------ *//
 handleAccount();
+
+//* ------------------------------ FavoritesList ------------------------------ *//
+//* Add the right type to the favoritesList
+document.addEventListener("click", (e) => {
+  if (e.target.closest("#addToFavorites")) {
+    // Get the id of the /season/episode
+    const id = e.target.closest("#addToFavorites").dataset.id;
+    const type = e.target.closest("#addToFavorites").dataset.favorite;
+
+    // Toggle the id to the list
+    if (favoritesList[type].list.has(id)) {
+      removeFromFavoritesList(id, favoritesList[type]);
+      // Restore the text content to the default
+      e.target.innerHTML = favoritesList[type].defaultButton
+    } else {
+      addToFavoritesList(id, type);
+      // Set the text content to the active
+      e.target.innerHTML = favoritesList[type].activeButton
+    }
+  }
+});

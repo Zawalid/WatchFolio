@@ -16,6 +16,7 @@ import {
   getSignInErrorMessage,
 } from "./firebaseApp.js";
 
+//* ----------------- Miscellaneous -----------------
 //* Show password when eye icon is clicked
 const showPassword = () => {
   document.querySelectorAll(".password_input").forEach((input) => {
@@ -97,6 +98,140 @@ const showMessage = (message, type) => {
   }, 4000);
 };
 
+//* ----------------- WatchList, FavoriteList -----------------
+//* Toggle watchList, favoriteList
+const toggleList = (
+  togglerId,
+  container,
+  listName,
+  actions,
+  displayFunction
+) => {
+  document.querySelectorAll(`#${togglerId}`).forEach((toggler) => {
+    toggler.addEventListener("click", function () {
+      displayFunction(listName);
+      container.classList.toggle("show");
+      // Check if the user is on the show page and add the overflow-hidden class to the body to prevent scrolling when the watchList is open
+      !container.classList.contains("show") &&
+      window.location.pathname.includes("show.html")
+        ? document.body.classList.remove("h-screen", "overflow-hidden")
+        : document.body.classList.remove("overflow-hidden");
+      // Switch the actions to the navbar if the favoriteList is open and the media query matches and  Add the active class to the toggler
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.getElementById("nav").appendChild(actions);
+        actions.classList.toggle("hidden");
+        this.classList.add("active");
+      } else {
+        container.appendChild(actions);
+        actions.classList.remove("hidden");
+        this.firstElementChild.classList.add("active");
+      }
+      // Scroll to the top of the page when the favoriteList is open on mobile
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        window.scrollTo(0, 0);
+        container.classList.contains("show") &&
+          document.body.classList.add("h-screen", "overflow-hidden");
+      }
+    });
+  });
+};
+//* Close the watchList, favoriteList
+const closeList = (togglerId, container, actions) => {
+  document.addEventListener("click", (e) => {
+    if (
+      !container.contains(e.target) &&
+      !e.target.closest(`#${togglerId}`) &&
+      !e.target.closest("#downloadList") &&
+      !actions.contains(e.target)
+    ) {
+      container.classList.remove("show");
+      actions.classList.add("hidden");
+      // Remove the active class from the toggler
+      document.querySelectorAll(`#${togglerId}`).forEach((toggler) => {
+        window.matchMedia("(max-width: 768px)").matches
+          ? toggler.classList.remove("active")
+          : toggler.firstElementChild.classList.remove("active");
+      });
+    }
+  });
+};
+//* Get the show from the api
+//* Display the show in the watchList, favoriteList
+const displayShow = async (id, container) => {
+  const res = await fetch(`https://api.tvmaze.com/shows/${id}`);
+  const show = await res.json();
+
+  return `
+  <div class="flex items-center justify-between" >
+<a href="show.html?id=${show.id}" class="flex items-center gap-3 " data-id="${
+    show.id
+  }" >
+<img src="${
+    show.image?.medium || "./imgs/placeholder.png"
+  }" alt="" class="w-[100px] rounded-lg" >
+<h3 class="text-textColor font-bold text-lg">${show.name} </h3>
+</a>
+<i class="fa-solid fa-trash text-textColor2 transition-colors hover:text-secondaryAccent duration-300 text-lg cursor-pointer" id="${
+    container.id === "favoritesList"
+      ? "removeFromFavoriteList"
+      : "removeFromWatchList"
+  }"></i>
+</div>
+`;
+};
+//* Show the elements from the selected list and change the active button
+const displayList = (buttons, container, dataAttr, displayFunction) => {
+  buttons.forEach((button) => {
+    button.addEventListener("click", function () {
+      // Remove the active class from all the buttons
+      buttons.forEach((button) => button.classList.remove("active"));
+      // Add the active class to the clicked button
+      this.classList.add("active");
+      // Update the current list in the dataset to use to know which list is the current one
+      container.dataset[`current_${dataAttr}`] = this.dataset[dataAttr];
+      // Display the current list
+      displayFunction(this.dataset[dataAttr]);
+    });
+  });
+};
+//* Remove from the chosen list when clicking on the trash icon
+const removeFromList = (
+  buttonId,
+  container,
+  dataAttr,
+  listObject,
+  displayFunction,
+  removeFunction
+) => {
+  document.addEventListener("click", (e) => {
+    if (e.target.closest(`#${buttonId}`)) {
+      // Get the id of the show to remove by getting the href of the show link
+      const id = e.target.closest(`#${buttonId}`).previousElementSibling.dataset
+        .id;
+      // Get the current list from the dataset
+      const list = container.dataset[`current_${dataAttr}`];
+      console.log(id);
+      console.log(
+        document.querySelectorAll(`#overview button[data-${dataAttr}]`)
+      );
+      // Check if the user is on the show page of the show they want to remove and change the button text to the default one
+      window.location.href.includes(`show.html?id=${id}`) &&
+        document
+          .querySelectorAll(`#overview button[data-${dataAttr}]`)
+          .forEach((button) => {
+            if (button.dataset[dataAttr] == list) {
+              button.innerHTML = listObject[list].defaultButton;
+            }
+          });
+      // Remove the show from the list
+      removeFunction(id, listObject[list]);
+      // Display the shows from the list
+      displayFunction(list);
+    }
+  });
+};
+
+//* ----------------- User  -----------------
 //* Display user info
 const displayUserInfo = async (user) => {
   // Get the fallback avatar if the user doesn't have a profile picture
@@ -381,7 +516,7 @@ const handleAccount = () => {
   isValidPassword();
   changePasswordForm.addEventListener("submit", function (e) {
     e.preventDefault();
-    if (this.newPassword.value === "") {
+    if (this.password.value === "") {
       showMessage("Please enter your new password", "error");
       return;
     }
@@ -396,7 +531,7 @@ const handleAccount = () => {
       );
       return;
     }
-    if (this.newPassword.value !== this.confirmNewPassword.value) {
+    if (this.password.value !== this.confirmNewPassword.value) {
       showMessage("Passwords don't match", "error");
       return;
     }
@@ -405,7 +540,7 @@ const handleAccount = () => {
     // Reauthenticate the user
     reauthenticate(async () => {
       // Update the user's password
-      updatePassword(auth.currentUser, this.newPassword.value)
+      updatePassword(auth.currentUser, this.password.value)
         .then(() => {
           // Show the success message
           showMessage("Your password has been changed successfully", "info");
@@ -449,6 +584,7 @@ const handleAccount = () => {
     });
   });
 };
+
 //* Export
 export {
   showPassword,
@@ -456,4 +592,9 @@ export {
   showMessage,
   handleUserAuth,
   handleAccount,
+  toggleList,
+  closeList,
+  displayShow,
+  displayList,
+  removeFromList,
 };
