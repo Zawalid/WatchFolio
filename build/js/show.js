@@ -18,7 +18,15 @@ import {
 // TMDB API
 import { options, genders, baseUrl } from "./TMDB.js";
 // Utilities
-import { handleUserAuth, handleAccount } from "./utilities.js";
+import {
+  handleUserAuth,
+  handleAccount,
+  checkIfUserIsLoggedIn,
+  retrieveFromLocalStorageOrDatabase,
+  updateLocalStorageOrDatabase,
+  storeInLocalStorageOrDatabase,
+} from "./utilities.js";
+import { db, doc, getDoc } from "./firebaseApp.js";
 
 //* ------------------ Creating overview containers (Avoid repetition) ------------------ *//
 const overviewContainer = `
@@ -88,16 +96,16 @@ const displayOverview = (container, html, img = null) => {
       hideOrShowSeasonButtons();
       //* Activate the add to favorites button if the season is already added to the favorites
       activateFavoritesListEpisodeSeasonButton(
-        seasonOverviewContainer.querySelector("button")
-        , "season"
+        seasonOverviewContainer.querySelector("button"),
+        "season"
       );
     }
     if (container === episodeOverviewContainer) {
       document.documentElement.style.setProperty("--episode-bg", `url(${img})`);
       //* Activate the add to favorites button if the episode is already added to the favorites
       activateFavoritesListEpisodeSeasonButton(
-        episodeOverviewContainer.querySelector("button")
-        , "episode"
+        episodeOverviewContainer.querySelector("button"),
+        "episode"
       );
     }
   }, 1000);
@@ -1038,51 +1046,31 @@ document.addEventListener("click", (e) => {
 //* Close the episode overview when clicking on the close button or the container
 closeOverview(episodeOverviewContainer);
 
-//* ------------------------------ WatchLists ------------------------------ *//
-//* Perform the right action when clicking  on a watchList button
-showOverviewContainer.addEventListener("click", (e) => {
-  // Get the id of the show
-  const id = window.location.search.split("=")[1];
-
-  if (e.target.tagName === "BUTTON" && e.target.hasAttribute("data-list")) {
-    const list = watchLists[e.target.dataset.list];
-    // Toggle the id to the list
-    // Check if the show already added and remove it if so  else add it
-    if (list.shows.has(id)) {
-      removeFromWatchList(id, list);
-      // Restore the text content to the default
-      e.target.innerHTML = list.defaultButton;
-    } else {
-      addToWatchList(id, list.shows);
-      // Set the text content to the active
-      e.target.innerHTML = list.activeButton;
-    }
-  }
-});
-//* Activate the right button when the page loads if the show is already added to a watchList
-const activateWatchListButton = () => {
-  for (const list in watchLists) {
-    watchLists[list].shows.forEach((show) => {
-      if (show === window.location.search.split("=")[1]) {
-        document.querySelector(`[data-list=${list}]`).innerHTML =
-          watchLists[list].activeButton;
-      }
-    });
-  }
-};
-
 //* ------------------------------ Episodes tracking ------------------------------ *//
 //* Watched and watching episodes
 const episodes = {
   watchedEpisodes: {
+    name: "watchedEpisodes",
     episodes: new Set(),
     icon: `<i class="fa-solid fa-eye text-lg"></i>`,
   },
   watchingEpisodes: {
+    name: "watchingEpisodes",
     episodes: new Set(),
     icon: `<i class="fa-solid fa-play text-lg"></i>`,
   },
 };
+//* Retrieve episodes from localStorage/database and store them back in the lists to manipulate them
+for (let episode in episodes) {
+  episode = episodes[episode];
+  // retrieve from database/local storage
+  retrieveFromLocalStorageOrDatabase("Episodes", episode);
+}
+//* Store the episodes in the local storage or database if the lists don't exist
+storeInLocalStorageOrDatabase("Episodes", [
+  "watchedEpisodes",
+  "watchingEpisodes",
+]);
 //* Change the episode icon when clicking on the watch now button and store the watched and watching episodes in the local storage
 document.addEventListener("click", (e) => {
   if (e.target.closest("#watchNow")) {
@@ -1122,47 +1110,35 @@ document.addEventListener("click", (e) => {
       }
     });
 
-    // Store the episodes in the local storage
-    localStorage.setItem("watchingEpisodes", [
-      ...episodes.watchingEpisodes.episodes,
-    ]);
-    localStorage.setItem("watchedEpisodes", [
-      ...episodes.watchedEpisodes.episodes,
+    //  Update the local storage/database
+    updateLocalStorageOrDatabase("Episodes", [
+      episodes.watchedEpisodes,
+      episodes.watchingEpisodes,
     ]);
   }
 });
-//* Retrieve episodes from local storage and store them back in the lists to manipulate them
-const retrieveAndStoreEpisodes = (episodes, episodesType) => {
-  // Get the episodes from the local storage
-  const eps = window.localStorage.getItem(episodesType)?.split(",");
-  // Remove the empty string from the array (it's added when the list is empty)
-  eps && eps[0] == "" && eps.splice(0, 1);
-  // Store the episodes in the list to manipulate them
-  episodes.episodes = new Set(eps);
-};
-retrieveAndStoreEpisodes(episodes.watchedEpisodes, "watchedEpisodes");
-retrieveAndStoreEpisodes(episodes.watchingEpisodes, "watchingEpisodes");
 //* Change the episode icon when the page loads
 const changeEpisodeIcon = () => {
-  // Get the episodes numbers
-  const episodesNumbers = [...document.querySelectorAll("#episode h2")];
-  episodesNumbers.map((h2) => {
-    if (episodes.watchedEpisodes.episodes.has(h2.parentElement.dataset.id)) {
-      // Change the icon to the watched icon (the eye icon)
-      h2.innerHTML = episodes.watchedEpisodes.icon;
-    }
-    if (episodes.watchingEpisodes.episodes.has(h2.parentElement.dataset.id)) {
-      // Change the icon to the watching icon (the play icon)
-      h2.innerHTML = episodes.watchingEpisodes.icon;
-    }
-  });
+  // Wait until ids are retrieved
+  setTimeout(() => {
+    // Get the episodes numbers
+    const episodesNumbers = [...document.querySelectorAll("#episode h2")];
+    episodesNumbers.map((h2) => {
+      for (const episode in episodes) {
+        if (episodes[episode].episodes.has(h2.parentElement.dataset.id)) {
+          h2.innerHTML = episodes[episode].icon;
+        }
+      }
+    });
+    // Remove the text content from the season watched button if all episodes are watched
+    [...document.querySelectorAll("#episode h2")].every(
+      (h2) => h2.innerHTML === episodes.watchedEpisodes.icon
+    ) && document.querySelector("#seasonWatched span")?.remove();
+  }, 1500);
 };
 //* Add the show to the watching shows
 const addShowToWatchingList = () => {
-  addToWatchList(
-    window.location.search.split("=")[1],
-    watchLists.watching.shows
-  );
+  addToWatchList(window.location.search.split("=")[1], watchLists.watching);
   document.querySelector(`[data-list=watching]`).innerHTML =
     watchLists.watching.activeButton;
 };
@@ -1199,12 +1175,10 @@ document.addEventListener("click", (e) => {
         episodes.watchingEpisodes.episodes.delete(h2.parentElement.dataset.id);
       episodes.watchedEpisodes.episodes.add(h2.parentElement.dataset.id);
     });
-    // Store the episodes in the local storage
-    localStorage.setItem("watchingEpisodes", [
-      ...episodes.watchingEpisodes.episodes,
-    ]);
-    localStorage.setItem("watchedEpisodes", [
-      ...episodes.watchedEpisodes.episodes,
+    //  Update the local storage/database
+    updateLocalStorageOrDatabase("Episodes", [
+      episodes.watchedEpisodes,
+      episodes.watchingEpisodes,
     ]);
     // Add the show to the watched shows if the season is the last season or if it's the only season And that the show status is "Ended" else add it to the watching shows
     if (
@@ -1212,10 +1186,7 @@ document.addEventListener("click", (e) => {
         currentSeason === [...document.querySelectorAll("#season")].length) &&
       document.getElementById("showStatus").innerText === "Ended"
     ) {
-      addToWatchList(
-        window.location.search.split("=")[1],
-        watchLists.watched.shows
-      );
+      addToWatchList(window.location.search.split("=")[1], watchLists.watched);
       document.querySelector(`[data-list=watched]`).innerHTML =
         watchLists.watched.activeButton;
     } else {
@@ -1247,6 +1218,42 @@ handleUserAuth();
 //* ------------------------------ Account ------------------------------ *//
 handleAccount();
 
+//* ------------------------------ WatchLists ------------------------------ *//
+//* Perform the right action when clicking  on a watchList button
+showOverviewContainer.addEventListener("click", (e) => {
+  // Get the id of the show
+  const id = window.location.search.split("=")[1];
+
+  if (e.target.tagName === "BUTTON" && e.target.hasAttribute("data-list")) {
+    const list = watchLists[e.target.dataset.list];
+    // Toggle the id to the list
+    // Check if the show already added and remove it if so  else add it
+    if (list.shows.has(id)) {
+      removeFromWatchList(id, list);
+      // Restore the text content to the default
+      e.target.innerHTML = list.defaultButton;
+    } else {
+      addToWatchList(id, list);
+      // Set the text content to the active
+      e.target.innerHTML = list.activeButton;
+    }
+  }
+});
+//* Activate the right button when the page loads if the show is already added to a watchList
+const activateWatchListButton = () => {
+  // Wait until the ids are retrieved
+  setTimeout(() => {
+    for (const list in watchLists) {
+      watchLists[list].shows.forEach((show) => {
+        if (show === window.location.search.split("=")[1]) {
+          document.querySelector(`[data-list=${list}]`).innerHTML =
+            watchLists[list].activeButton;
+        }
+      });
+    }
+  }, 1500);
+};
+
 //* ------------------------------ FavoritesList ------------------------------ *//
 //* Add the right type to the favoritesList
 document.addEventListener("click", (e) => {
@@ -1259,35 +1266,39 @@ document.addEventListener("click", (e) => {
     if (favoritesList[type].list.has(id)) {
       removeFromFavoritesList(id, favoritesList[type]);
       // Restore the text content to the default
-      e.target.innerHTML = favoritesList[type].defaultButton;
+      e.target.innerHTML = favoritesList.defaultButton;
     } else {
-      addToFavoritesList(id, type);
+      addToFavoritesList(id, favoritesList[type]);
       // Set the text content to the active
-      e.target.innerHTML = favoritesList[type].activeButton;
+      e.target.innerHTML = favoritesList.activeButton;
     }
   }
 });
 //* Activate the add button when the page loads if the show is already added to the favoritesList (show case)
 const activateFavoritesListShowButton = () => {
-  for (const list in favoritesList) {
-    favoritesList[list].list.forEach((item) => {
-      if (item === window.location.search.split("=")[1]) {
-        document.querySelector(`[data-favorite=${list}]`).innerHTML =
-          favoritesList[list].activeButton;
+  // Wait until the ids are retrieved
+  setTimeout(() => {
+    favoritesList.shows.list.forEach((id) => {
+      if (id === window.location.search.split("=")[1]) {
+        document.querySelector(`[data-favorite=shows]`).innerHTML =
+          favoritesList.activeButton;
       }
     });
-  }
+  }, 1500);
 };
 //* Activate the add button when the page loads if the season/episode are already added to the favoritesList (season/episode case)
 const activateFavoritesListEpisodeSeasonButton = (button, type) => {
-  for (const list in favoritesList) {
-    favoritesList[list].list.forEach((item) => {
-      if (
-        item ===
-        localStorage.getItem(type === "season" ? "currentSId" : "currentEpId")
-      ) {
-        button.innerHTML = favoritesList[list].activeButton;
-      }
-    });
-  }
+  // Wait until the ids are retrieved
+  setTimeout(() => {
+    for (const list in favoritesList) {
+      favoritesList[list].list?.forEach((item) => {
+        if (
+          item ===
+          localStorage.getItem(type === "season" ? "currentSId" : "currentEpId")
+        ) {
+          button.innerHTML = favoritesList.activeButton;
+        }
+      });
+    }
+  }, 1500);
 };

@@ -12,6 +12,9 @@ import {
   searchList,
   showSearchInput,
   hideSearchInput,
+  updateLocalStorageOrDatabase,
+  retrieveFromLocalStorageOrDatabase,
+  storeInLocalStorageOrDatabase,
 } from "./utilities.js";
 
 //* ------------------------------ Main logic ------------------------------ *//
@@ -29,48 +32,52 @@ export const favoritesList = {
   shows: {
     name: "favoriteShows",
     list: new Set(),
-    activeButton: `<i class="fa-solid fa-heart"></i> Favorite`,
-    defaultButton: `<i class="fa-solid fa-heart"></i> Add To Favorites`,
   },
   seasons: {
     name: "favoriteSeasons",
     list: new Set(),
-    defaultButton: `<i class="fa-solid fa-heart"></i> Add To Favorites`,
-    activeButton: `<i class="fa-solid fa-heart"></i> Favorite`,
   },
   episodes: {
     name: "favoriteEpisodes",
     list: new Set(),
-    defaultButton: `<i class="fa-solid fa-heart"></i> Add To Favorites`,
-    activeButton: `<i class="fa-solid fa-heart"></i> Favorite`,
   },
+  defaultButton: `<i class="fa-solid fa-heart"></i> Add To Favorites`,
+  activeButton: `<i class="fa-solid fa-heart"></i> Favorite`,
 };
-//* Retrieve shows from local storage and store them back in the lists to manipulate them
+//* Retrieve shows from local storage/Database and store them in the lists
 for (let list in favoritesList) {
+  if (list === "defaultButton" || list === "activeButton") continue;
   list = favoritesList[list];
-  const lists = window.localStorage.getItem(list.name)?.split(",");
-  // Remove the empty string from the array (it's added when the list is empty)
-  lists && lists[0] == "" && lists.splice(0, 1);
-  // Store the shows/seasons/episodes back in the lists
-  list.list = new Set(lists);
+  // retrieve from database/local storage
+  retrieveFromLocalStorageOrDatabase("Favorites", list);
 }
+//* Store the lists in the local storage or database if the lists don't exist
+storeInLocalStorageOrDatabase("Favorites", [
+  "favoriteShows",
+  "favoriteSeasons",
+  "favoriteEpisodes",
+]);
 //* Add to favoritesList
 export const addToFavoritesList = (id, type) => {
   // Add to the right type of favorites list
-  favoritesList[type].list.add(id);
-  //   update the lists in the local storage
-  [favoritesList.shows, favoritesList.seasons, favoritesList.episodes].forEach(
-    (set) => {
-      window.localStorage.setItem(set.name, [...set.list]);
-    }
-  );
+  type.list.add(id);
+  //   update the list in the local storage or database
+  updateLocalStorageOrDatabase("Favorites", [
+    favoritesList.shows,
+    favoritesList.seasons,
+    favoritesList.episodes,
+  ]);
 };
 //* Remove from favoritesList
 export const removeFromFavoritesList = (id, type) => {
   // Remove from the right type of favorites list
   type.list.delete(id);
-  //   update the list in the local storage
-  window.localStorage.setItem(type.name, [...type.list]);
+  //   update the list in the local storage or database
+  updateLocalStorageOrDatabase("Favorites", [
+    favoritesList.shows,
+    favoritesList.seasons,
+    favoritesList.episodes,
+  ]);
 };
 //* Display shows, seasons, episodes from the favoritesList
 const displayFromFavoritesList = async (type) => {
@@ -109,7 +116,7 @@ const displayFromFavoritesList = async (type) => {
         <div class="flex items-center justify-between" >
       <div class="flex items-center gap-3 " data-id="${season.id}">
       <img src="${
-        season.image?.medium || show.image?.medium || "./imgs/placeholder.png"
+        season.image?.medium || "./imgs/placeholder.png"
       }" alt="" class="w-[100px] rounded-lg" >
       <div>
       <h3 class="text-textColor font-bold text-lg">${

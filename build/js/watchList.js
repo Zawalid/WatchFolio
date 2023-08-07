@@ -14,6 +14,9 @@ import {
   searchList,
   showSearchInput,
   hideSearchInput,
+  retrieveFromLocalStorageOrDatabase,
+  storeInLocalStorageOrDatabase,
+  updateLocalStorageOrDatabase,
 } from "./utilities.js";
 
 //* ------------------------------ Main logic ------------------------------ *//
@@ -46,12 +49,15 @@ export const watchLists = {
 //* Retrieve shows from local storage and store them back in the lists to manipulate them
 for (let list in watchLists) {
   list = watchLists[list];
-  const lists = window.localStorage.getItem(list.name)?.split(",");
-  // Remove the empty string from the array (it's added when the list is empty)
-  lists && lists[0] == "" && lists.splice(0, 1);
-  // Store the shows/seasons/episodes back in the lists
-  list.shows = new Set(lists);
+  // retrieve from database/local storage
+  retrieveFromLocalStorageOrDatabase("watchList", list);
 }
+//* Store the lists in the local storage or database if the lists don't exist
+storeInLocalStorageOrDatabase("watchList", [
+  "watched",
+  "watching",
+  "willWatch",
+]);
 //* Add to the chosen list
 export const addToWatchList = (id, list) => {
   // Remove the id from the other lists if it exists
@@ -67,18 +73,24 @@ export const addToWatchList = (id, list) => {
         list.defaultButton)
   );
   // Add the id to the chosen list
-  list.add(id);
-  // Update the lists in the local storage
-  [watchLists.watched, watchLists.watching, watchLists.willWatch].forEach((l) =>
-    window.localStorage.setItem(l.name, [...l.shows])
-  );
+  list.shows.add(id);
+  // Update the lists in the local storage or database
+  updateLocalStorageOrDatabase("watchList", [
+    watchLists.watched,
+    watchLists.watching,
+    watchLists.willWatch,
+  ]);
 };
 //* Remove from the chosen list
 export const removeFromWatchList = (id, list) => {
   // Delete the id to from chosen list
   list.shows.delete(id);
-  // Update the list in the local storage
-  window.localStorage.setItem(list.name, [...list.shows]);
+  // Update the lists in the local storage or database
+  updateLocalStorageOrDatabase("watchList", [
+    watchLists.watched,
+    watchLists.watching,
+    watchLists.willWatch,
+  ]);
 };
 //* Display shows from the chosen list
 const displayShowsFromWatchList = async (list) => {

@@ -38,10 +38,19 @@ const firebaseConfig = {
   measurementId: "G-LEKBTCG8J3",
 };
 
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+} from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth();
+const db = getFirestore(app);
 
 //* ------------------------------ Error Handling ------------------------------ *//
 // Get error message based on error code of sign in
@@ -113,4 +122,11 @@ export {
   EmailAuthProvider,
   getSignInErrorMessage,
   getSignUpErrorMessage,
+  db,
+  setDoc,
+  getDoc,
+  updateDoc,
+  doc,
+  arrayUnion,
+  arrayRemove,
 };

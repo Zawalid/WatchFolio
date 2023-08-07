@@ -14,6 +14,11 @@ import {
   reauthenticateWithCredential,
   EmailAuthProvider,
   getSignInErrorMessage,
+  db,
+  doc,
+  getDoc,
+  updateDoc,
+  setDoc,
 } from "./firebaseApp.js";
 
 //* ----------------- Miscellaneous -----------------
@@ -111,6 +116,8 @@ const toggleList = (
     toggler.addEventListener("click", function () {
       displayFunction(listName);
       container.classList.toggle("show");
+      // Add the active class to the toggler
+      this.classList.add("active");
       // Check if the user is on the show page and add the overflow-hidden class to the body to prevent scrolling when the watchList is open
       !container.classList.contains("show") &&
       window.location.pathname.includes("show.html")
@@ -120,11 +127,9 @@ const toggleList = (
       if (window.matchMedia("(max-width: 768px)").matches) {
         document.getElementById("nav").appendChild(actions);
         actions.classList.toggle("hidden");
-        this.classList.add("active");
       } else {
         container.appendChild(actions);
         actions.classList.remove("hidden");
-        this.firstElementChild.classList.add("active");
       }
       // Scroll to the top of the page when the favoriteList is open on mobile
       if (window.matchMedia("(max-width: 768px)").matches) {
@@ -216,7 +221,8 @@ const removeFromList = (
           .querySelectorAll(`#overview button[data-${dataAttr}]`)
           .forEach((button) => {
             if (button.dataset[dataAttr] == list) {
-              button.innerHTML = listObject[list].defaultButton;
+              button.innerHTML =
+                listObject[list].defaultButton || listObject.defaultButton;
             }
           });
       // Remove the show from the list
@@ -253,7 +259,9 @@ const clearList = (container, listObject, dataAttr, displayFunction) => {
         window.location.pathname.includes("show.html") &&
           document.querySelectorAll("#overview button").forEach((button) => {
             if (button.dataset[dataAttr] == currentList) {
-              button.innerHTML = listObject[currentList].defaultButton;
+              button.innerHTML =
+                listObject[currentList].defaultButton ||
+                listObject.defaultButton;
             }
           });
       }
@@ -353,7 +361,7 @@ const showSearchInput = (container, searchListInput, listObject, dataAttr) => {
           "fa-magnifying-glass-plus"
         );
 };
-const hideSearchInput = (container,searchListInput) => {
+const hideSearchInput = (container, searchListInput) => {
   // Clear the input
   searchListInput.value = "";
   // Hide the input
@@ -363,7 +371,97 @@ const hideSearchInput = (container,searchListInput) => {
     .querySelector("#actions #search")
     .classList.replace("fa-magnifying-glass-minus", "fa-magnifying-glass-plus");
 };
+//* Update localStorage or database based on the user state
+const updateLocalStorageOrDatabase = async (document, lists) => {
+  // Get the right object (watchList or favoriteList)
+  const obj =
+    document === "Favorites"
+      ? "list"
+      : document === "watchList"
+      ? "shows"
+      : "episodes";
+  try {
+    const user = await checkIfUserIsLoggedIn();
+    lists.forEach((list) => {
+      updateDoc(doc(db, document, user.uid), {
+        [list.name]: [...list[obj]],
+      });
+    });
+  } catch (err) {
+    lists.forEach((list) => {
+      window.localStorage.setItem(list.name, [...list[obj]]);
+    });
+  }
+};
+//* Retrieve from the local storage or database based on the user state
+const retrieveFromLocalStorageOrDatabase = async (document, list) => {
+  // Get the right object (watchList or favoriteList)
+  const obj =
+    document === "Favorites"
+      ? "list"
+      : document === "watchList"
+      ? "shows"
+      : "episodes";
+  try {
+    const user = await checkIfUserIsLoggedIn();
+
+    getDoc(doc(db, document, user.uid)).then((doc) => {
+      if (doc.exists()) {
+        list[obj] = new Set(doc.data()[list.name]);
+      }
+    });
+  } catch (err) {
+    const lists = window.localStorage.getItem(list.name)?.split(",");
+    // Remove the empty string from the array (it's added when the list is empty)
+    lists && lists[0] == "" && lists.splice(0, 1);
+    // Store the shows/seasons/episodes back in the lists
+    list[obj] = new Set(lists);
+  }
+};
+//* Store the lists in the local storage or database if the lists don't exist
+const storeInLocalStorageOrDatabase = async (document, lists) => {
+  try {
+    const user = await checkIfUserIsLoggedIn();
+    for (let list of lists) {
+      getDoc(doc(db, document, user.uid)).then((snapshot) => {
+        // Check if the document exists and if the list doesn't exist in the document, create it
+        if (snapshot.exists()) {
+          if (!snapshot.data()[list]) {
+            updateDoc(doc(db, document, user.uid), {
+              [list]: [],
+            });
+          }
+        } else {
+          // Create the document and the list
+          setDoc(doc(db, document, user.uid), {
+            [list]: [],
+          });
+        }
+      });
+    }
+  } catch (err) {
+    lists.forEach((list) => {
+      if (!window.localStorage.getItem(list)) {
+        window.localStorage.setItem(list, "");
+      }
+    });
+  }
+};
+
 //* ----------------- User  -----------------
+//* Check if the user is logged in
+const checkIfUserIsLoggedIn = () => {
+  return new Promise((resolve, reject) => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        resolve(user);
+      } else {
+        reject("User is not logged in");
+      }
+    });
+  });
+};
+
 //* Display user info
 const displayUserInfo = async (user) => {
   // Get the fallback avatar if the user doesn't have a profile picture
@@ -387,53 +485,54 @@ const displayUserInfo = async (user) => {
 };
 
 //* Handle user authentication
-const handleUserAuth = () => {
-  onAuthStateChanged(auth, (user) => {
-    const signButton = document.getElementById("sign");
-    // Check if the user is logged in or not
-    if (user) {
-      //  Send verification email if the user is not verified and the user is in the home page
-      if (
-        !user.emailVerified &&
-        (window.location.pathname === "/" ||
-          window.location.pathname === "/index.html")
-      ) {
-        sendEmailVerification(user).then(() => {
-          showMessage(
-            "A verification email has been sent to your email address. Please check your inbox and click the verification link to verify your email.",
-            "info"
-          );
-        });
-      }
-      // Display the user's info
-      displayUserInfo(user);
-      // Change the text of the button to sign out
-      signButton.innerHTML = `
+const handleUserAuth = async () => {
+  const signButton = document.getElementById("sign");
+  const signOutConfirmation = document.getElementById("signOut_confirmation");
+  try {
+    const user = await checkIfUserIsLoggedIn();
+    //  Send verification email if the user is not verified and the user is in the home page
+    if (
+      !user.emailVerified &&
+      (window.location.pathname === "/" ||
+        window.location.pathname === "/index.html")
+    ) {
+      sendEmailVerification(user).then(() => {
+        showMessage(
+          "A verification email has been sent to your email address. Please check your inbox and click the verification link to verify your email.",
+          "info"
+        );
+      });
+    }
+    // Display the user's info
+    displayUserInfo(user);
+    // Change the text of the button to sign out
+    signButton.innerHTML = `
     <i class="fa-solid fa-sign-out text-2xl"></i>
     <span class="font-semibold">Sign Out</span>
     `;
-      //  Change the data-sign of the button to out
-      signButton.dataset.sign = "out";
-    } else {
-      // Change the text of the button to sign in
-      signButton.innerHTML = `
+    //  Change the data-sign of the button to out
+    signButton.dataset.sign = "out";
+
+    // Clear the local storage if the user is logged in
+    window.localStorage.clear();
+  } catch (err) {
+    // Change the text of the button to sign in
+    signButton.innerHTML = `
    <i class="fa-solid fa-sign-in text-2xl"></i>
    <span class="font-semibold">Sign In</span>
    `;
-      //  Change the data-sign of the button to in
-      signButton.dataset.sign = "in";
-      // Hide the sign out confirmation
-      signOutConfirmation.classList.remove("show");
-      // Set the info to guest's
-      document.getElementById("username").innerText = "Guest";
-      document.getElementById("email").innerText = "";
-      document
-        .querySelectorAll(".avatar")
-        .forEach((img) => (img.src = "./imgs/no profile.png"));
-    }
-  });
+    //  Change the data-sign of the button to in
+    signButton.dataset.sign = "in";
+    // Hide the sign out confirmation
+    signOutConfirmation.classList.remove("show");
+    // Set the info to guest's
+    document.getElementById("username").innerText = "Guest";
+    document.getElementById("email").innerText = "";
+    document
+      .querySelectorAll(".avatar")
+      .forEach((img) => (img.src = "./imgs/no profile.png"));
+  }
 
-  const signOutConfirmation = document.getElementById("signOut_confirmation");
   // Show the sign out confirmation
   document.addEventListener("click", (e) => {
     if (e.target.closest("#sign")) {
@@ -450,6 +549,8 @@ const handleUserAuth = () => {
     if (e.target.id === "yes") {
       // Sign out the user
       signOut(auth);
+      // Redirect the user to the home page
+      window.location.href = "./index.html";
     }
   });
 };
@@ -722,6 +823,7 @@ export {
   showPassword,
   isValidPassword,
   showMessage,
+  checkIfUserIsLoggedIn,
   handleUserAuth,
   handleAccount,
   toggleList,
@@ -734,4 +836,7 @@ export {
   searchList,
   showSearchInput,
   hideSearchInput,
+  updateLocalStorageOrDatabase,
+  retrieveFromLocalStorageOrDatabase,
+  storeInLocalStorageOrDatabase,
 };
