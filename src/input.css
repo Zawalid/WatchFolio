@@ -33,7 +33,8 @@
     z-index: 99999;
     opacity: 1;
   }
-  #search_list.show {
+  #favoritesList input.show ,
+  #watchList input.show {
     @apply bottom-full z-10 opacity-100;
   }
 }

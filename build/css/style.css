@@ -522,6 +522,14 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
+.\!container {
+  width: 100% !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  padding-right: 1.5rem !important;
+  padding-left: 1.5rem !important;
+}
+
 .container {
   width: 100%;
   margin-right: auto;
@@ -531,24 +539,40 @@ video {
 }
 
 @media (min-width: 1000px) {
+  .\!container {
+    max-width: 1000px !important;
+  }
+
   .container {
     max-width: 1000px;
   }
 }
 
 @media (min-width: 1125px) {
+  .\!container {
+    max-width: 1125px !important;
+  }
+
   .container {
     max-width: 1125px;
   }
 }
 
 @media (min-width: 1280px) {
+  .\!container {
+    max-width: 1280px !important;
+  }
+
   .container {
     max-width: 1280px;
   }
 }
 
 @media (min-width: 1536px) {
+  .\!container {
+    max-width: 1536px !important;
+  }
+
   .container {
     max-width: 1536px;
   }
@@ -1882,13 +1906,22 @@ li.active,
   opacity: 1;
 }
 
-#search_list.\!show {
+#favoritesList input.\!show ,
+  #watchList input.\!show {
   bottom: 100%;
   z-index: 10;
   opacity: 1;
 }
 
-#search_list.show {
+#favoritesList input.show ,
+  #watchList input.show {
+  bottom: 100%;
+  z-index: 10;
+  opacity: 1;
+}
+
+#favoritesList input.\!show ,
+  #watchList input.\!show {
   bottom: 100%;
   z-index: 10;
   opacity: 1;
@@ -1924,6 +1957,7 @@ html {
   background-color: white;
 }
 
+#favoritesListButtons::-webkit-scrollbar,
 #exploreTabs::-webkit-scrollbar,
 #watchListButtons::-webkit-scrollbar {
   display: none;

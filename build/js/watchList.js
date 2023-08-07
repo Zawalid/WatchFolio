@@ -9,6 +9,11 @@ import {
   displayShow,
   displayList,
   removeFromList,
+  clearList,
+  sortList,
+  searchList,
+  showSearchInput,
+  hideSearchInput,
 } from "./utilities.js";
 
 //* ------------------------------ Main logic ------------------------------ *//
@@ -192,141 +197,22 @@ downloadWatchListContainer.addEventListener("click", function (e) {
 });
 
 //* ------------------------------ CLear ------------------------------ *//
-//* Clear the watchList
-const clearConfirmation = watchListContainer.querySelector(
-  "#clear_confirmation"
-);
-const clearWatchList = () => {
-  // SHow confirmation modal
-  watchLists[watchListContainer.dataset.current_list].shows.size > 0 &&
-    clearConfirmation.classList.replace("hidden", "flex");
-  clearConfirmation.addEventListener("click", (e) => {
-    if (e.target.closest("#no")) {
-      clearConfirmation.classList.replace("flex", "hidden");
-    }
-    if (e.target.closest("#yes")) {
-      clearConfirmation.classList.replace("flex", "hidden");
-      const currentList = watchListContainer.dataset.current_list;
-      // Clear the list from the local storage
-      window.localStorage.setItem(currentList, "");
-      // Clear the list from the watchLists object
-      watchLists[currentList].shows.clear();
-      // Display the shows from the list
-      displayShowsFromWatchList(currentList);
-      // Check if the user is on the show page and change the button text to the default one
-      window.location.pathname.includes("show.html") &&
-        document
-          .getElementById("overview")
-          .querySelectorAll("button")
-          .forEach((button) => {
-            if (button.dataset.list == currentList) {
-              button.innerHTML = watchLists[currentList].defaultButton;
-            }
-          });
-    }
-  });
-};
-actions.querySelector("#clear").addEventListener("click", clearWatchList);
-
+clearList(watchListContainer, watchLists, "list", displayShowsFromWatchList);
 //* ------------------------------ Sort ------------------------------ *//
-//* Sort the watchList
-const sortWatchList = (direction) => {
-  // To store the sorted list
-  let sortedList = [];
-  // To store the sorted names of shows
-  let sortedNames;
-  // The sorted list by names based on the direction (AZ/ZA)
-  if (direction === "AZ") {
-    sortedNames = currentListShows
-      .map((a) => a.lastElementChild.textContent)
-      .toSorted();
-  } else {
-    sortedNames = currentListShows
-      .map((a) => a.lastElementChild.textContent)
-      .toSorted()
-      .toReversed();
-  }
-
-  const sort = () => {
-    sortedList.push(
-      currentListShows.find(
-        (a) => a.querySelector("h3").textContent == sortedNames[0]
-      ).parentElement
-    );
-    sortedNames.shift();
-  };
-  // Sort the list
-  currentListShows.forEach((e) => sort());
-  // Insert the sorted shows
-  const html = sortedList.map((el) => el.outerHTML).join("");
-  sortedList.length > 0
-    ? (watchListContainer.querySelector("#shows").innerHTML = html)
-    : "";
-};
-//* Sort from A to Z
-actions
-  .querySelector("#sortAZ")
-  .addEventListener("click", () => sortWatchList("AZ"));
-//* Sort from Z to A
-actions
-  .querySelector("#sortZA")
-  .addEventListener("click", () => sortWatchList("ZA"));
+sortList(watchListContainer);
 
 //* ------------------------------ Search ------------------------------ *//
-//* Search for a show
-const searchListInput = watchListContainer.querySelector("#search_list");
-const searchWatchList = () => {
-  // Get the query and convert it to lowercase
-  const query = searchListInput.value.toLowerCase();
-  // Filter the shows based on the query
-  const results = currentListShows.filter((a) => {
-    return a.lastElementChild.textContent.toLowerCase().includes(query);
-  });
-  // Display the results or a message if there are no results
-  watchListContainer.querySelector("#shows").innerHTML =
-    results.length > 0
-      ? results.map((res) => res.parentElement.outerHTML).join("")
-      : `<div class="flex flex-col items-center justify-center col-span-5 ml-[50%] mt-[50%] -translate-x-1/2 -translate-y-1/2">
-      <img src="./imgs/no_result.png" alt="" class="w-52" />
-      <h2 class="text-xl font-bold text-textColor2">No Shows Found</h2>
-      </div>
-      `;
-};
+const searchListInput = watchListContainer.querySelector("input");
 //* Show the search input when clicking on the search icon
-actions.querySelector("#search").addEventListener("click", function () {
-  // Toggle the search input
-  watchLists[watchListContainer.dataset.current_list].shows.size > 0 &&
-    searchListInput.classList.toggle("show");
-  // Focus or blur out of the input
-  searchListInput.classList.contains("show")
-    ? searchListInput.focus()
-    : searchListInput.blur();
-  // Change the icon
-  searchListInput.classList.contains("show")
-    ? this.classList.replace(
-        "fa-magnifying-glass-plus",
-        "fa-magnifying-glass-minus"
-      )
-    : this.classList.replace(
-        "fa-magnifying-glass-minus",
-        "fa-magnifying-glass-plus"
-      );
+actions.querySelector("#search").addEventListener("click", () => {
+  showSearchInput(watchListContainer, searchListInput, watchLists, "list");
 });
 //* Search when pressing enter
 searchListInput.addEventListener("keyup", (e) => {
   if (e.key === "Enter") {
     // Search for the show
-    searchWatchList();
-    // Clear the input
-    searchListInput.value = "";
-    // Hide the input
-    searchListInput.classList.remove("show");
-    // Change the icon
-    actions
-      .querySelector("#search")
-      .classList.replace(
-        "fa-magnifying-glass-minus",
-        "fa-magnifying-glass-plus"
-      );
+    searchList(searchListInput, watchListContainer, currentListShows);
+    // Hide the search input
+    hideSearchInput(watchListContainer, searchListInput);
   }
 });

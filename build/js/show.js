@@ -86,9 +86,19 @@ const displayOverview = (container, html, img = null) => {
       changeEpisodeIcon();
       //* Hide or show the next and previous season buttons based on the current season
       hideOrShowSeasonButtons();
+      //* Activate the add to favorites button if the season is already added to the favorites
+      activateFavoritesListEpisodeSeasonButton(
+        seasonOverviewContainer.querySelector("button")
+        , "season"
+      );
     }
     if (container === episodeOverviewContainer) {
       document.documentElement.style.setProperty("--episode-bg", `url(${img})`);
+      //* Activate the add to favorites button if the episode is already added to the favorites
+      activateFavoritesListEpisodeSeasonButton(
+        episodeOverviewContainer.querySelector("button")
+        , "episode"
+      );
     }
   }, 1000);
   if (window.matchMedia("(max-width: 768px)").matches) {
@@ -160,7 +170,7 @@ const getShowsInfo = async (name) => {
 
 //* ------------------------------ The show overview ------------------------------ *//
 const showOverviewContainer = document.getElementById("overview");
-let showName, currentSeason, showsSeasons,showImage
+let showName, currentSeason, showsSeasons, showImage;
 const showOverview = async () => {
   try {
     const res = await fetch(
@@ -315,8 +325,10 @@ ${recommendations.length !== 0 ? recommendations : ""}
       "--bg",
       `url(${show.image.original})`
     );
-    // Activate the watch list button after inserting the buttons
+    // Activate the watchList/favoriteList button after inserting the buttons if the show is in the list
     activateWatchListButton();
+    activateFavoritesListShowButton();
+
     // Get the seasons elements after inserting the seasons
     showsSeasons = [...document.querySelectorAll("#season")];
   } catch (err) {
@@ -552,6 +564,8 @@ window.addEventListener("hashchange", showOverview);
 //* ------------------------------ Season overview ------------------------------ *//
 const seasonOverviewContainer = document.getElementById("season_overview");
 const seasonOverview = async (id) => {
+  // Set a record to of the season id in the localStorage
+  localStorage.setItem("currentSId", id);
   showLoading(seasonOverviewContainer);
   // I used the try and catch to display an error message when the requests takes too long
   const res = await fetch(`https://api.tvmaze.com/seasons/${id}`);
@@ -982,7 +996,7 @@ const episodeOverview = async (showName, season, otherInfo) => {
             <i class="fa-solid fa-play"></i>
               Watch Now
             </a>
-            <button class="flex-1 flex justify-center items-center gap-2 cursor-pointer rounded-lg bg-secondaryAccent px-5 py-2 text-center font-bold text-textColor transition-colors duration-300 hover:bg-opacity-80"
+            <button class="min-w-[190px] flex-1 flex justify-center items-center gap-2 cursor-pointer rounded-lg bg-secondaryAccent px-5 py-2 text-center font-bold text-textColor transition-colors duration-300 hover:bg-opacity-80"
             id="addToFavorites"
             data-favorite="episodes"
             data-id="${localStorage.getItem("currentEpId")}"
@@ -1245,11 +1259,35 @@ document.addEventListener("click", (e) => {
     if (favoritesList[type].list.has(id)) {
       removeFromFavoritesList(id, favoritesList[type]);
       // Restore the text content to the default
-      e.target.innerHTML = favoritesList[type].defaultButton
+      e.target.innerHTML = favoritesList[type].defaultButton;
     } else {
       addToFavoritesList(id, type);
       // Set the text content to the active
-      e.target.innerHTML = favoritesList[type].activeButton
+      e.target.innerHTML = favoritesList[type].activeButton;
     }
   }
 });
+//* Activate the add button when the page loads if the show is already added to the favoritesList (show case)
+const activateFavoritesListShowButton = () => {
+  for (const list in favoritesList) {
+    favoritesList[list].list.forEach((item) => {
+      if (item === window.location.search.split("=")[1]) {
+        document.querySelector(`[data-favorite=${list}]`).innerHTML =
+          favoritesList[list].activeButton;
+      }
+    });
+  }
+};
+//* Activate the add button when the page loads if the season/episode are already added to the favoritesList (season/episode case)
+const activateFavoritesListEpisodeSeasonButton = (button, type) => {
+  for (const list in favoritesList) {
+    favoritesList[list].list.forEach((item) => {
+      if (
+        item ===
+        localStorage.getItem(type === "season" ? "currentSId" : "currentEpId")
+      ) {
+        button.innerHTML = favoritesList[list].activeButton;
+      }
+    });
+  }
+};

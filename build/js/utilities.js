@@ -210,10 +210,6 @@ const removeFromList = (
         .id;
       // Get the current list from the dataset
       const list = container.dataset[`current_${dataAttr}`];
-      console.log(id);
-      console.log(
-        document.querySelectorAll(`#overview button[data-${dataAttr}]`)
-      );
       // Check if the user is on the show page of the show they want to remove and change the button text to the default one
       window.location.href.includes(`show.html?id=${id}`) &&
         document
@@ -230,7 +226,143 @@ const removeFromList = (
     }
   });
 };
+//* Clear the watchList, favoriteList
+const clearList = (container, listObject, dataAttr, displayFunction) => {
+  //* Clear the watchList
+  const clearConfirmation = container.querySelector("#clear_confirmation");
+  const clearFunc = () => {
+    // SHow confirmation modal
+    const listElements = container.id === "watchList" ? "shows" : "list";
+    listObject[container.dataset[`current_${dataAttr}`]][listElements].size >
+      0 && clearConfirmation.classList.replace("hidden", "flex");
+    clearConfirmation.addEventListener("click", (e) => {
+      if (e.target.closest("#no")) {
+        clearConfirmation.classList.replace("flex", "hidden");
+      }
+      if (e.target.closest("#yes")) {
+        clearConfirmation.classList.replace("flex", "hidden");
+        const currentList = container.dataset[`current_${dataAttr}`];
 
+        // Clear the list from the local storage
+        window.localStorage.setItem(currentList, "");
+        // Clear the list from the listObject object
+        listObject[currentList][listElements].clear();
+        // Display the shows from the list
+        displayFunction(currentList);
+        // Check if the user is on the show page and change the button text to the default one
+        window.location.pathname.includes("show.html") &&
+          document.querySelectorAll("#overview button").forEach((button) => {
+            if (button.dataset[dataAttr] == currentList) {
+              button.innerHTML = listObject[currentList].defaultButton;
+            }
+          });
+      }
+    });
+  };
+  container
+    .querySelector("#actions #clear")
+    .addEventListener("click", clearFunc);
+};
+//* Sort the watchList, favoriteList
+const sortList = (container) => {
+  const sortFunc = (direction) => {
+    const currentELements = [...container.querySelectorAll("[data-id]")];
+    // To store the sorted list
+    let sortedList = [];
+    // To store the sorted names of shows
+    let sortedNames;
+    // The sorted list by names based on the direction (AZ/ZA)
+    if (direction === "AZ") {
+      sortedNames = currentELements
+        .map((a) => a.querySelector("h3").textContent)
+        .toSorted();
+    } else {
+      sortedNames = currentELements
+        .map((a) => a.querySelector("h3").textContent)
+        .toSorted()
+        .toReversed();
+    }
+    const sort = () => {
+      sortedList.push(
+        currentELements.find(
+          (a) => a.querySelector("h3").textContent == sortedNames[0]
+        ).parentElement
+      );
+      sortedNames.shift();
+    };
+    // Sort the list (Fill the sortedList array)
+    currentELements.forEach((e) => sort());
+    // Insert the sorted shows
+    const html = sortedList.map((el) => el.outerHTML).join("");
+    sortedList.length > 0
+      ? (container.querySelector(
+          `#${container.id === "watchList" ? "shows" : "favorites"}`
+        ).innerHTML = html)
+      : "";
+  };
+  //* Sort from A to Z
+  container
+    .querySelector("#actions #sortAZ")
+    .addEventListener("click", () => sortFunc("AZ"));
+  //* Sort from Z to A
+  container
+    .querySelector("#actions #sortZA")
+    .addEventListener("click", () => sortFunc("ZA"));
+};
+//* Search in the watchList, favoriteList
+const searchList = (searchListInput, container, currentELements) => {
+  // Get the query and convert it to lowercase
+  const query = searchListInput.value.toLowerCase();
+  // Filter the shows based on the query
+  const results = currentELements.filter((a) => {
+    return a.querySelector("h3").textContent.toLowerCase().includes(query);
+  });
+  // Display the results or a message if there are no results
+  container.querySelector(
+    `#${container.id === "watchList" ? "shows" : "favorites"}`
+  ).innerHTML =
+    results.length > 0
+      ? results.map((res) => res.parentElement.outerHTML).join("")
+      : `<div class="flex flex-col items-center justify-center col-span-5 ml-[50%] mt-[50%] -translate-x-1/2 -translate-y-1/2">
+      <img src="./imgs/no_result.png" alt="" class="w-52" />
+      <h2 class="text-xl font-bold text-textColor2">No Results Found</h2>
+      </div>
+      `;
+};
+const showSearchInput = (container, searchListInput, listObject, dataAttr) => {
+  // Toggle the search input
+  listObject[container.dataset[`current_${dataAttr}`]][
+    container.id === "watchList" ? "shows" : "list"
+  ].size > 0 && searchListInput.classList.toggle("show");
+  // Focus or blur out of the input
+  searchListInput.classList.contains("show")
+    ? searchListInput.focus()
+    : searchListInput.blur();
+  // Change the icon
+  searchListInput.classList.contains("show")
+    ? container
+        .querySelector("#actions #search")
+        .classList.replace(
+          "fa-magnifying-glass-plus",
+          "fa-magnifying-glass-minus"
+        )
+    : container
+        .querySelector("#actions #search")
+        .classList.replace(
+          "fa-magnifying-glass-minus",
+          "fa-magnifying-glass-plus"
+        );
+};
+const hideSearchInput = (container,searchListInput) => {
+  // Clear the input
+  searchListInput.value = "";
+  // Hide the input
+  searchListInput.classList.remove("show");
+  // Change the icon
+  container
+    .querySelector("#actions #search")
+    .classList.replace("fa-magnifying-glass-minus", "fa-magnifying-glass-plus");
+};
 //* ----------------- User  -----------------
 //* Display user info
 const displayUserInfo = async (user) => {
@@ -597,4 +729,9 @@ export {
   displayShow,
   displayList,
   removeFromList,
+  clearList,
+  sortList,
+  searchList,
+  showSearchInput,
+  hideSearchInput,
 };

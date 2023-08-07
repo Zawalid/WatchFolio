@@ -7,8 +7,12 @@ import {
   displayShow,
   displayList,
   removeFromList,
+  clearList,
+  sortList,
+  searchList,
+  showSearchInput,
+  hideSearchInput,
 } from "./utilities.js";
-
 
 //* ------------------------------ Main logic ------------------------------ *//
 const favoritesListContainer = document.getElementById("favoritesList");
@@ -49,7 +53,6 @@ for (let list in favoritesList) {
   lists && lists[0] == "" && lists.splice(0, 1);
   // Store the shows/seasons/episodes back in the lists
   list.list = new Set(lists);
-  console.log(favoritesList);
 }
 //* Add to favoritesList
 export const addToFavoritesList = (id, type) => {
@@ -217,142 +220,37 @@ closeList("favoritesList_toggler", favoritesListContainer, actions);
 
 //* ------------------------- Actions ------------------------- *//
 
-//* ------------------------------ CLear ------------------------------ *// !---> Function
+//* ------------------------------ CLear ------------------------------ *//
 //* Clear the watchList
-const clearConfirmation = favoritesListContainer.querySelector(
-  "#clear_confirmation"
+clearList(
+  favoritesListContainer,
+  favoritesList,
+  "favorite",
+  displayFromFavoritesList
 );
-const clearWatchList = () => {
-  // SHow confirmation modal
-  favoritesList[favoritesListContainer.dataset.current_favorite].list.size >
-    0 && clearConfirmation.classList.replace("hidden", "flex");
-  clearConfirmation.addEventListener("click", (e) => {
-    if (e.target.closest("#no")) {
-      clearConfirmation.classList.replace("flex", "hidden");
-    }
-    if (e.target.closest("#yes")) {
-      clearConfirmation.classList.replace("flex", "hidden");
-      const currentList = favoritesListContainer.dataset.current_favorite;
-      // Clear the list from the local storage
-      window.localStorage.setItem(favoritesList[currentList].name, "");
-      // Clear the list from the favoriteList object
-      favoritesList[currentList].list.clear();
-      // Display the shows from the list
-      displayFromFavoritesList(currentList);
-      // Check if the user is on the show page and change the button text to the default one
-      // window.location.pathname.includes("show.html") &&
-      //   document
-      //     .getElementById("overview")
-      //     .querySelectorAll("button")
-      //     .forEach((button) => {
-      //       if (button.dataset.list == currentList) {
-      //         button.innerHTML = watchLists[currentList].defaultButton;
-      //       }
-      //     });
-    }
-  });
-};
-actions.querySelector("#clear").addEventListener("click", clearWatchList);
 
 //* ------------------------------ Sort ------------------------------ *//
-//* Sort the watchList
-const sortFavoriteList = (direction) => {
-  // To store the sorted list
-  let sortedList = [];
-  // To store the sorted names of shows
-  let sortedNames;
-  // The sorted list by names based on the direction (AZ/ZA)
-  if (direction === "AZ") {
-    sortedNames = currentListFavorites
-      .map((a) => a.querySelector("h3").textContent)
-      .toSorted();
-  } else {
-    sortedNames = currentListFavorites
-      .map((a) => a.querySelector("h3").textContent)
-      .toSorted()
-      .toReversed();
-  }
-  console.log(sortedNames);
-  const sort = () => {
-    sortedList.push(
-      currentListFavorites.find(
-        (a) => a.querySelector("h3").textContent == sortedNames[0]
-      ).parentElement
-    );
-    sortedNames.shift();
-  };
-  // Sort the list (Fill the sortedList array)
-  currentListFavorites.forEach((e) => sort());
-  // Insert the sorted shows
-  const html = sortedList.map((el) => el.outerHTML).join("");
-  sortedList.length > 0
-    ? (favoritesListContainer.querySelector("#favorites").innerHTML = html)
-    : "";
-};
-//* Sort from A to Z
-actions
-  .querySelector("#sortAZ")
-  .addEventListener("click", () => sortFavoriteList("AZ"));
-//* Sort from Z to A
-actions
-  .querySelector("#sortZA")
-  .addEventListener("click", () => sortFavoriteList("ZA"));
+sortList(favoritesListContainer);
 
-//* ------------------------------ Search ------------------------------ *// !---> Function
+//* ------------------------------ Search ------------------------------ *//
 //* Search for a show
-const searchListInput = favoritesListContainer.querySelector("#search_list");
-const searchFavoriteList = () => {
-  // Get the query and convert it to lowercase
-  const query = searchListInput.value.toLowerCase();
-  // Filter the shows based on the query
-  const results = currentListFavorites.filter((a) => {
-    return a.querySelector("h3").textContent.toLowerCase().includes(query);
-  });
-  // Display the results or a message if there are no results
-  favoritesListContainer.querySelector("#favorites").innerHTML =
-    results.length > 0
-      ? results.map((res) => res.parentElement.outerHTML).join("")
-      : `<div class="flex flex-col items-center justify-center col-span-5 ml-[50%] mt-[50%] -translate-x-1/2 -translate-y-1/2">
-      <img src="./imgs/no_result.png" alt="" class="w-52" />
-      <h2 class="text-xl font-bold text-textColor2">No Shows Found</h2>
-      </div>
-      `;
-};
+const searchListInput = favoritesListContainer.querySelector("input");
+
 //* Show the search input when clicking on the search icon
-actions.querySelector("#search").addEventListener("click", function () {
-  // Toggle the search input
-  favoritesList[favoritesListContainer.dataset.current_favorite].list.size >
-    0 && searchListInput.classList.toggle("show");
-  // Focus or blur out of the input
-  searchListInput.classList.contains("show")
-    ? searchListInput.focus()
-    : searchListInput.blur();
-  // Change the icon
-  searchListInput.classList.contains("show")
-    ? this.classList.replace(
-        "fa-magnifying-glass-plus",
-        "fa-magnifying-glass-minus"
-      )
-    : this.classList.replace(
-        "fa-magnifying-glass-minus",
-        "fa-magnifying-glass-plus"
-      );
+actions.querySelector("#search").addEventListener("click", () => {
+  showSearchInput(
+    favoritesListContainer,
+    searchListInput,
+    favoritesList,
+    "favorite"
+  );
 });
 //* Search when pressing enter
 searchListInput.addEventListener("keyup", (e) => {
   if (e.key === "Enter") {
     // Search for the show
-    searchFavoriteList();
-    // Clear the input
-    searchListInput.value = "";
-    // Hide the input
-    searchListInput.classList.remove("show");
-    // Change the icon
-    actions
-      .querySelector("#search")
-      .classList.replace(
-        "fa-magnifying-glass-minus",
-        "fa-magnifying-glass-plus"
-      );
+    searchList(searchListInput, favoritesListContainer, currentListFavorites);
+    // Hide the search input
+    hideSearchInput(favoritesListContainer, searchListInput);
   }
 });

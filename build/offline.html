@@ -49,9 +49,7 @@
     <div class="container flex h-full flex-col">
       <header class="flex items-center justify-between pt-5">
         <a href="index.html">
-          <h2
-            class="font-logo text-4xl font-extrabold  max-sm:text-3xl"
-          >
+          <h2 class="font-logo text-4xl font-extrabold max-sm:text-3xl">
             <span class="text-primaryAccent">Watch</span
             ><span class="text-textColor">Folio</span>
           </h2>
@@ -106,8 +104,8 @@
                 <span class="font-semibold">WatchList</span>
               </li>
               <li
-                class="my-3 flex cursor-pointer items-center gap-3 rounded-xl py-2 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
-                id="favorites_toggler"
+                class="my-3 flex cursor-pointer items-center gap-3 rounded-xl py-2 text-textColor2 transition-colors duration-300 hover:text-primaryAccent max-md:hidden"
+                id="favoritesList_toggler"
               >
                 <i class="fa-solid fa-heart text-2xl"></i>
                 <span class="font-semibold">Favorites</span>
@@ -171,26 +169,33 @@
             href="index.html"
             class="active flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
           >
-            <i class="fa-solid fa-house "></i>
+            <i class="fa-solid fa-house"></i>
             <span class="text-sm font-semibold">Home</span>
           </a>
         </li>
-        <li
-          class="flex cursor-pointer flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
-          id="watchList_toggler"
-        >
-          <i class="fa-solid fa-clipboard-list "></i>
-          <span class="text-sm font-semibold">Watchlist</span>
-        </li>
         <li class="cursor-pointer marker:text-transparent">
-          <a
+            <a
             href="index.html#explore"
             class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
-          >
-            <i class="fa-solid fa-globe "></i>
+            >
+            <i class="fa-solid fa-globe"></i>
             <span class="text-sm font-semibold">Explore</span>
           </a>
-        </li>
+      </li>
+      <li
+        class="flex cursor-pointer flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
+        id="watchList_toggler"
+      >
+        <i class="fa-solid fa-clipboard-list"></i>
+        <span class="text-sm font-semibold">WatchList</span>
+      </li>
+      <li
+        class="flex cursor-pointer flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
+        id="favoritesList_toggler"
+      >
+        <i class="fa-solid fa-heart"></i>
+        <span class="text-sm font-semibold">Favorites</span>
+      </li>
       </ul>
     </div>
     </div>
@@ -253,7 +258,6 @@
         <input
           type="text"
           name="search"
-          id="search_list"
           autocomplete="off"
           placeholder="Search for watched shows"
           class="absolute bottom-0 left-0 -z-10 h-full w-full border-none bg-textColor2 px-5 font-semibold text-dark placeholder-dark opacity-0 transition-all duration-300 placeholder:font-bold focus:outline-none"
@@ -401,6 +405,92 @@
         >
           Download
         </button>
+      </div>
+    </div>
+  </div>
+  <div
+    class=" absolute right-20 top-[75px] -z-10 h-[550px] w-[400px] rounded-xl bg-gradient opacity-0 transition-opacity duration-300 max-md:right-0 max-md:top-0 max-md:h-full max-md:w-full max-md:rounded-none"
+    id="favoritesList"
+    data-current_favorite="shows"
+  >
+    <div
+      class="grid grid-cols-[repeat(2,105px)_122px] place-content-between gap-3 overflow-x-auto px-2 py-5"
+      id="favoritesListButtons"
+    >
+      <button
+        class="active rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+        data-favorite="shows"
+      >
+        Shows
+      </button>
+      <button
+        class="rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+        data-favorite="seasons"
+      >
+        Seasons
+      </button>
+      <button
+        class="rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+        data-favorite="episodes"
+      >
+        Episodes
+      </button>
+    </div>
+    <div
+      class="me-2 mt-5 flex h-[400px] flex-col gap-4 overflow-y-auto px-5 pb-5 max-md:h-[72%] max-md:pb-[76px]"
+      id="favorites"
+    ></div>
+    <div class="relative hidden w-full" id="actions">
+      <div
+        class="flex items-center justify-between px-5 py-2 max-md:bg-gradient"
+      >
+        <i
+          class="fa-solid fa-eraser cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+          id="clear"
+        ></i>
+        <i
+          class="fa-solid fa-magnifying-glass-plus cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+          id="search"
+        ></i>
+        <i
+          class="fa-solid fa-arrow-down-a-z cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+          id="sortAZ"
+        ></i>
+        <i
+          class="fa-solid fa-arrow-down-z-a cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+          id="sortZA"
+        ></i>
+        <input
+          type="text"
+          name="search"
+          autocomplete="off"
+          placeholder="Search for favorite shows"
+          class="absolute bottom-0 left-0 -z-10 h-full w-full border-none bg-textColor2 px-5 font-semibold text-dark placeholder-dark opacity-0 transition-all duration-300 placeholder:font-bold focus:outline-none"
+        />
+      </div>
+    </div>
+    <div
+      class="absolute inset-0 hidden h-full w-full items-center justify-center backdrop-blur-[2px]"
+      id="clear_confirmation"
+    >
+      <div class="w-3/4 rounded-2xl bg-white p-6">
+        <h2 class="text-center text-lg font-bold">
+          Are you sure you want to clear this list?
+        </h2>
+        <div class="mt-6 flex justify-center gap-8">
+          <button
+            class="mx-auto block rounded-2xl bg-secondaryAccent px-5 py-2 font-bold text-textColor"
+            id="yes"
+          >
+            Yes
+          </button>
+          <button
+            class="mx-auto block rounded-2xl bg-thirdAccent px-5 py-2 font-bold text-textColor"
+            id="no"
+          >
+            No
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -660,6 +750,7 @@
     </div>
     <script type="module">
       import "./js/watchList.js";
+      import "./js/favoritesList.js";
       import { handleUserAuth, handleAccount } from "./js/utilities.js";
 
       handleUserAuth();
