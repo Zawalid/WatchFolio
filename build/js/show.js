@@ -15,8 +15,6 @@ import {
   removeFromFavoritesList,
 } from "./favoritesList.js";
 
-// TMDB API
-import { options, genders, baseUrl } from "./TMDB.js";
 // Utilities
 import {
   handleUserAuth,
@@ -26,6 +24,23 @@ import {
   updateLocalStorageOrDatabase,
   storeInLocalStorageOrDatabase,
 } from "./utilities.js";
+
+//* ------------------ TMDB ------------------ *//
+const options = {
+  method: "GET",
+  headers: {
+    accept: "application/json",
+    Authorization:
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3OWUxNjZjMzNhZjE4ZmVlNTgzNWJiMDBiOGE5ZTA1NCIsInN1YiI6IjY0YTJiOTcxMTEzODZjMDBhZGM3OTQxMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.yxORg4upeOsiqCve7e9CDV4i-_Q2LfIpnqKKax3Fnw4",
+  },
+};
+const genders = {
+  0: "Not Specified",
+  1: "Female",
+  2: "Male",
+  3: "Non Binary",
+};
+const baseUrl = "http://image.tmdb.org/t/p/";
 
 //* ------------------ Creating overview containers (Avoid repetition) ------------------ *//
 const overviewContainer = `
@@ -689,7 +704,6 @@ Add To Favorites      </button>
   </button>
   </div>
   `;
-  console.log(currentSeason);
   displayOverview(seasonOverviewContainer, html);
 };
 //* Get the season trailer

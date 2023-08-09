@@ -172,7 +172,6 @@ document.addEventListener("submit", (e) => {
         .then((userCredential) => {
           // Update user's display name
           const user = userCredential.user;
-          console.log(user);
           updateProfile(user, {
             displayName: `${firstName} ${lastName}`,
           }).catch((error) =>

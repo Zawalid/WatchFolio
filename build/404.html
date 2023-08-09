@@ -146,597 +146,600 @@
         </p>
       </div>
       <div
-      class="fixed bottom-0 left-0 z-[9999] flex w-full flex-col-reverse items-center justify-between md:hidden"
-      id="nav"
-    >
-      <ul
-        class="flex w-full items-center justify-around bg-[rgba(11_,21_,49_,0.5)] px-5 py-3 backdrop-blur-[6px]"
+        class="fixed bottom-0 left-0 z-[9999] flex w-full flex-col-reverse items-center justify-between md:hidden"
+        id="nav"
       >
-        <li class="cursor-pointer marker:text-transparent">
-          <a
-            href="index.html"
-            class="active flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
-          >
-            <i class="fa-solid fa-house"></i>
-            <span class="text-sm font-semibold">Home</span>
-          </a>
-        </li>
-        <li class="cursor-pointer marker:text-transparent">
+        <ul
+          class="flex w-full items-center justify-around bg-[rgba(11_,21_,49_,0.5)] px-5 py-3 backdrop-blur-[6px]"
+        >
+          <li class="cursor-pointer marker:text-transparent">
             <a
-            href="index.html#explore"
-            class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+              href="index.html"
+              class="active flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
             >
-            <i class="fa-solid fa-globe"></i>
-            <span class="text-sm font-semibold">Explore</span>
-          </a>
-      </li>
-      <li
-        class="flex cursor-pointer flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
-        id="watchList_toggler"
-      >
-        <i class="fa-solid fa-clipboard-list"></i>
-        <span class="text-sm font-semibold">WatchList</span>
-      </li>
-      <li
-        class="flex cursor-pointer flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
-        id="favoritesList_toggler"
-      >
-        <i class="fa-solid fa-heart"></i>
-        <span class="text-sm font-semibold">Favorites</span>
-      </li>
-      </ul>
-    </div>
-    </div>
-    <div
-    class="absolute right-20 top-[75px] -z-10 h-[550px] w-[400px] rounded-xl bg-gradient opacity-0 transition-opacity duration-300 max-md:right-0 max-md:top-0 max-md:h-full max-md:w-full max-md:rounded-none"
-    id="watchList"
-    data-current_list="watched"
-  >
-    <div
-      class="grid grid-cols-[repeat(2,105px)_122px] place-content-between gap-3 overflow-x-auto px-2 py-5"
-      id="watchListButtons"
-    >
-      <button
-        class="active rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
-        data-list="watched"
-      >
-        Watched
-      </button>
-      <button
-        class="rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
-        data-list="watching"
-      >
-        Watching
-      </button>
-      <button
-        class="rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
-        data-list="willWatch"
-      >
-        Will Watch
-      </button>
-    </div>
-    <div
-      class="me-2 mt-5 flex h-[400px] flex-col gap-4 overflow-y-auto px-5 pb-5 max-md:h-[72%] max-md:pb-[76px]"
-      id="shows"
-    ></div>
-    <div class="relative hidden w-full" id="actions">
-      <div
-        class="flex items-center justify-between px-5 py-2 max-md:bg-gradient"
-      >
-        <i
-          class="fa-solid fa-download cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-          id="download"
-        ></i>
-        <i
-          class="fa-solid fa-eraser cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-          id="clear"
-        ></i>
-        <i
-          class="fa-solid fa-magnifying-glass-plus cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-          id="search"
-        ></i>
-        <i
-          class="fa-solid fa-arrow-down-a-z cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-          id="sortAZ"
-        ></i>
-        <i
-          class="fa-solid fa-arrow-down-z-a cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-          id="sortZA"
-        ></i>
-        <input
-          type="text"
-          name="search"
-          autocomplete="off"
-          placeholder="Search for watched shows"
-          class="absolute bottom-0 left-0 -z-10 h-full w-full border-none bg-textColor2 px-5 font-semibold text-dark placeholder-dark opacity-0 transition-all duration-300 placeholder:font-bold focus:outline-none"
-        />
+              <i class="fa-solid fa-house"></i>
+              <span class="text-sm font-semibold">Home</span>
+            </a>
+          </li>
+          <li class="cursor-pointer marker:text-transparent">
+            <a
+              href="index.html#explore"
+              class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+            >
+              <i class="fa-solid fa-globe"></i>
+              <span class="text-sm font-semibold">Explore</span>
+            </a>
+          </li>
+          <li
+            class="flex cursor-pointer flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
+            id="watchList_toggler"
+          >
+            <i class="fa-solid fa-clipboard-list"></i>
+            <span class="text-sm font-semibold">WatchList</span>
+          </li>
+          <li
+            class="flex cursor-pointer flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
+            id="favoritesList_toggler"
+          >
+            <i class="fa-solid fa-heart"></i>
+            <span class="text-sm font-semibold">Favorites</span>
+          </li>
+        </ul>
       </div>
     </div>
     <div
-      class="absolute inset-0 hidden h-full w-full items-center justify-center backdrop-blur-[2px]"
-      id="clear_confirmation"
+      class="absolute right-20 top-[75px] -z-10 h-[550px] w-[400px] rounded-xl bg-gradient opacity-0 transition-opacity duration-300 max-md:right-0 max-md:top-0 max-md:h-full max-md:w-full max-md:rounded-none"
+      id="watchList"
+      data-current_list="watched"
     >
-      <div class="w-3/4 rounded-2xl bg-white p-6">
-        <h2 class="text-center text-lg font-bold">
-          Are you sure you want to clear this list?
-        </h2>
-        <div class="mt-6 flex justify-center gap-8">
-          <button
-            class="mx-auto block rounded-2xl bg-secondaryAccent px-5 py-2 font-bold text-textColor"
-            id="yes"
-          >
-            Yes
-          </button>
-          <button
-            class="mx-auto block rounded-2xl bg-thirdAccent px-5 py-2 font-bold text-textColor"
-            id="no"
-          >
-            No
-          </button>
+      <div
+        class="grid grid-cols-[repeat(2,105px)_122px] place-content-between gap-3 overflow-x-auto px-2 py-5"
+        id="watchListButtons"
+      >
+        <button
+          class="active rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          data-list="watched"
+        >
+          Watched
+        </button>
+        <button
+          class="rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          data-list="watching"
+        >
+          Watching
+        </button>
+        <button
+          class="rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          data-list="willWatch"
+        >
+          Will Watch
+        </button>
+      </div>
+      <div
+        class="me-2 mt-5 flex h-[400px] flex-col gap-4 overflow-y-auto px-5 pb-5 max-md:h-[72%] max-md:pb-[76px]"
+        id="shows"
+      ></div>
+      <div class="relative hidden w-full" id="actions">
+        <div
+          class="flex items-center justify-between px-5 py-2 max-md:bg-gradient"
+        >
+          <i
+            class="fa-solid fa-download cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="download"
+          ></i>
+          <i
+            class="fa-solid fa-eraser cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="clear"
+          ></i>
+          <i
+            class="fa-solid fa-magnifying-glass-plus cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="search"
+          ></i>
+          <i
+            class="fa-solid fa-arrow-down-a-z cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="sortAZ"
+          ></i>
+          <i
+            class="fa-solid fa-arrow-down-z-a cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="sortZA"
+          ></i>
+          <input
+            type="text"
+            name="search"
+            autocomplete="off"
+            placeholder="Search for watched shows"
+            class="absolute bottom-0 left-0 -z-10 h-full w-full border-none bg-textColor2 px-5 font-semibold text-dark placeholder-dark opacity-0 transition-all duration-300 placeholder:font-bold focus:outline-none"
+          />
+        </div>
+      </div>
+      <div
+        class="absolute inset-0 hidden h-full w-full items-center justify-center backdrop-blur-[2px]"
+        id="clear_confirmation"
+      >
+        <div class="w-3/4 rounded-2xl bg-white p-6">
+          <h2 class="text-center text-lg font-bold">
+            Are you sure you want to clear this list?
+          </h2>
+          <div class="mt-6 flex justify-center gap-8">
+            <button
+              class="mx-auto block rounded-2xl bg-secondaryAccent px-5 py-2 font-bold text-textColor"
+              id="yes"
+            >
+              Yes
+            </button>
+            <button
+              class="mx-auto block rounded-2xl bg-thirdAccent px-5 py-2 font-bold text-textColor"
+              id="no"
+            >
+              No
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="absolute inset-0 -z-10 flex h-full w-full items-center justify-center bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-300 max-md:h-full"
-    id="downloadList"
-  >
-    <div class="relative overflow-hidden rounded-2xl bg-white p-6 pb-12">
-      <div
-        class="absolute left-1/2 hidden -translate-x-1/2 items-center gap-2 rounded-2xl bg-red-700 px-5 py-2 font-bold text-textColor"
-        id="emptyListWarning"
-      >
-        <i class="fa-solid fa-triangle-exclamation"></i> List is empty
-      </div>
+    <div
+      class="absolute inset-0 -z-10 flex h-full w-full items-center justify-center bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-300 max-md:h-full"
+      id="downloadList"
+    >
+      <div class="relative overflow-hidden rounded-2xl bg-white p-6 pb-12">
+        <div
+          class="absolute left-1/2 hidden -translate-x-1/2 items-center gap-2 rounded-2xl bg-red-700 px-5 py-2 font-bold text-textColor"
+          id="emptyListWarning"
+        >
+          <i class="fa-solid fa-triangle-exclamation"></i> List is empty
+        </div>
 
-      <i
-        class="fa-solid fa-xmark absolute right-4 top-2 cursor-pointer text-2xl text-dark"
-        id="close"
-      ></i>
-      <div class="">
-        <h2 class="text-2xl font-bold">
-          Download your <q id="listName"></q> list
-        </h2>
-        <p class="text-gray-600">Choose the format to download.</p>
-      </div>
-      <div class="my-8 flex flex-wrap justify-center gap-8">
-        <div
-          class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
-        >
-          <input
-            type="radio"
-            class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
-            name="format"
-            value="pdf"
-            checked
-          />
-          <div
-            class="flex h-full w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
-          >
-            <i class="fa-solid fa-file-pdf mb-2 text-4xl"></i>
-            <span class="text-sm">PDF</span>
-          </div>
-        </div>
-        <div
-          class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
-        >
-          <input
-            type="radio"
-            class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
-            name="format"
-            value="csv"
-          />
-          <div
-            class="flex h-full w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
-          >
-            <i class="fa-solid fa-file-csv mb-2 text-4xl"></i>
-            <span class="text-sm">CSV</span>
-          </div>
-        </div>
-        <div
-          class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
-        >
-          <input
-            type="radio"
-            class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
-            name="format"
-            value="text"
-          />
-          <div
-            class="flex h-full w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
-          >
-            <i class="fa-solid fa-file-lines mb-2 text-4xl"></i>
-            <span class="text-sm">Text</span>
-          </div>
-        </div>
-        <div
-          class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
-        >
-          <input
-            type="radio"
-            class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
-            name="format"
-            value="json"
-          />
-          <div
-            class="flex h-full w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
-          >
-            <img src="imgs/json.png" alt="" class="mb-2 w-10" />
-            <span class="text-sm">JSON</span>
-          </div>
-        </div>
-      </div>
-      <button
-        class="mx-auto block rounded-2xl bg-secondaryAccent px-5 py-2 font-bold text-textColor"
-        id="download"
-      >
-        Download
-      </button>
-      <i
-        class="fa-sharp fa-solid fa-chevron-up absolute bottom-1 left-1/2 -translate-x-1/2 cursor-pointer text-xl text-dark"
-        id="showDownloadAll"
-      ></i>
-      <div
-        class="absolute bottom-0 left-0 w-full translate-y-full bg-gradient pb-3 pt-7 transition-transform duration-500"
-        id="downloadAllContainer"
-      >
         <i
-          class="fa-sharp fa-solid fa-chevron-down absolute left-1/2 top-0 -translate-x-1/2 cursor-pointer text-xl text-textColor2"
-          id="hideDownloadAll"
+          class="fa-solid fa-xmark absolute right-4 top-2 cursor-pointer text-2xl text-dark"
+          id="close"
         ></i>
-        <p class="mb-2 text-center text-sm font-bold text-textColor">
-          Download All Your Lists
-        </p>
+        <div class="">
+          <h2 class="text-2xl font-bold">
+            Download your <q id="listName"></q> list
+          </h2>
+          <p class="text-gray-600">Choose the format to download.</p>
+        </div>
+        <div class="my-8 flex flex-wrap justify-center gap-8">
+          <div
+            class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
+          >
+            <input
+              type="radio"
+              class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
+              name="format"
+              value="pdf"
+              checked
+            />
+            <div
+              class="flex h-full w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+            >
+              <i class="fa-solid fa-file-pdf mb-2 text-4xl"></i>
+              <span class="text-sm">PDF</span>
+            </div>
+          </div>
+          <div
+            class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
+          >
+            <input
+              type="radio"
+              class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
+              name="format"
+              value="csv"
+            />
+            <div
+              class="flex h-full w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+            >
+              <i class="fa-solid fa-file-csv mb-2 text-4xl"></i>
+              <span class="text-sm">CSV</span>
+            </div>
+          </div>
+          <div
+            class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
+          >
+            <input
+              type="radio"
+              class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
+              name="format"
+              value="text"
+            />
+            <div
+              class="flex h-full w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+            >
+              <i class="fa-solid fa-file-lines mb-2 text-4xl"></i>
+              <span class="text-sm">Text</span>
+            </div>
+          </div>
+          <div
+            class="relative overflow-hidden rounded-xl bg-dark shadow-shadow1"
+          >
+            <input
+              type="radio"
+              class="peer absolute top-0 h-full w-full cursor-pointer opacity-0"
+              name="format"
+              value="json"
+            />
+            <div
+              class="flex h-full w-[100px] flex-col items-center p-5 font-bold text-textColor transition-colors duration-300 peer-checked:bg-secondaryAccent"
+            >
+              <img src="imgs/json.png" alt="" class="mb-2 w-10" />
+              <span class="text-sm">JSON</span>
+            </div>
+          </div>
+        </div>
         <button
           class="mx-auto block rounded-2xl bg-secondaryAccent px-5 py-2 font-bold text-textColor"
-          id="downloadAll"
+          id="download"
         >
           Download
         </button>
-      </div>
-    </div>
-  </div>
-  <div
-    class=" absolute right-20 top-[75px] -z-10 h-[550px] w-[400px] rounded-xl bg-gradient opacity-0 transition-opacity duration-300 max-md:right-0 max-md:top-0 max-md:h-full max-md:w-full max-md:rounded-none"
-    id="favoritesList"
-    data-current_favorite="shows"
-  >
-    <div
-      class="grid grid-cols-[repeat(2,105px)_122px] place-content-between gap-3 overflow-x-auto px-2 py-5"
-      id="favoritesListButtons"
-    >
-      <button
-        class="active rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
-        data-favorite="shows"
-      >
-        Shows
-      </button>
-      <button
-        class="rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
-        data-favorite="seasons"
-      >
-        Seasons
-      </button>
-      <button
-        class="rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
-        data-favorite="episodes"
-      >
-        Episodes
-      </button>
-    </div>
-    <div
-      class="me-2 mt-5 flex h-[400px] flex-col gap-4 overflow-y-auto px-5 pb-5 max-md:h-[72%] max-md:pb-[76px]"
-      id="favorites"
-    ></div>
-    <div class="relative hidden w-full" id="actions">
-      <div
-        class="flex items-center justify-between px-5 py-2 max-md:bg-gradient"
-      >
         <i
-          class="fa-solid fa-eraser cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-          id="clear"
+          class="fa-sharp fa-solid fa-chevron-up absolute bottom-1 left-1/2 -translate-x-1/2 cursor-pointer text-xl text-dark"
+          id="showDownloadAll"
         ></i>
-        <i
-          class="fa-solid fa-magnifying-glass-plus cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-          id="search"
-        ></i>
-        <i
-          class="fa-solid fa-arrow-down-a-z cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-          id="sortAZ"
-        ></i>
-        <i
-          class="fa-solid fa-arrow-down-z-a cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
-          id="sortZA"
-        ></i>
-        <input
-          type="text"
-          name="search"
-          autocomplete="off"
-          placeholder="Search for favorite shows"
-          class="absolute bottom-0 left-0 -z-10 h-full w-full border-none bg-textColor2 px-5 font-semibold text-dark placeholder-dark opacity-0 transition-all duration-300 placeholder:font-bold focus:outline-none"
-        />
-      </div>
-    </div>
-    <div
-      class="absolute inset-0 hidden h-full w-full items-center justify-center backdrop-blur-[2px]"
-      id="clear_confirmation"
-    >
-      <div class="w-3/4 rounded-2xl bg-white p-6">
-        <h2 class="text-center text-lg font-bold">
-          Are you sure you want to clear this list?
-        </h2>
-        <div class="mt-6 flex justify-center gap-8">
+        <div
+          class="absolute bottom-0 left-0 w-full translate-y-full bg-gradient pb-3 pt-7 transition-transform duration-500"
+          id="downloadAllContainer"
+        >
+          <i
+            class="fa-sharp fa-solid fa-chevron-down absolute left-1/2 top-0 -translate-x-1/2 cursor-pointer text-xl text-textColor2"
+            id="hideDownloadAll"
+          ></i>
+          <p class="mb-2 text-center text-sm font-bold text-textColor">
+            Download All Your Lists
+          </p>
           <button
             class="mx-auto block rounded-2xl bg-secondaryAccent px-5 py-2 font-bold text-textColor"
-            id="yes"
+            id="downloadAll"
           >
-            Yes
-          </button>
-          <button
-            class="mx-auto block rounded-2xl bg-thirdAccent px-5 py-2 font-bold text-textColor"
-            id="no"
-          >
-            No
+            Download
           </button>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class=" absolute inset-0 -z-10 flex h-full w-full bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-500 max-md:h-full md:items-center md:justify-center"
-    id="account"
-  >
-    <div class="relative h-full w-full overflow-auto bg-gradient max-md:pb-[76px]">
-      <i
-        class="fa-solid fa-times absolute right-5 top-5 cursor-pointer text-xl text-textColor2"
-        id="close_account"
-      ></i>
-      <div class="hidden items-center bg-red-700 gap-5 max-sm:flex-col px-8 py-3 mt-16" id="emailNotVerified">
-        <p class="font-semibold text-textColor">
-          Your account is not verified. Please verify your email address.
-        </p>
-        <button class=" font-bold text-textColor2">
-          Resend
+    <div
+      class="absolute right-20 top-[75px] -z-10 h-[550px] w-[400px] rounded-xl bg-gradient opacity-0 transition-opacity duration-300 max-md:right-0 max-md:top-0 max-md:h-full max-md:w-full max-md:rounded-none"
+      id="favoritesList"
+      data-current_favorite="shows"
+    >
+      <div
+        class="grid grid-cols-[repeat(2,105px)_122px] place-content-between gap-3 overflow-x-auto px-2 py-5"
+        id="favoritesListButtons"
+      >
+        <button
+          class="active rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          data-favorite="shows"
+        >
+          Shows
+        </button>
+        <button
+          class="rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          data-favorite="seasons"
+        >
+          Seasons
+        </button>
+        <button
+          class="rounded-2xl px-5 py-2 font-bold text-textColor transition-colors duration-300 hover:bg-secondaryAccent"
+          data-favorite="episodes"
+        >
+          Episodes
         </button>
       </div>
-      <div class="p-8">
-        <h2 class="text-2xl font-bold text-textColor">Account Details</h2>
-        <div class="relative mb-10 mt-12 h-28 w-28">
-          <div
-            class="absolute bottom-3 right-0 hidden h-6 w-6 place-content-center items-center overflow-hidden rounded-full bg-secondaryAccent"
-            id="change_picture"
-          >
-            <i class="fa-solid fa-pen text-xs text-white"></i>
-            <input
-              type="file"
-              name="Image"
-              accept="image/*"
-              multiple="false"
-              title=" "
-              class="absolute -left-40 cursor-pointer opacity-0"
-            />
-          </div>
-          <img
-            src="./imgs/no profile.png"
-            alt=""
-            class="avatar h-full w-full rounded-full object-cover"
-            id="profile_picture"
+      <div
+        class="me-2 mt-5 flex h-[400px] flex-col gap-4 overflow-y-auto px-5 pb-5 max-md:h-[72%] max-md:pb-[76px]"
+        id="favorites"
+      ></div>
+      <div class="relative hidden w-full" id="actions">
+        <div
+          class="flex items-center justify-between px-5 py-2 max-md:bg-gradient"
+        >
+          <i
+            class="fa-solid fa-eraser cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="clear"
+          ></i>
+          <i
+            class="fa-solid fa-magnifying-glass-plus cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="search"
+          ></i>
+          <i
+            class="fa-solid fa-arrow-down-a-z cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="sortAZ"
+          ></i>
+          <i
+            class="fa-solid fa-arrow-down-z-a cursor-pointer text-lg text-textColor2 transition-colors duration-300 hover:text-secondaryAccent"
+            id="sortZA"
+          ></i>
+          <input
+            type="text"
+            name="search"
+            autocomplete="off"
+            placeholder="Search for favorite shows"
+            class="absolute bottom-0 left-0 -z-10 h-full w-full border-none bg-textColor2 px-5 font-semibold text-dark placeholder-dark opacity-0 transition-all duration-300 placeholder:font-bold focus:outline-none"
           />
         </div>
-        <form method="post" class="" id="accountDetails_form">
-          <input type="hidden" name="action" value="edit" />
-          <div class="mb-7 flex gap-20 max-sm:flex-col max-sm:gap-5">
-            <label class="w-1/2 font-semibold text-textColor2 max-sm:w-full">
-              First Name
-              <input
-                type="text"
-                name="firstName"
-                value=""
-                readonly
-                class="mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
-              />
-            </label>
-            <label class="w-1/2 font-semibold text-textColor2 max-sm:w-full">
-              Last Name
-              <input
-                type="text"
-                name="lastName"
-                value=""
-                readonly
-                class="mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
-              />
-            </label>
-          </div>
-          <label class="w-1/2 font-semibold text-textColor2 max-sm:w-full">
-            Email
-            <input
-              type="email"
-              name="email"
-              value=""
-              readonly
-              class="mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
-            />
-          </label>
-          <div class="mt-12 flex flex-wrap gap-5">
-            <button
-              class="min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:flex-1"
-            >
-              Edit
-            </button>
-            <button
-              type="button"
-              class="hidden min-w-[170px] rounded-xl bg-thirdAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:flex-1"
-              id="cancel"
-            >
-              Discard Changes
-            </button>
-          </div>
-        </form>
       </div>
-      <div class="border-y border-nobleDark500 p-8">
-        <h2 class="text-2xl font-bold text-textColor">Change Password</h2>
-        <form method="post" class="mt-12" id="changePassword_form">
-          <div class="mb-7 flex gap-20 max-sm:flex-col max-sm:gap-5">
-            <div class="w-1/2 max-sm:w-full">
-              <label class="font-semibold text-textColor2" for="password">
-                New Password
-              </label>
-              <div class="relative">
+      <div
+        class="absolute inset-0 hidden h-full w-full items-center justify-center backdrop-blur-[2px]"
+        id="clear_confirmation"
+      >
+        <div class="w-3/4 rounded-2xl bg-white p-6">
+          <h2 class="text-center text-lg font-bold">
+            Are you sure you want to clear this list?
+          </h2>
+          <div class="mt-6 flex justify-center gap-8">
+            <button
+              class="mx-auto block rounded-2xl bg-secondaryAccent px-5 py-2 font-bold text-textColor"
+              id="yes"
+            >
+              Yes
+            </button>
+            <button
+              class="mx-auto block rounded-2xl bg-thirdAccent px-5 py-2 font-bold text-textColor"
+              id="no"
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="absolute inset-0 -z-10 flex h-full w-full bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-500 max-md:h-full md:items-center md:justify-center"
+      id="account"
+    >
+      <div
+        class="relative h-full w-full overflow-auto bg-gradient max-md:pb-[76px]"
+      >
+        <i
+          class="fa-solid fa-times absolute right-5 top-5 cursor-pointer text-xl text-textColor2"
+          id="close_account"
+        ></i>
+        <div
+          class="mt-16 hidden items-center gap-5 bg-red-700 px-8 py-3 max-sm:flex-col"
+          id="emailNotVerified"
+        >
+          <p class="font-semibold text-textColor">
+            Your account is not verified. Please verify your email address.
+          </p>
+          <button class="font-bold text-textColor2">Resend</button>
+        </div>
+        <div class="p-8">
+          <h2 class="text-2xl font-bold text-textColor">Account Details</h2>
+          <div class="relative mb-10 mt-12 h-28 w-28">
+            <div
+              class="absolute bottom-3 right-0 hidden h-6 w-6 place-content-center items-center overflow-hidden rounded-full bg-secondaryAccent"
+              id="change_picture"
+            >
+              <i class="fa-solid fa-pen text-xs text-white"></i>
+              <input
+                type="file"
+                name="Image"
+                accept="image/*"
+                multiple="false"
+                title=" "
+                class="absolute -left-40 cursor-pointer opacity-0"
+              />
+            </div>
+            <img
+              src="./imgs/no profile.png"
+              alt=""
+              class="avatar h-full w-full rounded-full object-cover"
+              id="profile_picture"
+            />
+          </div>
+          <form method="post" class="" id="accountDetails_form">
+            <input type="hidden" name="action" value="edit" />
+            <div class="mb-7 flex gap-20 max-sm:flex-col max-sm:gap-5">
+              <label class="w-1/2 font-semibold text-textColor2 max-sm:w-full">
+                First Name
                 <input
-                  class="password_input peer relative z-[20] mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
-                  type="password"
-                  name="password"
-                  id="password"
+                  type="text"
+                  name="firstName"
+                  value=""
+                  readonly
+                  class="mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
                 />
-                <i
-                  class="fa-solid fa-eye eye-icon absolute right-3 top-1/2 z-30 cursor-pointer text-sm text-textColor2"
-                  id="show_password"
-                ></i>
-                <div
-                  class="shadow-shadow-1 absolute -top-[210px] -z-10 w-full rounded-xl bg-white p-5 opacity-0 transition-opacity duration-500 peer-focus:z-10 peer-focus:opacity-100 sm:w-[325px]"
-                  id="password_validation"
-                >
-                  <h3 class="text-grey-700 font-bold">
-                    Password requirements
-                  </h3>
-                  <ul class="5">
-                    <li class="text-grey-500 mb-2 text-sm">
-                      <i
-                        id="chars_long_validation"
-                        class="fa-regular fa-circle-check mr-3 text-red-300"
-                      ></i
-                      >Should be at least 8 characters
-                    </li>
-                    <li class="text-grey-500 mb-2 text-sm">
-                      <i
-                        id="uppercase_validation"
-                        class="fa-regular fa-circle-check mr-3 text-red-300"
-                      ></i
-                      >Contain at least one uppercase
-                    </li>
-                    <li class="text-grey-500 mb-2 text-sm">
-                      <i
-                        id="lowercase_validation"
-                        class="fa-regular fa-circle-check mr-3 text-red-300"
-                      ></i
-                      >Contain at least one lowercase
-                    </li>
-                    <li class="text-grey-500 mb-2 text-sm">
-                      <i
-                        id="numbers_validation"
-                        class="fa-regular fa-circle-check mr-3 text-red-300"
-                      ></i
-                      >Contain at least one digit
-                    </li>
-                    <li class="text-grey-500 text-sm">
-                      <i
-                        id="special_chars_validation"
-                        class="fa-regular fa-circle-check mr-3 text-red-300"
-                      ></i
-                      >Contain at least one special character
-                    </li>
-                  </ul>
+              </label>
+              <label class="w-1/2 font-semibold text-textColor2 max-sm:w-full">
+                Last Name
+                <input
+                  type="text"
+                  name="lastName"
+                  value=""
+                  readonly
+                  class="mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
+                />
+              </label>
+            </div>
+            <label class="w-1/2 font-semibold text-textColor2 max-sm:w-full">
+              Email
+              <input
+                type="email"
+                name="email"
+                value=""
+                readonly
+                class="mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
+              />
+            </label>
+            <div class="mt-12 flex flex-wrap gap-5">
+              <button
+                class="min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:flex-1"
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                class="hidden min-w-[170px] rounded-xl bg-thirdAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:flex-1"
+                id="cancel"
+              >
+                Discard Changes
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="border-y border-nobleDark500 p-8">
+          <h2 class="text-2xl font-bold text-textColor">Change Password</h2>
+          <form method="post" class="mt-12" id="changePassword_form">
+            <div class="mb-7 flex gap-20 max-sm:flex-col max-sm:gap-5">
+              <div class="w-1/2 max-sm:w-full">
+                <label class="font-semibold text-textColor2" for="password">
+                  New Password
+                </label>
+                <div class="relative">
+                  <input
+                    class="password_input peer relative z-[20] mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
+                    type="password"
+                    name="password"
+                    id="password"
+                  />
+                  <i
+                    class="fa-solid fa-eye eye-icon absolute right-3 top-1/2 z-30 cursor-pointer text-sm text-textColor2"
+                    id="show_password"
+                  ></i>
+                  <div
+                    class="shadow-shadow-1 absolute -top-[210px] -z-10 w-full rounded-xl bg-white p-5 opacity-0 transition-opacity duration-500 peer-focus:z-10 peer-focus:opacity-100 sm:w-[325px]"
+                    id="password_validation"
+                  >
+                    <h3 class="text-grey-700 font-bold">
+                      Password requirements
+                    </h3>
+                    <ul class="5">
+                      <li class="text-grey-500 mb-2 text-sm">
+                        <i
+                          id="chars_long_validation"
+                          class="fa-regular fa-circle-check mr-3 text-red-300"
+                        ></i
+                        >Should be at least 8 characters
+                      </li>
+                      <li class="text-grey-500 mb-2 text-sm">
+                        <i
+                          id="uppercase_validation"
+                          class="fa-regular fa-circle-check mr-3 text-red-300"
+                        ></i
+                        >Contain at least one uppercase
+                      </li>
+                      <li class="text-grey-500 mb-2 text-sm">
+                        <i
+                          id="lowercase_validation"
+                          class="fa-regular fa-circle-check mr-3 text-red-300"
+                        ></i
+                        >Contain at least one lowercase
+                      </li>
+                      <li class="text-grey-500 mb-2 text-sm">
+                        <i
+                          id="numbers_validation"
+                          class="fa-regular fa-circle-check mr-3 text-red-300"
+                        ></i
+                        >Contain at least one digit
+                      </li>
+                      <li class="text-grey-500 text-sm">
+                        <i
+                          id="special_chars_validation"
+                          class="fa-regular fa-circle-check mr-3 text-red-300"
+                        ></i
+                        >Contain at least one special character
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="w-1/2 max-sm:w-full">
+                <label class="font-semibold text-textColor2" for="password">
+                  Confirm New Password
+                </label>
+                <div class="relative">
+                  <input
+                    type="password"
+                    name="confirmNewPassword"
+                    class="password_input mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
+                  />
+                  <i
+                    class="fa-solid fa-eye eye-icon absolute right-3 top-1/2 z-30 cursor-pointer text-sm text-textColor2"
+                    id="show_password"
+                  ></i>
                 </div>
               </div>
             </div>
-            <div class="w-1/2 max-sm:w-full">
-              <label class="font-semibold text-textColor2" for="password">
-                Confirm New Password
-              </label>
+            <button
+              class="mt-12 block min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:w-full"
+            >
+              Change Password
+            </button>
+          </form>
+        </div>
+        <div class="p-8">
+          <h2 class="text-2xl font-bold text-textColor">Reset Password</h2>
+          <p class="mt-12 text-textColor2">
+            If you forgot your password, you can reset it by clicking the button
+            below. A reset password link will be sent to your email.
+          </p>
+          <button
+            class="mt-12 block min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:w-full"
+            id="reset_password"
+          >
+            Reset Password
+          </button>
+        </div>
+        <div class="border-t border-nobleDark500 p-8">
+          <h2 class="text-2xl font-bold text-textColor">Delete Account</h2>
+          <p class="mt-12 text-textColor2">
+            Once you delete your account, there is no going back. Please be
+            certain.
+          </p>
+          <button
+            class="mt-12 block min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:w-full"
+            id="delete_account"
+          >
+            Delete Account
+          </button>
+        </div>
+        <div
+          class="fixed inset-0 -z-10 flex h-full w-full items-center justify-center bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-300"
+          id="verify_user_container"
+        >
+          <div
+            class="relative flex flex-col justify-center gap-5 overflow-hidden rounded-2xl bg-gradient p-6 max-sm:h-full max-sm:w-full sm:min-h-[326px] sm:min-w-[615px]"
+          >
+            <i
+              class="fa-solid fa-times absolute right-5 top-5 cursor-pointer text-xl text-textColor2"
+              id="close"
+            ></i>
+            <h1 class="text-3xl font-bold text-textColor">
+              Let's Verify It's You!
+            </h1>
+            <p class="mb-5 text-textColor2">
+              To protect your account, please confirm your identity before
+              <span id="action">updating your information</span>. Thank you.
+            </p>
+            <form method="post" id="verify_user_form">
+              <input
+                class="w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
+                type="text"
+                name="email"
+                placeholder="Email"
+                autocomplete="true"
+              />
               <div class="relative">
                 <input
+                  class="password_input mt-5 w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
                   type="password"
-                  name="confirmNewPassword"
-                  class="password_input mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
+                  name="password"
+                  placeholder="Password"
                 />
                 <i
-                  class="fa-solid fa-eye eye-icon absolute right-3 top-1/2 z-30 cursor-pointer text-sm text-textColor2"
+                  class="fa-solid fa-eye eye-icon absolute right-3 top-1/2 cursor-pointer text-sm text-textColor2"
                   id="show_password"
                 ></i>
               </div>
-            </div>
-          </div>
-          <button
-            class="mt-12 block min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:w-full"
-          >
-            Change Password
-          </button>
-        </form>
-      </div>
-      <div class="p-8">
-        <h2 class="text-2xl font-bold text-textColor">Reset Password</h2>
-        <p class="mt-12 text-textColor2">
-          If you forgot your password, you can reset it by clicking the button
-          below. A reset password link will be sent to your email.
-        </p>
-        <button
-          class="mt-12 block min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:w-full"
-          id="reset_password"
-        >
-          Reset Password
-        </button>
-      </div>
-      <div class="border-t border-nobleDark500 p-8">
-        <h2 class="text-2xl font-bold text-textColor">Delete Account</h2>
-        <p class="mt-12 text-textColor2">
-          Once you delete your account, there is no going back. Please be
-          certain.
-        </p>
-        <button
-          class="mt-12 block min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:w-full"
-          id="delete_account"
-        >
-          Delete Account
-        </button>
-      </div>
-      <div
-        class="fixed inset-0 -z-10 flex h-full w-full items-center justify-center bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-300"
-        id="verify_user_container"
-      >
-        <div
-          class="relative flex flex-col justify-center gap-5 overflow-hidden rounded-2xl bg-gradient p-6 max-sm:h-full max-sm:w-full sm:min-h-[326px] sm:min-w-[615px]"
-        >
-          <i
-            class="fa-solid fa-times absolute right-5 top-5 cursor-pointer text-xl text-textColor2"
-            id="close"
-          ></i>
-          <h1 class="text-3xl font-bold text-textColor">
-            Let's Verify It's You!
-          </h1>
-          <p class="mb-5 text-textColor2">
-            To protect your account, please confirm your identity before
-            <span id="action">updating your information</span>. Thank you.
-          </p>
-          <form method="post" id="verify_user_form">
-            <input
-              class="w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
-              type="text"
-              name="email"
-              placeholder="Email"
-              autocomplete="true"
-            />
-            <div class="relative">
               <input
-                class="password_input mt-5 w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
-                type="password"
-                name="password"
-                placeholder="Password"
+                type="submit"
+                value="Verify"
+                class="mt-5 w-full cursor-pointer rounded-2xl bg-primaryAccent py-3 text-lg font-bold text-black transition hover:bg-opacity-80"
               />
-              <i
-                class="fa-solid fa-eye eye-icon absolute right-3 top-1/2 cursor-pointer text-sm text-textColor2"
-                id="show_password"
-              ></i>
-            </div>
-            <input
-              type="submit"
-              value="Verify"
-              class="mt-5 w-full cursor-pointer rounded-2xl bg-primaryAccent py-3 text-lg font-bold text-black transition hover:bg-opacity-80"
-            />
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
     <div
       class="absolute -top-1/2 left-1/2 z-50 -translate-x-1/2 rounded-xl bg-red-700 px-5 py-3 text-center font-bold text-textColor transition-all duration-500"
       id="message"
@@ -744,12 +747,12 @@
       Error message
     </div>
     <div
-    class="fixed -bottom-14 transition-all duration-300 left-1/2 z-[99999] flex -translate-x-1/2 items-center gap-3 rounded-xl bg-gradient justify-center w-[200px] py-2 text-textColor2"
-    id="connectionStatus"
-  >
-    <i class="fa-solid fa-wifi"></i>
-    <p>You are offline</p>
-  </div>
+      class="fixed -bottom-14 left-1/2 z-[99999] flex w-[200px] -translate-x-1/2 items-center justify-center gap-3 rounded-xl bg-gradient py-2 text-textColor2 transition-all duration-300"
+      id="connectionStatus"
+    >
+      <i class="fa-solid fa-wifi"></i>
+      <p>You are offline</p>
+    </div>
     <script type="module">
       import { handleUserAuth, handleAccount } from "./js/utilities.js";
       import "./js/watchList.js";

@@ -1,10 +1,20 @@
 {
   "description": "",
   "devDependencies": {
-    "prettier-plugin-tailwindcss": "^0.3.0"
+    "autoprefixer": "^10.4.14",
+    "cssnano": "^6.0.1",
+    "html-minifier": "^4.0.0",
+    "postcss": "^8.4.27",
+    "postcss-cli": "^10.1.0",
+    "prettier-plugin-tailwindcss": "^0.3.0",
+    "uglify-js": "^3.17.4"
   },
   "scripts": {
     "tailwind": "npx tailwindcss -i ./src/input.css -o ./build/css/style.css --watch",
-    "prettier": " npx prettier --write **/*.html"
+    "prettier": " npx prettier --write **/*.html",
+    "minifyHtml": "npx html-minifier --input-dir build --output-dir dist --file-ext html --collapse-whitespace --remove-comments --remove-optional-tags --remove-tag-whitespace --use-short-doctype --minify-css true --minify-js true",
+    "minifyCss": "npx postcss build/css/style.css > dist/style.min.css",
+    "minifyJs": "node minify-js.js",
+    "minify": "npm run minifyHtml && npm run minifyCss && npm run minifyJs"
   }
 }

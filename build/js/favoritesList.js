@@ -54,7 +54,7 @@ for (let list in favoritesList) {
     if (res.name === "favoriteShows") {
       res.list.forEach((id) => {
         if (id === window.location.search.split("=")[1]) {
-          document.querySelector(`[data-favorite=shows]`).innerHTML =
+          document.querySelector(`#overview [data-favorite=shows]`).innerHTML =
             favoritesList.activeButton;
         }
       });

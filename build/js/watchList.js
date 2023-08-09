@@ -54,7 +54,7 @@ for (let list in watchLists) {
     // Check if the current show the user  is in is in the watchList and if so change the button
     res.shows.forEach((id) => {
       if (id === window.location.search.split("=")[1]) {
-        document.querySelector(`[data-list=${list.name}]`).innerHTML =
+        document.querySelector(`#overview [data-list=${list.name}]`).innerHTML =
           list.activeButton;
       }
     });

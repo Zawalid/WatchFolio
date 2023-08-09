@@ -5,8 +5,6 @@
 import "./watchList.js";
 // Favorites list
 import "./favoritesList.js";
-// TMDB API
-import { options } from "./TMDB.js";
 // Utilities
 import { handleAccount, handleUserAuth } from "./utilities.js";
 // Firebase
@@ -14,8 +12,17 @@ import {
   auth,
   signInWithCredential,
   GoogleAuthProvider,
-  doc,
 } from "./firebaseApp.js";
+
+//* TMDB
+const options = {
+  method: "GET",
+  headers: {
+    accept: "application/json",
+    Authorization:
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3OWUxNjZjMzNhZjE4ZmVlNTgzNWJiMDBiOGE5ZTA1NCIsInN1YiI6IjY0YTJiOTcxMTEzODZjMDBhZGM3OTQxMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.yxORg4upeOsiqCve7e9CDV4i-_Q2LfIpnqKKax3Fnw4",
+  },
+};
 
 //* Render the show's html
 const renderShow = (show) => {
@@ -368,4 +375,3 @@ window.onload = function () {
 
 //* ------------------------------ Account ------------------------------ *//
 handleAccount();
-
