@@ -60,9 +60,7 @@
   >
     <div class="container relative flex h-full flex-col gap-12">
       <header class="flex items-center justify-between pt-5">
-        <h2
-          class="font-logo text-4xl font-extrabold  max-sm:text-3xl"
-        >
+        <h2 class="font-logo text-4xl font-extrabold max-sm:text-3xl">
           <span class="text-primaryAccent">Watch</span
           ><span class="text-textColor">Folio</span>
         </h2>
@@ -116,7 +114,7 @@
                 <span class="font-semibold">WatchList</span>
               </li>
               <li
-                class="my-3 flex cursor-pointer items-center gap-3 rounded-xl py-2 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+                class="my-3 flex cursor-pointer items-center gap-3 rounded-xl py-2 text-textColor2 transition-colors duration-300 hover:text-primaryAccent max-md:hidden"
                 id="favoritesList_toggler"
               >
                 <i class="fa-solid fa-heart text-2xl"></i>
@@ -184,46 +182,46 @@
         </div>
       </div>
       <div
-      class="fixed bottom-0 left-0 z-[9999] flex w-full flex-col-reverse items-center justify-between md:hidden"
-      id="nav"
-    >
-      <ul
-        class="flex w-full items-center justify-around bg-[rgba(11_,21_,49_,0.5)] px-5 py-3 backdrop-blur-[6px]"
+        class="fixed bottom-0 left-0 z-[9999] flex w-full flex-col-reverse items-center justify-between md:hidden"
+        id="nav"
       >
-        <li class="cursor-pointer marker:text-transparent">
-          <a
-            href="index.html"
-            class="active flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
-          >
-            <i class="fa-solid fa-house"></i>
-            <span class="text-sm font-semibold">Home</span>
-          </a>
-        </li>
-        <li class="cursor-pointer marker:text-transparent">
+        <ul
+          class="flex w-full items-center justify-around bg-[rgba(11_,21_,49_,0.5)] px-5 py-3 backdrop-blur-[6px]"
+        >
+          <li class="cursor-pointer marker:text-transparent">
             <a
-            href="index.html#explore"
-            class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+              href="index.html"
+              class="active flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
             >
-            <i class="fa-solid fa-globe"></i>
-            <span class="text-sm font-semibold">Explore</span>
-          </a>
-      </li>
-      <li
-        class="flex cursor-pointer flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
-        id="watchList_toggler"
-      >
-        <i class="fa-solid fa-clipboard-list"></i>
-        <span class="text-sm font-semibold">WatchList</span>
-      </li>
-      <li
-        class="flex cursor-pointer flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
-        id="favoritesList_toggler"
-      >
-        <i class="fa-solid fa-heart"></i>
-        <span class="text-sm font-semibold">Favorites</span>
-      </li>
-      </ul>
-    </div>
+              <i class="fa-solid fa-house"></i>
+              <span class="text-sm font-semibold">Home</span>
+            </a>
+          </li>
+          <li class="cursor-pointer marker:text-transparent">
+            <a
+              href="index.html#explore"
+              class="flex flex-col items-center gap-1 text-textColor2 transition-colors duration-300 hover:text-primaryAccent"
+            >
+              <i class="fa-solid fa-globe"></i>
+              <span class="text-sm font-semibold">Explore</span>
+            </a>
+          </li>
+          <li
+            class="flex cursor-pointer flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
+            id="watchList_toggler"
+          >
+            <i class="fa-solid fa-clipboard-list"></i>
+            <span class="text-sm font-semibold">WatchList</span>
+          </li>
+          <li
+            class="flex cursor-pointer flex-col items-center gap-1 text-textColor2 transition-colors duration-300 marker:text-transparent hover:text-primaryAccent"
+            id="favoritesList_toggler"
+          >
+            <i class="fa-solid fa-heart"></i>
+            <span class="text-sm font-semibold">Favorites</span>
+          </li>
+        </ul>
+      </div>
     </div>
     <div
       class="container relative hidden h-auto min-h-[60vh] flex-wrap items-center justify-center gap-6 bg-gradient py-5"
@@ -528,7 +526,7 @@
       </div>
     </div>
     <div
-      class=" absolute right-20 top-[75px] -z-10 h-[550px] w-[400px] rounded-xl bg-gradient opacity-0 transition-opacity duration-300 max-md:right-0 max-md:top-0 max-md:h-full max-md:w-full max-md:rounded-none"
+      class="absolute right-20 top-[75px] -z-10 h-[550px] w-[400px] rounded-xl bg-gradient opacity-0 transition-opacity duration-300 max-md:right-0 max-md:top-0 max-md:h-full max-md:w-full max-md:rounded-none"
       id="favoritesList"
       data-current_favorite="shows"
     >
@@ -613,7 +611,7 @@
         </div>
       </div>
     </div>
-   
+
     <div
       class="absolute inset-0 -z-10 flex h-full w-full bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-500 max-md:h-full md:items-center md:justify-center"
       id="account"
@@ -625,6 +623,15 @@
           class="fa-solid fa-times absolute right-5 top-5 cursor-pointer text-xl text-textColor2"
           id="close_account"
         ></i>
+        <div class="hidden items-center bg-red-700 gap-5 max-sm:flex-col px-8 py-3 mt-16" id="emailNotVerified">
+          <p class="font-semibold text-textColor">
+            Your account is not verified. Please verify your email address.
+          </p>
+          <button class=" font-bold text-textColor2">
+            Resend
+          </button>
+        </div>
+
         <div class="p-8">
           <h2 class="text-2xl font-bold text-textColor">Account Details</h2>
           <div class="relative mb-10 mt-12 h-28 w-28">
@@ -832,7 +839,7 @@
             </h1>
             <p class="mb-5 text-textColor2">
               To protect your account, please confirm your identity before
-              updating your information. Thank you.
+              <span id="action">updating your information</span>. Thank you.
             </p>
             <form method="post" id="verify_user_form">
               <input

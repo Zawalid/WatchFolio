@@ -26,7 +26,19 @@ import {
   ref,
   uploadString,
   getDownloadURL,
+  deleteObject,
 } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-storage.js";
+
+
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  deleteDoc,
+} from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
+
 const firebaseConfig = {
   apiKey: "AIzaSyC6En24MyhaNsRCU_bV8PRdI6hn3lon-Wc",
   authDomain: "watchfolio-93175.firebaseapp.com",
@@ -37,16 +49,6 @@ const firebaseConfig = {
   appId: "1:338374125620:web:ff6262fa8eb4d26ae14261",
   measurementId: "G-LEKBTCG8J3",
 };
-
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  getDoc,
-  updateDoc,
-  arrayUnion,
-  arrayRemove,
-} from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
@@ -116,6 +118,7 @@ export {
   sendPasswordResetEmail,
   getStorage,
   ref,
+deleteObject,
   uploadString,
   getDownloadURL,
   reauthenticateWithCredential,
@@ -127,6 +130,5 @@ export {
   getDoc,
   updateDoc,
   doc,
-  arrayUnion,
-  arrayRemove,
+  deleteDoc,
 };

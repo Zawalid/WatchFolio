@@ -16,11 +16,6 @@ import {
   GoogleAuthProvider,
 } from "./firebaseApp.js";
 
-//* Initialize the watchLists if they don't exist
-["watched", "watching", "willWatch"].forEach((list) => {
-  !window.localStorage.getItem(list) && window.localStorage.setItem(list, "");
-});
-
 //* Render the show's html
 const renderShow = (show) => {
   return `
@@ -165,6 +160,7 @@ const explore = async (url, page = null) => {
             `https://api.tvmaze.com/singlesearch/shows?q=${tvShow.name}`
           );
           const show = await (await res).json();
+          // If the show is an anime, don't render it
           if (!show?.name || show.genres.includes("Anime")) return;
           return renderShow(show);
         } catch {}

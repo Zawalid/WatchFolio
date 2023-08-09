@@ -49,7 +49,17 @@ for (let list in favoritesList) {
   if (list === "defaultButton" || list === "activeButton") continue;
   list = favoritesList[list];
   // retrieve from database/local storage
-  retrieveFromLocalStorageOrDatabase("Favorites", list);
+  retrieveFromLocalStorageOrDatabase("Favorites", list).then((res) => {
+    // Check if the current show the user  is in is in the favorite shows list and if so change the button
+    if (res.name === "favoriteShows") {
+      res.list.forEach((id) => {
+        if (id === window.location.search.split("=")[1]) {
+          document.querySelector(`[data-favorite=shows]`).innerHTML =
+            favoritesList.activeButton;
+        }
+      });
+    }
+  });
 }
 //* Store the lists in the local storage or database if the lists don't exist
 storeInLocalStorageOrDatabase("Favorites", [
@@ -218,12 +228,16 @@ removeFromList(
 toggleList(
   "favoritesList_toggler",
   favoritesListContainer,
-  "shows",
   actions,
   displayFromFavoritesList
 );
 //* Close the favoritesList when clicking outside of it
-closeList("favoritesList_toggler", favoritesListContainer, actions);
+closeList(
+  "favoritesList_toggler",
+  favoritesListContainer,
+  actions,
+  displayFromFavoritesList
+);
 
 //* ------------------------- Actions ------------------------- *//
 

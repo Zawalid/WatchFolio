@@ -26,7 +26,6 @@ import {
   updateLocalStorageOrDatabase,
   storeInLocalStorageOrDatabase,
 } from "./utilities.js";
-import { db, doc, getDoc } from "./firebaseApp.js";
 
 //* ------------------ Creating overview containers (Avoid repetition) ------------------ *//
 const overviewContainer = `
@@ -333,10 +332,6 @@ ${recommendations.length !== 0 ? recommendations : ""}
       "--bg",
       `url(${show.image.original})`
     );
-    // Activate the watchList/favoriteList button after inserting the buttons if the show is in the list
-    activateWatchListButton();
-    activateFavoritesListShowButton();
-
     // Get the seasons elements after inserting the seasons
     showsSeasons = [...document.querySelectorAll("#season")];
   } catch (err) {
@@ -680,18 +675,21 @@ Add To Favorites      </button>
     showsSeasons[currentSeason - 2] ? currentSeason - 1 : showsSeasons.length
   }</span>
   </button>
-  <button class="flex justify-center items-center gap-2 rounded-lg bg-secondaryAccent px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80" id="seasonWatched">
+  <button class="h-12 flex justify-center items-center gap-2 rounded-lg bg-secondaryAccent px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80" id="seasonWatched"
+  data-state="notWatched"
+  >
   <i class="fa-solid fa-check"></i>
   <span>Season watched</span>
   </button>
   <button class="flex justify-center items-center gap-2 rounded-lg bg-secondaryAccent px-5 py-3 font-semibold text-textColor transition-colors duration-300 hover:bg-opacity-80" id="nextSeason">
   <span>${window.matchMedia("(min-width: 768px)").matches ? "Season" : ""} ${
-    showsSeasons[currentSeason + 1] ? currentSeason + 1 : 1
+    showsSeasons[currentSeason] ? currentSeason + 1 : 1
   }</span>
   <i class="fa-solid fa-chevron-right"></i>
   </button>
   </div>
   `;
+  console.log(currentSeason);
   displayOverview(seasonOverviewContainer, html);
 };
 //* Get the season trailer
@@ -1162,35 +1160,81 @@ document.addEventListener("click", (e) => {
 //* Mark the season as watched when clicking on the season watched button
 document.addEventListener("click", (e) => {
   if (e.target.closest("#seasonWatched")) {
-    // Remove the text content from the button
-    document.querySelector("#seasonWatched span").remove();
     // Get the episodes numbers
     const episodesNumbers = [...document.querySelectorAll("#episode h2")];
-    // Loop through the episodes and mark them as watched
-    episodesNumbers.map((h2) => {
-      // Change the icon to the watched icon (the eye icon)
-      h2.innerHTML = episodes.watchedEpisodes.icon;
-      // Remove the episode from the watching episodes and add it to the watched episodes
-      episodes.watchingEpisodes.episodes.has(h2.parentElement.dataset.id) &&
-        episodes.watchingEpisodes.episodes.delete(h2.parentElement.dataset.id);
-      episodes.watchedEpisodes.episodes.add(h2.parentElement.dataset.id);
-    });
-    //  Update the local storage/database
-    updateLocalStorageOrDatabase("Episodes", [
-      episodes.watchedEpisodes,
-      episodes.watchingEpisodes,
-    ]);
-    // Add the show to the watched shows if the season is the last season or if it's the only season And that the show status is "Ended" else add it to the watching shows
-    if (
-      ([...document.querySelectorAll("#season")].length === 1 ||
-        currentSeason === [...document.querySelectorAll("#season")].length) &&
-      document.getElementById("showStatus").innerText === "Ended"
-    ) {
-      addToWatchList(window.location.search.split("=")[1], watchLists.watched);
-      document.querySelector(`[data-list=watched]`).innerHTML =
-        watchLists.watched.activeButton;
+    if (e.target.closest("#seasonWatched").dataset.state === "notWatched") {
+      // Change the button state
+      e.target.closest("#seasonWatched").dataset.state = "watched";
+      // Remove the text content from the button
+      document.querySelector("#seasonWatched span")?.remove();
+      // Loop through the episodes and mark them as watched
+      episodesNumbers.map((h2) => {
+        // Change the icon to the watched icon (the eye icon)
+        h2.innerHTML = episodes.watchedEpisodes.icon;
+        // Remove the episode from the watching episodes and add it to the watched episodes
+        episodes.watchingEpisodes.episodes.has(h2.parentElement.dataset.id) &&
+          episodes.watchingEpisodes.episodes.delete(
+            h2.parentElement.dataset.id
+          );
+        episodes.watchedEpisodes.episodes.add(h2.parentElement.dataset.id);
+      });
+      //  Update the local storage/database
+      updateLocalStorageOrDatabase("Episodes", [
+        episodes.watchedEpisodes,
+        episodes.watchingEpisodes,
+      ]);
+      // Add the show to the watched shows if the season is the last season or if it's the only season And that the show status is "Ended" else add it to the watching shows
+      if (
+        ([...document.querySelectorAll("#season")].length === 1 ||
+          currentSeason === [...document.querySelectorAll("#season")].length) &&
+        document.getElementById("showStatus").innerText === "Ended"
+      ) {
+        addToWatchList(
+          window.location.search.split("=")[1],
+          watchLists.watched
+        );
+        document.querySelector(`[data-list=watched]`).innerHTML =
+          watchLists.watched.activeButton;
+      } else {
+        addShowToWatchingList();
+      }
     } else {
-      addShowToWatchingList();
+      // Change the button state
+      e.target.closest("#seasonWatched").dataset.state = "notWatched";
+      // Add the text content to the button
+      document.getElementById("seasonWatched").innerHTML = `
+      <i class="fa-solid fa-check"></i>
+      <span>Season watched</span>
+      `;
+      // Loop through the episodes and mark them as not watched
+      episodesNumbers.map((h2, i) => {
+        // Change the icon to the episode number
+        h2.innerHTML = i + 1;
+        // Remove the episode from the watched episodes
+        episodes.watchedEpisodes.episodes.has(h2.parentElement.dataset.id) &&
+          episodes.watchedEpisodes.episodes.delete(h2.parentElement.dataset.id);
+      });
+      //  Update the local storage/database
+      updateLocalStorageOrDatabase("Episodes", [
+        episodes.watchedEpisodes,
+        episodes.watchingEpisodes,
+      ]);
+      // Remove the show from the watched shows or the watching shows
+      watchLists.watched.shows.has(window.location.search.split("=")[1])
+        ? removeFromWatchList(
+            window.location.search.split("=")[1],
+            watchLists.watched
+          )(
+            (document.querySelector(`[data-list=watched]`).innerHTML =
+              watchLists.watched.defaultButton)
+          )
+        : removeFromWatchList(
+            window.location.search.split("=")[1],
+            watchLists.watching
+          )(
+            (document.querySelector(`[data-list=watching]`).innerHTML =
+              watchLists.watching.defaultButton)
+          );
     }
   }
 });
@@ -1239,20 +1283,6 @@ showOverviewContainer.addEventListener("click", (e) => {
     }
   }
 });
-//* Activate the right button when the page loads if the show is already added to a watchList
-const activateWatchListButton = () => {
-  // Wait until the ids are retrieved
-  setTimeout(() => {
-    for (const list in watchLists) {
-      watchLists[list].shows.forEach((show) => {
-        if (show === window.location.search.split("=")[1]) {
-          document.querySelector(`[data-list=${list}]`).innerHTML =
-            watchLists[list].activeButton;
-        }
-      });
-    }
-  }, 1500);
-};
 
 //* ------------------------------ FavoritesList ------------------------------ *//
 //* Add the right type to the favoritesList
@@ -1274,19 +1304,7 @@ document.addEventListener("click", (e) => {
     }
   }
 });
-//* Activate the add button when the page loads if the show is already added to the favoritesList (show case)
-const activateFavoritesListShowButton = () => {
-  // Wait until the ids are retrieved
-  setTimeout(() => {
-    favoritesList.shows.list.forEach((id) => {
-      if (id === window.location.search.split("=")[1]) {
-        document.querySelector(`[data-favorite=shows]`).innerHTML =
-          favoritesList.activeButton;
-      }
-    });
-  }, 1500);
-};
-//* Activate the add button when the page loads if the season/episode are already added to the favoritesList (season/episode case)
+//* Activate the add button when the page loads if the season/episode are already added to the favoritesList
 const activateFavoritesListEpisodeSeasonButton = (button, type) => {
   // Wait until the ids are retrieved
   setTimeout(() => {

@@ -19,6 +19,8 @@ import {
   getDoc,
   updateDoc,
   setDoc,
+  deleteDoc,
+  deleteObject,
 } from "./firebaseApp.js";
 
 //* ----------------- Miscellaneous -----------------
@@ -105,16 +107,13 @@ const showMessage = (message, type) => {
 
 //* ----------------- WatchList, FavoriteList -----------------
 //* Toggle watchList, favoriteList
-const toggleList = (
-  togglerId,
-  container,
-  listName,
-  actions,
-  displayFunction
-) => {
+const toggleList = (togglerId, container, actions, displayFunction) => {
   document.querySelectorAll(`#${togglerId}`).forEach((toggler) => {
     toggler.addEventListener("click", function () {
-      displayFunction(listName);
+      // Display the elements from the first list
+      container.id === "watchList"
+        ? displayFunction("watched")
+        : displayFunction("shows");
       container.classList.toggle("show");
       // Add the active class to the toggler
       this.classList.add("active");
@@ -141,7 +140,7 @@ const toggleList = (
   });
 };
 //* Close the watchList, favoriteList
-const closeList = (togglerId, container, actions) => {
+const closeList = (togglerId, container, actions, displayFunction) => {
   document.addEventListener("click", (e) => {
     if (
       !container.contains(e.target) &&
@@ -153,10 +152,12 @@ const closeList = (togglerId, container, actions) => {
       actions.classList.add("hidden");
       // Remove the active class from the toggler
       document.querySelectorAll(`#${togglerId}`).forEach((toggler) => {
-        window.matchMedia("(max-width: 768px)").matches
-          ? toggler.classList.remove("active")
-          : toggler.firstElementChild.classList.remove("active");
+        toggler.classList.remove("active");
       });
+      // Display the elements from the first list
+      container.id === "watchList"
+        ? displayFunction("watched")
+        : displayFunction("shows");
     }
   });
 };
@@ -405,10 +406,12 @@ const retrieveFromLocalStorageOrDatabase = async (document, list) => {
   try {
     const user = await checkIfUserIsLoggedIn();
 
-    getDoc(doc(db, document, user.uid)).then((doc) => {
+    return getDoc(doc(db, document, user.uid)).then((doc) => {
       if (doc.exists()) {
         list[obj] = new Set(doc.data()[list.name]);
       }
+      // So that i use the filled object with the buttons
+      return Promise.resolve(list);
     });
   } catch (err) {
     const lists = window.localStorage.getItem(list.name)?.split(",");
@@ -416,6 +419,8 @@ const retrieveFromLocalStorageOrDatabase = async (document, list) => {
     lists && lists[0] == "" && lists.splice(0, 1);
     // Store the shows/seasons/episodes back in the lists
     list[obj] = new Set(lists);
+
+    return Promise.resolve(list);
   }
 };
 //* Store the lists in the local storage or database if the lists don't exist
@@ -479,9 +484,17 @@ const displayUserInfo = async (user) => {
   document.getElementById("email").innerText = document.getElementById(
     "accountDetails_form"
   ).email.value = user.email;
+
+  // Change the profile picture in the menu and the profile
   document
     .querySelectorAll(".avatar")
     .forEach((img) => (img.src = user.photoURL || avatar));
+  try {
+    // Check if the profile picture is available
+    const image = await fetch(user.photoURL, { mode: "no-cors" });
+    if (!image.ok)
+      document.querySelectorAll(".avatar").forEach((img) => (img.src = avatar));
+  } catch (err) {}
 };
 
 //* Handle user authentication
@@ -496,11 +509,18 @@ const handleUserAuth = async () => {
       (window.location.pathname === "/" ||
         window.location.pathname === "/index.html")
     ) {
+      // Check if the verification email has been sent before
+      if (document.cookie.includes("emailSent=true")) {
+        return;
+      }
+      // Send the verification email
       sendEmailVerification(user).then(() => {
         showMessage(
           "A verification email has been sent to your email address. Please check your inbox and click the verification link to verify your email.",
           "info"
         );
+        // Set a cookie to prevent the verification email from being sent again
+        document.cookie = "emailSent=true; max-age=86400; path=/";
       });
     }
     // Display the user's info
@@ -563,6 +583,23 @@ const handleAccount = () => {
   //* Show account
   document.getElementById("account_toggler").addEventListener("click", () => {
     if (auth.currentUser) {
+      // SHow the email not verified message every time the user opens the account if the user's email is not verified
+      const emailNotVerified = document.getElementById("emailNotVerified");
+      // Show the email not verified message if the user's email is not verified
+      !auth.currentUser.emailVerified &&
+        emailNotVerified.classList.replace("hidden", "flex");
+      // Send the verification email when the user clicks on the button
+      emailNotVerified.querySelector("button").addEventListener("click", () => {
+        sendEmailVerification(auth.currentUser).then(() => {
+          showMessage(
+            "A verification email has been sent to your email address. Please check your inbox and click the verification link to verify your email.",
+            "info"
+          );
+          // Hide the email not verified message
+          emailNotVerified.classList.replace("flex", "hidden");
+        });
+      });
+
       window.scrollTo(0, 0);
       document.body.classList.add("h-screen", "overflow-hidden");
       account.classList.add("show");
@@ -607,7 +644,7 @@ const handleAccount = () => {
         );
         // Reauthenticate the user
         reauthenticateWithCredential(auth.currentUser, credential)
-          .then((res) => {
+          .then(() => {
             verifyUserContainer.classList.remove("show");
             this.reset();
             func();
@@ -619,6 +656,7 @@ const handleAccount = () => {
   };
   //* show password when eye icon is clicked
   showPassword();
+
   //* ----------------- Account Details -----------------
   const accountDetailsForm = document.getElementById("accountDetails_form");
   const accountDetailsAction = accountDetailsForm.action;
@@ -626,7 +664,7 @@ const handleAccount = () => {
   const imageInput = account.querySelector("[name='Image']");
   const accountDetailsInputs = accountDetailsForm.querySelectorAll("input");
   const editDetailsButton = accountDetailsForm.querySelector("button");
-  const profilePicture = account.querySelector("#edit");
+  const profilePicture = account.querySelector("img");
   const cancelChanges = account.querySelector("#cancel");
 
   //* Get the uploaded image and Upload it to firebase storage and return the download url
@@ -647,7 +685,7 @@ const handleAccount = () => {
         return;
       }
       // Create a storage reference
-      const storageRef = ref(getStorage(), `users/${user.uid}/profile.png`);
+      const storageRef = ref(getStorage(), `usersProfiles/${user.uid}.png`);
       // Upload the image
       uploadString(storageRef, base64ImageData, "data_url").then((snapshot) => {
         // Get the download url
@@ -657,7 +695,7 @@ const handleAccount = () => {
   }
 
   //* Switch between edit and save
-  const switchToEdit = () => {
+  const switchToEdit = (saved = false) => {
     // change the action to edit
     accountDetailsAction.value = "edit";
     // change the button text to Edit
@@ -671,7 +709,7 @@ const handleAccount = () => {
     // Hide the cancel button
     cancelChanges.classList.replace("block", "hidden");
     // restore the user info
-    displayUserInfo(auth.currentUser);
+    !saved && displayUserInfo(auth.currentUser);
   };
   const switchToSave = () => {
     // change the action to save
@@ -693,15 +731,14 @@ const handleAccount = () => {
       // switch to save
       switchToSave();
       // Add the change event listener to the image input to change the profile picture when the user chooses a new one
-      imageInput.addEventListener("change", () => {
-        if (!imageInput.files[0].type.startsWith("image/")) {
+      imageInput.addEventListener("change", async () => {
+        const image = imageInput.files[0];
+        if (!image.type.startsWith("image/")) {
           profilePicture.src = "./imgs/no profile.png";
           return;
+        } else {
+          profilePicture.src = await getUploadedImage(image);
         }
-        // Get the uploaded image and set it as the profile picture
-        getUploadedImage(imageInput.files[0]).then((src) => {
-          profilePicture.src = src;
-        });
       });
     } else if (accountDetailsAction.value === "save") {
       // Get the inputs
@@ -712,6 +749,9 @@ const handleAccount = () => {
       if (inputs.some((input) => input.value == "")) {
         showMessage("Please fill in all the fields", "error");
       } else {
+        // Set the verification action
+        verifyUserContainer.querySelector("#action").textContent =
+          "updating your information";
         // show the verification container
         verifyUserContainer.classList.add("show");
         // reauthenticate the user
@@ -728,12 +768,8 @@ const handleAccount = () => {
           });
           // Update the user's email
           updateEmail(auth.currentUser, accountDetailsForm.email.value);
-          // Switch to edit
-          switchToEdit();
-          // Update the user's info
-          auth.currentUser
-            .reload()
-            .then(() => displayUserInfo(auth.currentUser));
+          // Switch to edit with the saved to not restore the user's info
+          switchToEdit(true);
           // Show the success message
           showMessage("Your account details have been updated successfully");
         });
@@ -768,6 +804,9 @@ const handleAccount = () => {
       showMessage("Passwords don't match", "error");
       return;
     }
+    // Set the verification action
+    verifyUserContainer.querySelector("#action").textContent =
+      "changing your password";
     // Show the verification container
     verifyUserContainer.classList.add("show");
     // Reauthenticate the user
@@ -800,20 +839,31 @@ const handleAccount = () => {
 
   //* ----------------- Delete Account -----------------
   const deleteAccountButton = document.getElementById("delete_account");
-  deleteAccountButton.addEventListener("click", () => {
+  deleteAccountButton.addEventListener("click", async () => {
+    // Set the verification action
+    verifyUserContainer.querySelector("#action").textContent =
+      "deleting your account";
     // Show the verification container
     verifyUserContainer.classList.add("show");
     // Reauthenticate the user
     reauthenticate(async () => {
-      // Delete the user's account
-      auth.currentUser
-        .delete()
-        .then(() => {
-          // Show the success message
-          showMessage("Your account has been deleted successfully", "info");
-          window.location.href = "/";
-        })
-        .catch((error) => showMessage(error.message, "error"));
+      const storage = getStorage();
+      Promise.all([
+        ["Favorites", "watchList", "Episodes"].map((document) => {
+          deleteDoc(doc(db, document, auth.currentUser.uid));
+        }, deleteObject(ref(storage, `usersProfiles/${auth.currentUser.uid}.png`))),
+      ]).then(() => {
+        // Delete the user account after deleting the their data
+        auth.currentUser
+          .delete()
+          .then(() => {
+            // Show the success message
+            showMessage("Your account has been deleted successfully", "info");
+
+            window.location.href = "/";
+          })
+          .catch((error) => showMessage(error.message, "error"));
+      });
     });
   });
 };

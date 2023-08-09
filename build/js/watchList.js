@@ -50,7 +50,15 @@ export const watchLists = {
 for (let list in watchLists) {
   list = watchLists[list];
   // retrieve from database/local storage
-  retrieveFromLocalStorageOrDatabase("watchList", list);
+  retrieveFromLocalStorageOrDatabase("watchList", list).then((res) => {
+    // Check if the current show the user  is in is in the watchList and if so change the button
+    res.shows.forEach((id) => {
+      if (id === window.location.search.split("=")[1]) {
+        document.querySelector(`[data-list=${list.name}]`).innerHTML =
+          list.activeButton;
+      }
+    });
+  });
 }
 //* Store the lists in the local storage or database if the lists don't exist
 storeInLocalStorageOrDatabase("watchList", [
@@ -149,12 +157,16 @@ displayList(
 toggleList(
   "watchList_toggler",
   watchListContainer,
-  "watched",
   actions,
   displayShowsFromWatchList
 );
 //* Close the watchList when clicking outside of it
-closeList("watchList_toggler", watchListContainer, actions);
+closeList(
+  "watchList_toggler",
+  watchListContainer,
+  actions,
+  displayShowsFromWatchList
+);
 
 //* ------------------------------ Actions ------------------------------ *//
 

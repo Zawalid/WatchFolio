@@ -828,6 +828,14 @@
           class="fa-solid fa-times absolute right-5 top-5 cursor-pointer text-xl text-textColor2"
           id="close_account"
         ></i>
+        <div class="hidden items-center bg-red-700 gap-5 max-sm:flex-col px-8 py-3 mt-16" id="emailNotVerified">
+          <p class="font-semibold text-textColor">
+            Your account is not verified. Please verify your email address.
+          </p>
+          <button class=" font-bold text-textColor2">
+            Resend
+          </button>
+        </div>
         <div class="p-8">
           <h2 class="text-2xl font-bold text-textColor">Account Details</h2>
           <div class="relative mb-10 mt-12 h-28 w-28">
@@ -1034,7 +1042,7 @@
             </h1>
             <p class="mb-5 text-textColor2">
               To protect your account, please confirm your identity before
-              updating your information. Thank you.
+              <span id="action">updating your information</span>. Thank you.
             </p>
             <form method="post" id="verify_user_form">
               <input
