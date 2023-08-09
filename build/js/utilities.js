@@ -125,7 +125,7 @@ const handleConnection = () => {
     showAndHideConnectionStatus();
   });
 };
-handleConnection()
+handleConnection();
 
 //* ----------------- WatchList, FavoriteList -----------------
 //* Toggle watchList, favoriteList
@@ -912,4 +912,3 @@ export {
   retrieveFromLocalStorageOrDatabase,
   storeInLocalStorageOrDatabase,
 };
-

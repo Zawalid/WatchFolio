@@ -375,3 +375,12 @@ window.onload = function () {
 
 //* ------------------------------ Account ------------------------------ *//
 handleAccount();
+
+//* Hide the watchList, favoriteList,account when clicking on the explore button
+document
+  .getElementById("nav")
+  .querySelectorAll("li")[1]
+  .addEventListener("click", () => {
+    document.querySelector(".show")?.classList.remove("show");
+    document.body.classList.remove("overflow-hidden");
+  });
