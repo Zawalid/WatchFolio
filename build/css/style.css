@@ -594,6 +594,10 @@ video {
   inset: 0px;
 }
 
+.-bottom-14 {
+  bottom: -3.5rem;
+}
+
 .-bottom-24 {
   bottom: -6rem;
 }
@@ -682,14 +686,6 @@ video {
   top: 100%;
 }
 
-.-bottom-3 {
-  bottom: -0.75rem;
-}
-
-.-bottom-14 {
-  bottom: -3.5rem;
-}
-
 .-z-10 {
   z-index: -10;
 }
@@ -710,20 +706,12 @@ video {
   z-index: 20;
 }
 
-.z-\[9999\] {
-  z-index: 9999;
-}
-
-.z-\[\] {
-  z-index: ;
-}
-
-.z-\[0000\] {
-  z-index: 0000;
-}
-
 .z-\[99999\] {
   z-index: 99999;
+}
+
+.z-\[9999\] {
+  z-index: 9999;
 }
 
 .col-span-5 {
@@ -1050,6 +1038,10 @@ video {
   width: 150px;
 }
 
+.w-\[200px\] {
+  width: 200px;
+}
+
 .w-\[210px\] {
   width: 210px;
 }
@@ -1082,14 +1074,6 @@ video {
 .w-max {
   width: -moz-max-content;
   width: max-content;
-}
-
-.w-\[\] {
-  width: ;
-}
-
-.w-\[200px\] {
-  width: 200px;
 }
 
 .min-w-\[170px\] {
@@ -1942,22 +1926,22 @@ li.active,
   opacity: 1;
 }
 
-#favoritesList input.\!show ,
-  #watchList input.\!show {
+input[name='search'].\!show ,
+  input[name='search'].\!show {
   bottom: 100%;
   z-index: 10;
   opacity: 1;
 }
 
-#favoritesList input.show ,
-  #watchList input.show {
+input[name='search'].show ,
+  input[name='search'].show {
   bottom: 100%;
   z-index: 10;
   opacity: 1;
 }
 
-#favoritesList input.\!show ,
-  #watchList input.\!show {
+input[name='search'].\!show ,
+  input[name='search'].\!show {
   bottom: 100%;
   z-index: 10;
   opacity: 1;
@@ -2011,6 +1995,10 @@ html {
 
 #skeleton .bg-textColor2 {
   animation: skeleton 1s linear alternate infinite;
+}
+
+.first-letter\:flex::first-letter {
+  display: flex;
 }
 
 .marker\:text-transparent *::marker {

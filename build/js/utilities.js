@@ -354,7 +354,7 @@ const searchList = (searchListInput, container, currentELements) => {
   ).innerHTML =
     results.length > 0
       ? results.map((res) => res.parentElement.outerHTML).join("")
-      : `<div class="flex flex-col items-center justify-center col-span-5 ml-[50%] mt-[50%] -translate-x-1/2 -translate-y-1/2">
+      : `<div class="flex-1 flex flex-col items-center justify-center col-span-5 ml-[50%]  -translate-x-1/2 ">
       <img src="./imgs/no_result.png" alt="" class="w-52" />
       <h2 class="text-xl font-bold text-textColor2">No Results Found</h2>
       </div>
@@ -371,13 +371,13 @@ const showSearchInput = (container, searchListInput, listObject, dataAttr) => {
     : searchListInput.blur();
   // Change the icon
   searchListInput.classList.contains("show")
-    ? container
+    ? document
         .querySelector("#actions #search")
         .classList.replace(
           "fa-magnifying-glass-plus",
           "fa-magnifying-glass-minus"
         )
-    : container
+    : document
         .querySelector("#actions #search")
         .classList.replace(
           "fa-magnifying-glass-minus",
@@ -390,7 +390,7 @@ const hideSearchInput = (container, searchListInput) => {
   // Hide the input
   searchListInput.classList.remove("show");
   // Change the icon
-  container
+  document
     .querySelector("#actions #search")
     .classList.replace("fa-magnifying-glass-minus", "fa-magnifying-glass-plus");
 };
