@@ -14,6 +14,7 @@ import {
   auth,
   signInWithCredential,
   GoogleAuthProvider,
+  doc,
 } from "./firebaseApp.js";
 
 //* Render the show's html
@@ -367,3 +368,4 @@ window.onload = function () {
 
 //* ------------------------------ Account ------------------------------ *//
 handleAccount();
+

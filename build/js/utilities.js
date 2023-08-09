@@ -105,6 +105,28 @@ const showMessage = (message, type) => {
   }, 4000);
 };
 
+//* Handle user connection status
+const handleConnection = () => {
+  const connectionStatus = document.getElementById("connectionStatus");
+  const showAndHideConnectionStatus = () => {
+    connectionStatus.classList.replace("-bottom-14", "bottom-3");
+    setTimeout(() => {
+      connectionStatus.classList.replace("bottom-3", "-bottom-14");
+    }, 3000);
+  };
+  window.addEventListener("online", () => {
+    connectionStatus.lastElementChild.innerText = "Back online";
+    connectionStatus.classList.replace("text-textColor2", "text-primaryAccent");
+    showAndHideConnectionStatus();
+  });
+  window.addEventListener("offline", () => {
+    connectionStatus.lastElementChild.innerText = "You are offline";
+    connectionStatus.classList.replace("text-primaryAccent", "text-textColor2");
+    showAndHideConnectionStatus();
+  });
+};
+handleConnection()
+
 //* ----------------- WatchList, FavoriteList -----------------
 //* Toggle watchList, favoriteList
 const toggleList = (togglerId, container, actions, displayFunction) => {
@@ -890,3 +912,4 @@ export {
   retrieveFromLocalStorageOrDatabase,
   storeInLocalStorageOrDatabase,
 };
+
