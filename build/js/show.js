@@ -90,7 +90,6 @@ const showLoading = (container) => {
   ></i>
     `;
   } else {
-    container.firstElementChild.scrollIntoView({ behavior: "smooth" });
     container.firstElementChild.innerHTML = `
   <i
   class="fa-solid fa-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-4xl text-thirdAccent"

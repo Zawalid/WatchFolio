@@ -365,6 +365,11 @@ const showSearchInput = (container, searchListInput, listObject, dataAttr) => {
   listObject[container.dataset[`current_${dataAttr}`]][
     container.id === "watchList" ? "shows" : "list"
   ].size > 0 && searchListInput.classList.toggle("show");
+  searchListInput.placeholder =
+    container.id === "watchList"
+      ? "Search for shows"
+      : `Search for favorite ${container.dataset[`current_${dataAttr}`]}
+  `;
   // Focus or blur out of the input
   searchListInput.classList.contains("show")
     ? searchListInput.focus()
