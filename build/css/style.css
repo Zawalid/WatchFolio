@@ -1414,7 +1414,7 @@ video {
 
 .bg-dark {
   --tw-bg-opacity: 1;
-  background-color: rgb(19 15 64 / var(--tw-bg-opacity));
+  background-color: rgb(6 5 20 / var(--tw-bg-opacity));
 }
 
 .bg-nobleDark600 {
@@ -1698,7 +1698,7 @@ video {
 
 .text-dark {
   --tw-text-opacity: 1;
-  color: rgb(19 15 64 / var(--tw-text-opacity));
+  color: rgb(6 5 20 / var(--tw-text-opacity));
 }
 
 .text-gray-600 {
@@ -1753,12 +1753,12 @@ video {
 
 .placeholder-dark::-moz-placeholder {
   --tw-placeholder-opacity: 1;
-  color: rgb(19 15 64 / var(--tw-placeholder-opacity));
+  color: rgb(6 5 20 / var(--tw-placeholder-opacity));
 }
 
 .placeholder-dark::placeholder {
   --tw-placeholder-opacity: 1;
-  color: rgb(19 15 64 / var(--tw-placeholder-opacity));
+  color: rgb(6 5 20 / var(--tw-placeholder-opacity));
 }
 
 .opacity-0 {
@@ -2192,7 +2192,7 @@ html {
 
 .group:hover .group-hover\:bg-dark {
   --tw-bg-opacity: 1;
-  background-color: rgb(19 15 64 / var(--tw-bg-opacity));
+  background-color: rgb(6 5 20 / var(--tw-bg-opacity));
 }
 
 .group:hover .group-hover\:bg-secondaryAccent {

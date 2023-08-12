@@ -25,7 +25,7 @@ module.exports = {
         thirdAccent: "#03A9F4",
         textColor: "#fff",
         textColor2: "#D4D4D4",
-        dark: "#130F40",
+        dark: "#060514",
 
         // Auth
         nobleDark500: "#363A3D",
