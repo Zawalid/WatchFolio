@@ -666,6 +666,10 @@ video {
   top: 50%;
 }
 
+.top-10 {
+  top: 2.5rem;
+}
+
 .top-2 {
   top: 0.5rem;
 }
@@ -788,6 +792,10 @@ video {
   margin-left: 50%;
 }
 
+.ml-auto {
+  margin-left: auto;
+}
+
 .mr-3 {
   margin-right: 0.75rem;
 }
@@ -835,10 +843,6 @@ video {
 
 .mt-9 {
   margin-top: 2.25rem;
-}
-
-.mt-\[50\%\] {
-  margin-top: 50%;
 }
 
 .mt-auto {
@@ -931,6 +935,10 @@ video {
 
 .h-\[615px\] {
   height: 615px;
+}
+
+.h-\[80vh\] {
+  height: 80vh;
 }
 
 .h-auto {
@@ -1050,6 +1058,10 @@ video {
   width: 230px;
 }
 
+.w-\[24px\] {
+  width: 24px;
+}
+
 .w-\[300px\] {
   width: 300px;
 }
@@ -1096,6 +1108,10 @@ video {
   table-layout: fixed;
 }
 
+.origin-right {
+  transform-origin: right;
+}
+
 .-translate-x-1\/2 {
   --tw-translate-x: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
@@ -1108,6 +1124,12 @@ video {
 
 .translate-y-full {
   --tw-translate-y: 100%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.scale-0 {
+  --tw-scale-x: 0;
+  --tw-scale-y: 0;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -1356,10 +1378,6 @@ video {
 
 .border-r {
   border-right-width: 1px;
-}
-
-.border-t {
-  border-top-width: 1px;
 }
 
 .border-none {
@@ -1869,7 +1887,7 @@ li.active,
   opacity: 1;
 }
 
-#favoritesListButtons button.active ,
+#favoritesListButtons button.active,
   #explore button.active,
   #tabs button.active,
   #watchListButtons button.active {
@@ -1926,22 +1944,13 @@ li.active,
   opacity: 1;
 }
 
-input[name='search'].\!show ,
-  input[name='search'].\!show {
+input[name="search"].\!show {
   bottom: 100%;
   z-index: 10;
   opacity: 1;
 }
 
-input[name='search'].show ,
-  input[name='search'].show {
-  bottom: 100%;
-  z-index: 10;
-  opacity: 1;
-}
-
-input[name='search'].\!show ,
-  input[name='search'].\!show {
+input[name="search"].show {
   bottom: 100%;
   z-index: 10;
   opacity: 1;
@@ -1995,10 +2004,6 @@ html {
 
 #skeleton .bg-textColor2 {
   animation: skeleton 1s linear alternate infinite;
-}
-
-.first-letter\:flex::first-letter {
-  display: flex;
 }
 
 .marker\:text-transparent *::marker {
@@ -2213,6 +2218,16 @@ html {
   background-color: rgb(244 67 54 / var(--tw-bg-opacity));
 }
 
+.peer:hover ~ .peer-hover\:scale-100 {
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.peer:hover ~ .peer-hover\:opacity-100 {
+  opacity: 1;
+}
+
 .peer:focus ~ .peer-focus\:z-10 {
   z-index: 10;
 }
@@ -2264,10 +2279,6 @@ html {
     height: 100%;
   }
 
-  .max-md\:min-h-screen {
-    min-height: 100vh;
-  }
-
   .max-md\:w-\[140px\] {
     width: 140px;
   }
@@ -2283,10 +2294,6 @@ html {
 
   .max-md\:overflow-y-auto {
     overflow-y: auto;
-  }
-
-  .max-md\:overflow-y-scroll {
-    overflow-y: scroll;
   }
 
   .max-md\:rounded-none {
@@ -2341,6 +2348,10 @@ html {
 
   .max-sm\:h-full {
     height: 100%;
+  }
+
+  .max-sm\:w-11\/12 {
+    width: 91.666667%;
   }
 
   .max-sm\:w-\[100px\] {

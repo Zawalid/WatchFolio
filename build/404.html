@@ -74,7 +74,7 @@
           >
             <ul class="rounded-xl bg-gradient p-5">
               <li
-                class="mb-5 flex items-center gap-3 border-b border-textColor2 pb-3"
+                class="relative mb-5 flex items-center gap-3 border-b border-textColor2 pb-3"
               >
                 <img
                   src="./imgs/no profile.png"
@@ -86,12 +86,26 @@
                   <h3 class="font-bold text-textColor" id="username">Guest</h3>
                   <p class="text-textColor2" id="email"></p>
                 </div>
+                <i
+                  class="fa-solid fa-circle-info peer ml-auto text-lg text-thirdAccent"
+                  id="syncInfo"
+                ></i>
+                <div
+                  class="absolute top-10 origin-right scale-0 rounded-lg bg-thirdAccent p-3 text-textColor opacity-0 transition-all duration-300 peer-hover:scale-100 peer-hover:opacity-100"
+                >
+                  <p class="text-sm font-semibold">
+                    To ensure your watchList and favorites stay in sync across
+                    all your devices, please sign in.
+                  </p>
+                </div>
               </li>
               <li
                 class="flex cursor-pointer items-center gap-3 rounded-xl py-2 text-textColor2 transition-colors duration-300 hover:text-primaryAccent max-md:hidden"
                 id="watchList_toggler"
               >
-                <i class="fa-solid fa-clipboard-list text-2xl"></i>
+                <i
+                  class="fa-solid fa-clipboard-list w-[24px] text-center text-2xl"
+                ></i>
                 <span class="font-semibold">WatchList</span>
               </li>
               <li
@@ -483,265 +497,279 @@
       </div>
     </div>
     <div
-      class="absolute inset-0 -z-10 flex h-full w-full bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-500 max-md:h-full md:items-center md:justify-center"
-      id="account"
+    class="absolute inset-0 -z-10 flex h-full w-full bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-500 max-md:h-full md:items-center md:justify-center"
+    id="account"
+  >
+    <div
+      class="relative h-full w-full overflow-auto bg-gradient max-md:pb-[76px]"
     >
+      <i
+        class="fa-solid fa-times absolute right-5 top-5 cursor-pointer text-xl text-textColor2"
+        id="close_account"
+      ></i>
       <div
-        class="relative h-full w-full overflow-auto bg-gradient max-md:pb-[76px]"
+        class="mt-16 hidden items-center gap-5 bg-red-700 px-8 py-3 max-sm:flex-col"
+        id="emailNotVerified"
       >
-        <i
-          class="fa-solid fa-times absolute right-5 top-5 cursor-pointer text-xl text-textColor2"
-          id="close_account"
-        ></i>
-        <div
-          class="mt-16 hidden items-center gap-5 bg-red-700 px-8 py-3 max-sm:flex-col"
-          id="emailNotVerified"
-        >
-          <p class="font-semibold text-textColor">
-            Your account is not verified. Please verify your email address.
-          </p>
-          <button class="font-bold text-textColor2">Resend</button>
-        </div>
-        <div class="p-8">
-          <h2 class="text-2xl font-bold text-textColor">Account Details</h2>
-          <div class="relative mb-10 mt-12 h-28 w-28">
-            <div
-              class="absolute bottom-3 right-0 hidden h-6 w-6 place-content-center items-center overflow-hidden rounded-full bg-secondaryAccent"
-              id="change_picture"
-            >
-              <i class="fa-solid fa-pen text-xs text-white"></i>
-              <input
-                type="file"
-                name="Image"
-                accept="image/*"
-                multiple="false"
-                title=" "
-                class="absolute -left-40 cursor-pointer opacity-0"
-              />
-            </div>
-            <img
-              src="./imgs/no profile.png"
-              alt=""
-              class="avatar h-full w-full rounded-full object-cover"
-              id="profile_picture"
+        <p class="font-semibold text-textColor">
+          Your account is not verified. Please verify your email address.
+        </p>
+        <button class="font-bold text-textColor2">Resend</button>
+      </div>
+
+      <div class="p-8">
+        <h2 class="text-2xl font-bold text-textColor">Account Details</h2>
+        <div class="relative mb-10 mt-12 h-28 w-28">
+          <div
+            class="absolute bottom-3 right-0 hidden h-6 w-6 place-content-center items-center overflow-hidden rounded-full bg-secondaryAccent"
+            id="change_picture"
+          >
+            <i class="fa-solid fa-pen text-xs text-white"></i>
+            <input
+              type="file"
+              name="Image"
+              accept="image/*"
+              multiple="false"
+              title=" "
+              class="absolute -left-40 cursor-pointer opacity-0"
             />
           </div>
-          <form method="post" class="" id="accountDetails_form">
-            <input type="hidden" name="action" value="edit" />
-            <div class="mb-7 flex gap-20 max-sm:flex-col max-sm:gap-5">
-              <label class="w-1/2 font-semibold text-textColor2 max-sm:w-full">
-                First Name
-                <input
-                  type="text"
-                  name="firstName"
-                  value=""
-                  readonly
-                  class="mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
-                />
-              </label>
-              <label class="w-1/2 font-semibold text-textColor2 max-sm:w-full">
-                Last Name
-                <input
-                  type="text"
-                  name="lastName"
-                  value=""
-                  readonly
-                  class="mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
-                />
-              </label>
-            </div>
+          <img
+            src="./imgs/no profile.png"
+            alt=""
+            class="avatar h-full w-full rounded-full object-cover"
+            id="profile_picture"
+          />
+        </div>
+        <form method="post" class="" id="accountDetails_form">
+          <input type="hidden" name="action" value="edit" />
+          <div class="mb-7 flex gap-20 max-sm:flex-col max-sm:gap-5">
             <label class="w-1/2 font-semibold text-textColor2 max-sm:w-full">
-              Email
+              First Name
               <input
-                type="email"
-                name="email"
+                type="text"
+                name="firstName"
                 value=""
                 readonly
                 class="mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
               />
             </label>
-            <div class="mt-12 flex flex-wrap gap-5">
-              <button
-                class="min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:flex-1"
-              >
-                Edit
-              </button>
-              <button
-                type="button"
-                class="hidden min-w-[170px] rounded-xl bg-thirdAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:flex-1"
-                id="cancel"
-              >
-                Discard Changes
-              </button>
-            </div>
-          </form>
-        </div>
-        <div class="border-y border-nobleDark500 p-8">
-          <h2 class="text-2xl font-bold text-textColor">Change Password</h2>
-          <form method="post" class="mt-12" id="changePassword_form">
-            <div class="mb-7 flex gap-20 max-sm:flex-col max-sm:gap-5">
-              <div class="w-1/2 max-sm:w-full">
-                <label class="font-semibold text-textColor2" for="password">
-                  New Password
-                </label>
-                <div class="relative">
-                  <input
-                    class="password_input peer relative z-[20] mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
-                    type="password"
-                    name="password"
-                    id="password"
-                  />
-                  <i
-                    class="fa-solid fa-eye eye-icon absolute right-3 top-1/2 z-30 cursor-pointer text-sm text-textColor2"
-                    id="show_password"
-                  ></i>
-                  <div
-                    class="shadow-shadow-1 absolute -top-[210px] -z-10 w-full rounded-xl bg-white p-5 opacity-0 transition-opacity duration-500 peer-focus:z-10 peer-focus:opacity-100 sm:w-[325px]"
-                    id="password_validation"
-                  >
-                    <h3 class="text-grey-700 font-bold">
-                      Password requirements
-                    </h3>
-                    <ul class="5">
-                      <li class="text-grey-500 mb-2 text-sm">
-                        <i
-                          id="chars_long_validation"
-                          class="fa-regular fa-circle-check mr-3 text-red-300"
-                        ></i
-                        >Should be at least 8 characters
-                      </li>
-                      <li class="text-grey-500 mb-2 text-sm">
-                        <i
-                          id="uppercase_validation"
-                          class="fa-regular fa-circle-check mr-3 text-red-300"
-                        ></i
-                        >Contain at least one uppercase
-                      </li>
-                      <li class="text-grey-500 mb-2 text-sm">
-                        <i
-                          id="lowercase_validation"
-                          class="fa-regular fa-circle-check mr-3 text-red-300"
-                        ></i
-                        >Contain at least one lowercase
-                      </li>
-                      <li class="text-grey-500 mb-2 text-sm">
-                        <i
-                          id="numbers_validation"
-                          class="fa-regular fa-circle-check mr-3 text-red-300"
-                        ></i
-                        >Contain at least one digit
-                      </li>
-                      <li class="text-grey-500 text-sm">
-                        <i
-                          id="special_chars_validation"
-                          class="fa-regular fa-circle-check mr-3 text-red-300"
-                        ></i
-                        >Contain at least one special character
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="w-1/2 max-sm:w-full">
-                <label class="font-semibold text-textColor2" for="password">
-                  Confirm New Password
-                </label>
-                <div class="relative">
-                  <input
-                    type="password"
-                    name="confirmNewPassword"
-                    class="password_input mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
-                  />
-                  <i
-                    class="fa-solid fa-eye eye-icon absolute right-3 top-1/2 z-30 cursor-pointer text-sm text-textColor2"
-                    id="show_password"
-                  ></i>
-                </div>
-              </div>
-            </div>
-            <button
-              class="mt-12 block min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:w-full"
-            >
-              Change Password
-            </button>
-          </form>
-        </div>
-        <div class="p-8">
-          <h2 class="text-2xl font-bold text-textColor">Reset Password</h2>
-          <p class="mt-12 text-textColor2">
-            If you forgot your password, you can reset it by clicking the button
-            below. A reset password link will be sent to your email.
-          </p>
-          <button
-            class="mt-12 block min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:w-full"
-            id="reset_password"
-          >
-            Reset Password
-          </button>
-        </div>
-        <div class="border-t border-nobleDark500 p-8">
-          <h2 class="text-2xl font-bold text-textColor">Delete Account</h2>
-          <p class="mt-12 text-textColor2">
-            Once you delete your account, there is no going back. Please be
-            certain.
-          </p>
-          <button
-            class="mt-12 block min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:w-full"
-            id="delete_account"
-          >
-            Delete Account
-          </button>
-        </div>
-        <div
-          class="fixed inset-0 -z-10 flex h-full w-full items-center justify-center bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-300"
-          id="verify_user_container"
-        >
-          <div
-            class="relative flex flex-col justify-center gap-5 overflow-hidden rounded-2xl bg-gradient p-6 max-sm:h-full max-sm:w-full sm:min-h-[326px] sm:min-w-[615px]"
-          >
-            <i
-              class="fa-solid fa-times absolute right-5 top-5 cursor-pointer text-xl text-textColor2"
-              id="close"
-            ></i>
-            <h1 class="text-3xl font-bold text-textColor">
-              Let's Verify It's You!
-            </h1>
-            <p class="mb-5 text-textColor2">
-              To protect your account, please confirm your identity before
-              <span id="action">updating your information</span>. Thank you.
-            </p>
-            <form method="post" id="verify_user_form">
+            <label class="w-1/2 font-semibold text-textColor2 max-sm:w-full">
+              Last Name
               <input
-                class="w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
                 type="text"
-                name="email"
-                placeholder="Email"
-                autocomplete="true"
+                name="lastName"
+                value=""
+                readonly
+                class="mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
               />
+            </label>
+          </div>
+          <label class="w-1/2 font-semibold text-textColor2 max-sm:w-full">
+            Email
+            <input
+              type="email"
+              name="email"
+              value=""
+              readonly
+              class="mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
+            />
+          </label>
+          <div class="mt-12 flex flex-wrap gap-5">
+            <button
+              class="min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:flex-1"
+              id="edit"
+            >
+              Edit Details
+            </button>
+            <button
+              type="button"
+              class="hidden min-w-[170px] rounded-xl bg-thirdAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:flex-1"
+              id="cancel"
+            >
+              Discard Changes
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="border-y border-nobleDark500 p-8">
+        <h2 class="text-2xl font-bold text-textColor">Change Password</h2>
+        <form method="post" class="mt-12" id="changePassword_form">
+          <div class="mb-7 flex gap-20 max-sm:flex-col max-sm:gap-5">
+            <div class="w-1/2 max-sm:w-full">
+              <label class="font-semibold text-textColor2" for="password">
+                New Password
+              </label>
               <div class="relative">
                 <input
-                  class="password_input mt-5 w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
+                  class="password_input peer relative z-[20] mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
                   type="password"
                   name="password"
-                  placeholder="Password"
+                  id="password"
                 />
                 <i
-                  class="fa-solid fa-eye eye-icon absolute right-3 top-1/2 cursor-pointer text-sm text-textColor2"
+                  class="fa-solid fa-eye eye-icon absolute right-3 top-1/2 z-30 cursor-pointer text-sm text-textColor2"
+                  id="show_password"
+                ></i>
+                <div
+                  class="shadow-shadow-1 absolute -top-[210px] -z-10 w-full rounded-xl bg-white p-5 opacity-0 transition-opacity duration-500 peer-focus:z-10 peer-focus:opacity-100 sm:w-[325px]"
+                  id="password_validation"
+                >
+                  <h3 class="text-grey-700 font-bold">
+                    Password requirements
+                  </h3>
+                  <ul class="5">
+                    <li class="text-grey-500 mb-2 text-sm">
+                      <i
+                        id="chars_long_validation"
+                        class="fa-regular fa-circle-check mr-3 text-red-300"
+                      ></i
+                      >Should be at least 8 characters
+                    </li>
+                    <li class="text-grey-500 mb-2 text-sm">
+                      <i
+                        id="uppercase_validation"
+                        class="fa-regular fa-circle-check mr-3 text-red-300"
+                      ></i
+                      >Contain at least one uppercase
+                    </li>
+                    <li class="text-grey-500 mb-2 text-sm">
+                      <i
+                        id="lowercase_validation"
+                        class="fa-regular fa-circle-check mr-3 text-red-300"
+                      ></i
+                      >Contain at least one lowercase
+                    </li>
+                    <li class="text-grey-500 mb-2 text-sm">
+                      <i
+                        id="numbers_validation"
+                        class="fa-regular fa-circle-check mr-3 text-red-300"
+                      ></i
+                      >Contain at least one digit
+                    </li>
+                    <li class="text-grey-500 text-sm">
+                      <i
+                        id="special_chars_validation"
+                        class="fa-regular fa-circle-check mr-3 text-red-300"
+                      ></i
+                      >Contain at least one special character
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="w-1/2 max-sm:w-full">
+              <label class="font-semibold text-textColor2" for="password">
+                Confirm New Password
+              </label>
+              <div class="relative">
+                <input
+                  type="password"
+                  name="confirmNewPassword"
+                  class="password_input mt-5 w-full rounded-xl bg-nobleDark600 p-3 font-semibold text-textColor outline-transparent placeholder:text-textColor2 focus:outline-none"
+                />
+                <i
+                  class="fa-solid fa-eye eye-icon absolute right-3 top-1/2 z-30 cursor-pointer text-sm text-textColor2"
                   id="show_password"
                 ></i>
               </div>
-              <input
-                type="submit"
-                value="Verify"
-                class="mt-5 w-full cursor-pointer rounded-2xl bg-primaryAccent py-3 text-lg font-bold text-black transition hover:bg-opacity-80"
-              />
-            </form>
+            </div>
           </div>
+          <button
+            class="mt-12 block min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:w-full"
+          >
+            Change Password
+          </button>
+        </form>
+      </div>
+      <div class="p-8">
+        <h2 class="text-2xl font-bold text-textColor">Reset Password</h2>
+        <p class="mt-12 text-textColor2">
+          If you forgot your password, you can reset it by clicking the button
+          below. A reset password link will be sent to your email.
+        </p>
+        <button
+          class="mt-12 block min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:w-full"
+          id="reset_password"
+        >
+          Reset Password
+        </button>
+      </div>
+      <div class="border-y border-nobleDark500 p-8" id="account_linking">
+        <h2 class="text-2xl font-bold text-textColor">Account Linking</h2>
+        <p class="mt-12 text-textColor2">
+          Link your account to your Google account to be able to login with
+          your Google account. You can unlink your account at any time.
+        </p>
+        <button
+          class="mt-12 block min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:w-full"
+        >
+          Link Account
+        </button>
+      </div>
+      <div class="p-8">
+        <h2 class="text-2xl font-bold text-textColor">Delete Account</h2>
+        <p class="mt-12 text-textColor2">
+          Once you delete your account, there is no going back. Please be
+          certain.
+        </p>
+        <button
+          class="mt-12 block min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:w-full"
+          id="delete_account"
+        >
+          Delete Account
+        </button>
+      </div>
+      <div
+        class="fixed inset-0 -z-10 flex h-full w-full items-center justify-center bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-300"
+        id="verify_user_container"
+      >
+        <div
+          class="relative flex flex-col justify-center gap-5 overflow-hidden rounded-2xl bg-gradient p-6 max-sm:h-full max-sm:w-full sm:min-h-[326px] sm:min-w-[615px]"
+        >
+          <i
+            class="fa-solid fa-times absolute right-5 top-5 cursor-pointer text-xl text-textColor2"
+            id="close"
+          ></i>
+          <h1 class="text-3xl font-bold text-textColor">
+            Let's Verify It's You!
+          </h1>
+          <p class="mb-5 text-textColor2">
+            To protect your account, please confirm your identity before
+            <span id="action">updating your information</span>. Thank you.
+          </p>
+          <form method="post" id="verify_user_form">
+            <input
+              class="w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
+              type="text"
+              name="email"
+              placeholder="Email"
+              autocomplete="true"
+            />
+            <div class="relative">
+              <input
+                class="password_input mt-5 w-full rounded-xl border border-nobleDark500 bg-nobleDark600 p-3 text-white placeholder:text-textColor2 focus:outline-none"
+                type="password"
+                name="password"
+                placeholder="Password"
+              />
+              <i
+                class="fa-solid fa-eye eye-icon absolute right-3 top-1/2 cursor-pointer text-sm text-textColor2"
+                id="show_password"
+              ></i>
+            </div>
+            <input
+              type="submit"
+              value="Verify"
+              class="mt-5 w-full cursor-pointer rounded-2xl bg-primaryAccent py-3 text-lg font-bold text-black transition hover:bg-opacity-80"
+            />
+          </form>
         </div>
       </div>
     </div>
+  </div>
     <div
-      class="absolute -top-1/2 left-1/2 z-50 -translate-x-1/2 rounded-xl bg-red-700 px-5 py-3 text-center font-bold text-textColor transition-all duration-500"
+      class="absolute -top-1/2 left-1/2 z-50 -translate-x-1/2 rounded-xl bg-red-700 px-5 py-3 text-center font-bold text-textColor transition-all duration-500 max-sm:w-11/12"
       id="message"
     >
       Error message

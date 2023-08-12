@@ -52,11 +52,19 @@ for (let list in watchLists) {
   // retrieve from database/local storage
   retrieveFromLocalStorageOrDatabase("watchList", list).then((res) => {
     // Check if the current show the user  is in is in the watchList and if so change the button
-    res.shows.forEach((id) => {
-      if (id === window.location.search.split("=")[1]) {
-        document.querySelector(`#overview [data-list=${list.name}]`).innerHTML =
-          list.activeButton;
-      }
+    const interval = setInterval(() => {
+      res.shows.forEach((id) => {
+        if (
+          id === window.location.search.split("=")[1] &&
+          document.querySelector(`#overview [data-list=${list.name}]`)
+        ) {
+          document.querySelector(`#overview [data-favorite=shows]`)
+          document.querySelector(
+            `#overview [data-list=${list.name}]`
+          ).innerHTML = list.activeButton;
+          clearInterval(interval);
+        }
+      });
     });
   });
 }
@@ -237,6 +245,6 @@ searchListInput.addEventListener("keyup", (e) => {
     // Search for the show
     searchList(searchListInput, watchListContainer, currentListShows);
     // Hide the search input
-    hideSearchInput(watchListContainer, searchListInput);
+    hideSearchInput(searchListInput);
   }
 });

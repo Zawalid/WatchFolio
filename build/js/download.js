@@ -114,12 +114,12 @@ const downloadAsPDF = async (toDownload) => {
             <td class="border-r border-l border-gray-300 p-4">
               <div class="flex flex-col items-center justify-center gap-3 py-5">
                 <img
-                  src="${willWatch[i].image.medium}"
+                  src="${willWatchShows[i].image.medium}"
                   alt=""
                   class="w-[100px] rounded-xl"
                 />
                 <h3 class="text-center text-lg font-bold text-textColor">
-                  ${willWatch[i].name}
+                  ${willWatchShows[i].name}
                 </h3>
               </div>
             </td>

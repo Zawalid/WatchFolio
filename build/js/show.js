@@ -45,11 +45,11 @@ const baseUrl = "http://image.tmdb.org/t/p/";
 //* ------------------ Creating overview containers (Avoid repetition) ------------------ *//
 const overviewContainer = `
 <div
-class="absolute inset-0 -z-10 flex h-full w-full cursor-zoom-out bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-500 max-md:h-full md:items-center md:justify-center"
+class="fixed inset-0 -z-10 flex h-full w-full cursor-zoom-out bg-[#0005] opacity-0 backdrop-blur-[2px] transition-opacity duration-500 max-md:h-full md:items-center md:justify-center"
 id="overview"
 >
 <div
-  class="relative bg-gradient flex min-h-[500px] max-md:min-h-screen w-4/5 cursor-auto flex-col gap-10 rounded-xl  p-8 shadow-shadow1 max-md:left-0 max-md:h-full max-md:w-full max-md:translate-x-0 max-md:overflow-y-scroll max-md:pb-[75px] max-md:pt-14 max-sm:rounded-none"
+  class="relative bg-gradient flex min-h-[500px] h-[80vh] overflow-auto w-4/5 cursor-auto flex-col gap-10 rounded-xl  p-8 shadow-shadow1 max-md:left-0 max-md:h-full max-md:w-full max-md:translate-x-0  max-md:pb-[75px] max-md:pt-14 max-sm:rounded-none"
 ></div>
 </div>
 `;
@@ -62,7 +62,7 @@ document.querySelectorAll("#overview")[1].id = "season_overview";
 document.querySelectorAll("#overview")[1].id = "person_overview";
 // episode overview
 document.querySelectorAll("#overview")[1].firstElementChild.className =
-  "relative flex min-h-[500px] w-4/5 cursor-auto flex-col gap-10 rounded-xl bg-gradient  bg-cover bg-center shadow-shadow1 max-md:left-0 max-md:h-full max-md:min-h-screen max-md:w-full max-md:translate-x-0 max-md:overflow-y-auto max-sm:rounded-none overflow-hidden";
+  "relative flex min-h-[500px] w-4/5 cursor-auto flex-col gap-10 rounded-xl bg-gradient  bg-cover bg-center shadow-shadow1 max-md:left-0 max-md:h-full  overflow-auto max-md:w-full max-md:translate-x-0 max-md:overflow-y-auto max-sm:rounded-none overflow-hidden";
 document.querySelectorAll("#overview")[1].id = "episode_overview";
 
 //* ------------------------------ Helpers Functions ------------------------------ *//
@@ -1320,7 +1320,7 @@ document.addEventListener("click", (e) => {
 //* Activate the add button when the page loads if the season/episode are already added to the favoritesList
 const activateFavoritesListEpisodeSeasonButton = (button, type) => {
   // Wait until the ids are retrieved
-  setTimeout(() => {
+  const interval = setInterval(() => {
     for (const list in favoritesList) {
       favoritesList[list].list?.forEach((item) => {
         if (
@@ -1328,8 +1328,9 @@ const activateFavoritesListEpisodeSeasonButton = (button, type) => {
           localStorage.getItem(type === "season" ? "currentSId" : "currentEpId")
         ) {
           button.innerHTML = favoritesList.activeButton;
+          clearInterval(interval);
         }
       });
     }
-  }, 1500);
+  });
 };

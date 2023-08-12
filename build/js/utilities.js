@@ -13,6 +13,7 @@ import {
   getDownloadURL,
   reauthenticateWithCredential,
   EmailAuthProvider,
+  GoogleAuthProvider,
   getSignInErrorMessage,
   db,
   doc,
@@ -21,6 +22,8 @@ import {
   setDoc,
   deleteDoc,
   deleteObject,
+  linkWithPopup,
+  unlink,
 } from "./firebaseApp.js";
 
 //* ----------------- Miscellaneous -----------------
@@ -120,7 +123,7 @@ const handleConnection = () => {
     showAndHideConnectionStatus();
   });
   window.addEventListener("offline", () => {
-    connectionStatus.lastElementChild.innerText = "You are offline";
+    connectionStatus.lastElementChild.innerText = "No  connection";
     connectionStatus.classList.replace("text-primaryAccent", "text-textColor2");
     showAndHideConnectionStatus();
   });
@@ -217,6 +220,8 @@ const displayList = (buttons, container, dataAttr, displayFunction) => {
       this.classList.add("active");
       // Update the current list in the dataset to use to know which list is the current one
       container.dataset[`current_${dataAttr}`] = this.dataset[dataAttr];
+      // Hide the search input if it's open
+      hideSearchInput(document.querySelector("input[name='search'].show"));
       // Display the current list
       displayFunction(this.dataset[dataAttr]);
     });
@@ -377,26 +382,26 @@ const showSearchInput = (container, searchListInput, listObject, dataAttr) => {
   // Change the icon
   searchListInput.classList.contains("show")
     ? document
-        .querySelector("#actions #search")
+        .querySelector("#actions:not(.hidden) #search")
         .classList.replace(
           "fa-magnifying-glass-plus",
           "fa-magnifying-glass-minus"
         )
     : document
-        .querySelector("#actions #search")
+        .querySelector("#actions:not(.hidden) #search")
         .classList.replace(
           "fa-magnifying-glass-minus",
           "fa-magnifying-glass-plus"
         );
 };
-const hideSearchInput = (container, searchListInput) => {
+const hideSearchInput = (searchListInput) => {
   // Clear the input
-  searchListInput.value = "";
+  if (searchListInput) searchListInput.value = "";
   // Hide the input
-  searchListInput.classList.remove("show");
+  searchListInput?.classList.remove("show");
   // Change the icon
   document
-    .querySelector("#actions #search")
+    .querySelector("#actions:not(.hidden) #search")
     .classList.replace("fa-magnifying-glass-minus", "fa-magnifying-glass-plus");
 };
 //* Update localStorage or database based on the user state
@@ -516,12 +521,6 @@ const displayUserInfo = async (user) => {
   document
     .querySelectorAll(".avatar")
     .forEach((img) => (img.src = user.photoURL || avatar));
-  try {
-    // Check if the profile picture is available
-    const image = await fetch(user.photoURL, { mode: "no-cors" });
-    if (!image.ok)
-      document.querySelectorAll(".avatar").forEach((img) => (img.src = avatar));
-  } catch (err) {}
 };
 
 //* Handle user authentication
@@ -562,6 +561,12 @@ const handleUserAuth = async () => {
 
     // Clear the local storage if the user is logged in
     window.localStorage.clear();
+
+    // Hide the synchronization info
+    document.getElementById("syncInfo").classList.add("hidden");
+    document
+      .getElementById("syncInfo")
+      .nextElementSibling.classList.add("hidden");
   } catch (err) {
     // Change the text of the button to sign in
     signButton.innerHTML = `
@@ -578,6 +583,12 @@ const handleUserAuth = async () => {
     document
       .querySelectorAll(".avatar")
       .forEach((img) => (img.src = "./imgs/no profile.png"));
+    // Show the synchronization info
+    // Hide the synchronization info
+    document.getElementById("syncInfo").classList.remove("hidden");
+    document
+      .getElementById("syncInfo")
+      .nextElementSibling.classList.remove("hidden");
   }
 
   // Show the sign out confirmation
@@ -603,7 +614,7 @@ const handleUserAuth = async () => {
 };
 
 //* Handle user account
-const handleAccount = () => {
+const handleAccount = async () => {
   const account = document.getElementById("account");
   const verifyUserContainer = document.getElementById("verify_user_container");
 
@@ -726,7 +737,7 @@ const handleAccount = () => {
     // change the action to edit
     accountDetailsAction.value = "edit";
     // change the button text to Edit
-    editDetailsButton.textContent = "Edit";
+    editDetailsButton.textContent = "Edit Details";
     // Make the inputs readonly
     accountDetailsInputs.forEach((input) => {
       input.setAttribute("readonly", "readonly");
@@ -861,9 +872,102 @@ const handleAccount = () => {
           "info"
         )
       )
-      .catch((error) => showMessage(error.message, "error"));
+      .catch((error) => {
+        let message;
+        switch (error.code) {
+          case "auth/network-request-failed":
+            message = "Please check your internet connection and try again";
+            break;
+          case "auth/too-many-requests":
+            message = "Too many requests. Please try again later";
+            break;
+          default:
+            message = "Something went wrong. Please try again later";
+        }
+        showMessage(message, "error");
+      });
   });
 
+  //* -----------------  Account Linking -----------------
+  const accountLinking = document.getElementById("account_linking");
+  const switchToLink = () => {
+    accountLinking.querySelector("p").textContent =
+      "Link your account to your Google account to be able to login with your Google account. You can unlink your account at any time.";
+    accountLinking.querySelector("button").textContent = "Link Account";
+  };
+  const switchToUnlink = () => {
+    accountLinking.querySelector("p").textContent =
+      "Unlinking your account from your Google account will prevent you from logging in with your Google account. You can link your account again at any time.";
+    accountLinking.querySelector("button").textContent = "Unlink Account";
+  };
+  // Check if the user has already google linked with their account and change the ui based on that
+  try {
+    const user = await checkIfUserIsLoggedIn();
+    user.providerData.length > 1 ? switchToUnlink() : switchToLink();
+    // Hide the account linking functionality if the user is signed in with only google account
+    user.providerData.length === 1 &&
+    user.providerData[0].providerId === "google.com"
+      ? (accountLinking.classList.add("hidden"),
+        accountLinking.nextElementSibling.classList.add(
+          "border-y",
+          "border-nobleDark500"
+        ))
+      : (accountLinking.classList.remove("hidden"),
+        accountLinking.nextElementSibling.classList.remove(
+          "border-y",
+          "border-nobleDark500"
+        ));
+  } catch (err) {}
+  // Link or unlink the user account
+  accountLinking.querySelector("button").addEventListener("click", () => {
+    if (auth.currentUser.providerData.length > 1) {
+      switchToUnlink();
+      unlink(auth.currentUser, "google.com").then(() => {
+        showMessage("Your account has been unlinked successfully", "info");
+        switchToLink();
+      });
+    } else {
+      switchToLink();
+      linkWithPopup(auth.currentUser, new GoogleAuthProvider())
+        .then(() => {
+          showMessage("Your account has been linked successfully", "info");
+          switchToUnlink();
+        })
+        .catch((error) => {
+          let message;
+          switch (error.code) {
+            case "auth/popup-closed-by-user":
+              message =
+                "Popup was closed by the user before the linking process could be completed.";
+              break;
+            case "auth/popup-blocked":
+              message =
+                "Popup was blocked by the browser. Please ensure popups are allowed.";
+              break;
+            case "auth/account-exists-with-different-credential":
+              message =
+                "An account with different credentials already exists. You might need to link accounts.";
+              break;
+            case "auth/credential-already-in-use":
+              message =
+                "Credentials are already in use. The provided credentials are associated with another account.";
+              break;
+            case "auth/operation-not-allowed":
+              message =
+                "Account linking is not allowed. Please contact support for assistance.";
+              break;
+            case "auth/internal-error":
+              message =
+                "An internal error occurred during the linking process. Please try again later.";
+              break;
+            default:
+              message =
+                "An error occurred while linking accounts. Please try again.";
+          }
+          showMessage(message, "error");
+        });
+    }
+  });
   //* ----------------- Delete Account -----------------
   const deleteAccountButton = document.getElementById("delete_account");
   deleteAccountButton.addEventListener("click", async () => {

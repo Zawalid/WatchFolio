@@ -51,14 +51,18 @@ for (let list in favoritesList) {
   // retrieve from database/local storage
   retrieveFromLocalStorageOrDatabase("Favorites", list).then((res) => {
     // Check if the current show the user  is in is in the favorite shows list and if so change the button
-    if (res.name === "favoriteShows") {
+    const interval = setInterval(() => {
       res.list.forEach((id) => {
-        if (id === window.location.search.split("=")[1]) {
+        if (
+          id === window.location.search.split("=")[1] &&
+          document.querySelector(`#overview [data-favorite=shows]`)
+        ) {
           document.querySelector(`#overview [data-favorite=shows]`).innerHTML =
             favoritesList.activeButton;
+          clearInterval(interval);
         }
       });
-    }
+    });
   });
 }
 //* Store the lists in the local storage or database if the lists don't exist
@@ -272,6 +276,6 @@ searchListInput.addEventListener("keyup", (e) => {
     // Search for the show
     searchList(searchListInput, favoritesListContainer, currentListFavorites);
     // Hide the search input
-    hideSearchInput(favoritesListContainer, searchListInput);
+    hideSearchInput(searchListInput);
   }
 });

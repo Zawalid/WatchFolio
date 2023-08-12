@@ -19,6 +19,8 @@ import {
   sendPasswordResetEmail,
   reauthenticateWithCredential,
   EmailAuthProvider,
+  linkWithPopup,
+  unlink,
 } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
 
 import {
@@ -131,4 +133,6 @@ deleteObject,
   updateDoc,
   doc,
   deleteDoc,
+  linkWithPopup,
+  unlink,
 };

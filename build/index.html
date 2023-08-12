@@ -93,7 +93,7 @@
           >
             <ul class="rounded-xl bg-gradient p-5">
               <li
-                class="mb-5 flex items-center gap-3 border-b border-textColor2 pb-3"
+                class="relative mb-5 flex items-center gap-3 border-b border-textColor2 pb-3"
               >
                 <img
                   src="./imgs/no profile.png"
@@ -105,12 +105,26 @@
                   <h3 class="font-bold text-textColor" id="username">Guest</h3>
                   <p class="text-textColor2" id="email"></p>
                 </div>
+                <i
+                  class="fa-solid fa-circle-info peer ml-auto text-lg text-thirdAccent"
+                  id="syncInfo"
+                ></i>
+                <div
+                  class="absolute top-10 origin-right scale-0 rounded-lg bg-thirdAccent p-3 text-textColor opacity-0 transition-all duration-300 peer-hover:scale-100 peer-hover:opacity-100"
+                >
+                  <p class="text-sm font-semibold">
+                    To ensure your watchList and favorites stay in sync across
+                    all your devices, please sign in.
+                  </p>
+                </div>
               </li>
               <li
                 class="flex cursor-pointer items-center gap-3 rounded-xl py-2 text-textColor2 transition-colors duration-300 hover:text-primaryAccent max-md:hidden"
                 id="watchList_toggler"
               >
-                <i class="fa-solid fa-clipboard-list text-2xl"></i>
+                <i
+                  class="fa-solid fa-clipboard-list w-[24px] text-center text-2xl"
+                ></i>
                 <span class="font-semibold">WatchList</span>
               </li>
               <li
@@ -696,7 +710,7 @@
                 class="min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:flex-1"
                 id="edit"
               >
-                Edit
+                Edit Details
               </button>
               <button
                 type="button"
@@ -811,7 +825,19 @@
             Reset Password
           </button>
         </div>
-        <div class="border-t border-nobleDark500 p-8">
+        <div class="border-y border-nobleDark500 p-8" id="account_linking">
+          <h2 class="text-2xl font-bold text-textColor">Account Linking</h2>
+          <p class="mt-12 text-textColor2">
+            Link your account to your Google account to be able to login with
+            your Google account. You can unlink your account at any time.
+          </p>
+          <button
+            class="mt-12 block min-w-[170px] rounded-xl bg-secondaryAccent px-8 py-3 text-center text-sm font-bold text-textColor transition-colors duration-500 max-sm:w-full"
+          >
+            Link Account
+          </button>
+        </div>
+        <div class="p-8">
           <h2 class="text-2xl font-bold text-textColor">Delete Account</h2>
           <p class="mt-12 text-textColor2">
             Once you delete your account, there is no going back. Please be
@@ -873,7 +899,7 @@
       </div>
     </div>
     <div
-      class="absolute -top-1/2 left-1/2 z-50 -translate-x-1/2 rounded-xl bg-red-700 px-5 py-3 text-center font-bold text-textColor transition-all duration-500"
+      class="absolute -top-1/2 left-1/2 z-50 -translate-x-1/2 rounded-xl bg-red-700 px-5 py-3 text-center font-bold text-textColor transition-all duration-500 max-sm:w-11/12"
       id="message"
     >
       A Message
