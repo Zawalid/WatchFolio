@@ -795,7 +795,7 @@ const handleAccount = async () => {
         // reauthenticate the user
         reauthenticate(async () => {
           // Upload the profile picture to firebase storage and get the download url
-          const photoURL = profilePicture.src.includes("firebasestorage")
+          const photoURL = profilePicture.src.includes("http")
             ? profilePicture.src
             : await uploadProfileImage(profilePicture.src);
           // Update the user's display name and photoURL
