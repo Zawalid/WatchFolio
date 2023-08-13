@@ -6,7 +6,11 @@ import "./watchList.js";
 // Favorites list
 import "./favoritesList.js";
 // Utilities
-import { handleAccount, handleUserAuth } from "./utilities.js";
+import {
+  checkIfUserIsLoggedIn,
+  handleAccount,
+  handleUserAuth,
+} from "./utilities.js";
 // Firebase
 import {
   auth,
@@ -370,7 +374,9 @@ function handleCredentialResponse(response) {
 }
 //* Automatically handle the Google One Tap sign-in when the page loads
 window.onload = function () {
-  handleGoogleOneTapSignIn();
+  checkIfUserIsLoggedIn().catch(() => {
+    handleGoogleOneTapSignIn();
+  });
 };
 
 //* ------------------------------ Account ------------------------------ *//
