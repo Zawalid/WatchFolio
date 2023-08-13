@@ -12,55 +12,55 @@
       "src": "imgs/icons/icon-48x48.png",
       "sizes": "48x48",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "maskable any"
     },
     {
       "src": "imgs/icons/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "maskable any"
     },
     {
       "src": "imgs/icons/icon-96x96.png",
       "sizes": "96x96",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "maskable any"
     },
     {
       "src": "imgs/icons/icon-128x128.png",
       "sizes": "128x128",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "maskable any"
     },
     {
       "src": "imgs/icons/icon-144x144.png",
       "sizes": "144x144",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "maskable any"
     },
     {
       "src": "imgs/icons/icon-152x152.png",
       "sizes": "152x152",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "maskable any"
     },
     {
       "src": "imgs/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "maskable any"
     },
     {
       "src": "imgs/icons/icon-384x384.png",
-      "sizes": "384x384",
+      "sizes": "284x284",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "maskable any"
     },
     {
       "src": "imgs/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "maskable any"
     }
   ],
   "shortcuts": [
@@ -71,8 +71,7 @@
       "icons": [
         {
           "src": "imgs/icons/user-solid.svg",
-          "sizes": "48x48",
-          "type": "image/png"
+          "sizes": "131x150"
         }
       ]
     },
@@ -83,8 +82,7 @@
       "icons": [
         {
           "src": "imgs/icons/globe-solid.svg",
-          "sizes": "48x48",
-          "type": "image/png"
+          "sizes": "150x150"
         }
       ]
     },
@@ -95,8 +93,7 @@
       "icons": [
         {
           "src": "imgs/icons/clipboard-solid.svg",
-          "sizes": "48x48",
-          "type": "image/png"
+          "sizes": "113x150"
         }
       ]
     },
@@ -106,21 +103,8 @@
       "description": "View your favorites",
       "icons": [
         {
-          "src": "imgs/icons/.svg",
-          "sizes": "48x48",
-          "type": "image/png"
-        }
-      ]
-    },
-    {
-      "name": "Sign In",
-      "url": "/authentication",
-      "description": "Sign in to your account",
-      "icons": [
-        {
-          "src": "imgs/icons/.svg",
-          "sizes": "48x48",
-          "type": "image/png"
+          "src": "imgs/icons/clipboard-solid.svg",
+          "sizes": "113x150"
         }
       ]
     }
