@@ -134,21 +134,34 @@ handleConnection();
 ["load", "hashchange"].forEach((event) => {
   window.addEventListener(event, (e) => {
     if (window.location.hash === "#watchlist") {
-      document
-        .getElementById("watchList_toggler")
-        .dispatchEvent(new Event("click"));
+      // Get the toggler that is not hidden
+      const toggler = [...document.querySelectorAll("#watchList_toggler")].find(
+        (toggler) => {
+          return window.getComputedStyle(toggler).display === "flex";
+        }
+      );
+      toggler.dispatchEvent(new Event("click"));
     } else if (window.location.hash === "#favorites") {
-      document
-        .getElementById("favoritesList_toggler")
-        .dispatchEvent(new Event("click"));
+      // Get the toggler that is not hidden
+      const toggler = [
+        ...document.querySelectorAll("#favoritesList_toggler"),
+      ].find((toggler) => {
+        return window.getComputedStyle(toggler).display === "flex";
+      });
+      toggler.dispatchEvent(new Event("click"));
     } else if (window.location.hash === "#account") {
-      document
-        .getElementById("account_toggler")
-        .dispatchEvent(new Event("click"));
+      checkIfUserIsLoggedIn()
+        .then(() => {
+          document
+            .getElementById("account_toggler")
+            .dispatchEvent(new Event("click"));
+        })
+        .catch(() => {
+          window.location.href = "./authentication.html";
+        });
     }
   });
 });
-
 
 //* ----------------- WatchList, FavoriteList -----------------
 //* Toggle watchList, favoriteList
@@ -544,73 +557,73 @@ const displayUserInfo = async (user) => {
 };
 
 //* Handle user authentication
-const handleUserAuth = async () => {
+const handleUserAuth = () => {
   const signButton = document.getElementById("sign");
   const signOutConfirmation = document.getElementById("signOut_confirmation");
-  try {
-    const user = await checkIfUserIsLoggedIn();
-    //  Send verification email if the user is not verified and the user is in the home page
-    if (
-      !user.emailVerified &&
-      (window.location.pathname === "/" ||
-        window.location.pathname === "/index.html")
-    ) {
-      // Check if the verification email has been sent before
-      if (document.cookie.includes("emailSent=true")) {
-        return;
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      //  Send verification email if the user is not verified and the user is in the home page
+      if (
+        !user.emailVerified &&
+        (window.location.pathname === "/" ||
+          window.location.pathname === "/index.html")
+      ) {
+        // Check if the verification email has been sent before
+        if (document.cookie.includes("emailSent=true")) {
+          return;
+        }
+        // Send the verification email
+        sendEmailVerification(user).then(() => {
+          showMessage(
+            "A verification email has been sent to your email address. Please check your inbox and click the verification link to verify your email.",
+            "info"
+          );
+          // Set a cookie to prevent the verification email from being sent again
+          document.cookie = "emailSent=true; max-age=86400; path=/";
+        });
       }
-      // Send the verification email
-      sendEmailVerification(user).then(() => {
-        showMessage(
-          "A verification email has been sent to your email address. Please check your inbox and click the verification link to verify your email.",
-          "info"
-        );
-        // Set a cookie to prevent the verification email from being sent again
-        document.cookie = "emailSent=true; max-age=86400; path=/";
-      });
+      // Display the user's info
+      displayUserInfo(user);
+      // Change the text of the button to sign out
+      signButton.innerHTML = `
+        <i class="fa-solid fa-sign-out text-2xl"></i>
+        <span class="font-semibold">Sign Out</span>
+        `;
+      //  Change the data-sign of the button to out
+      signButton.dataset.sign = "out";
+
+      // Clear the local storage if the user is logged in
+      window.localStorage.clear();
+
+      // Hide the synchronization info
+      document.getElementById("syncInfo").classList.add("hidden");
+      document
+        .getElementById("syncInfo")
+        .nextElementSibling.classList.add("hidden");
+    } else {
+      // Change the text of the button to sign in
+      signButton.innerHTML = `
+       <i class="fa-solid fa-sign-in text-2xl"></i>
+       <span class="font-semibold">Sign In</span>
+       `;
+      //  Change the data-sign of the button to in
+      signButton.dataset.sign = "in";
+      // Hide the sign out confirmation
+      signOutConfirmation.classList.remove("show");
+      // Set the info to guest's
+      document.getElementById("username").innerText = "Guest";
+      document.getElementById("email").innerText = "";
+      document
+        .querySelectorAll(".avatar")
+        .forEach((img) => (img.src = "./imgs/no profile.png"));
+      // Show the synchronization info
+      // Hide the synchronization info
+      document.getElementById("syncInfo").classList.remove("hidden");
+      document
+        .getElementById("syncInfo")
+        .nextElementSibling.classList.remove("hidden");
     }
-    // Display the user's info
-    displayUserInfo(user);
-    // Change the text of the button to sign out
-    signButton.innerHTML = `
-    <i class="fa-solid fa-sign-out text-2xl"></i>
-    <span class="font-semibold">Sign Out</span>
-    `;
-    //  Change the data-sign of the button to out
-    signButton.dataset.sign = "out";
-
-    // Clear the local storage if the user is logged in
-    window.localStorage.clear();
-
-    // Hide the synchronization info
-    document.getElementById("syncInfo").classList.add("hidden");
-    document
-      .getElementById("syncInfo")
-      .nextElementSibling.classList.add("hidden");
-  } catch (err) {
-    // Change the text of the button to sign in
-    signButton.innerHTML = `
-   <i class="fa-solid fa-sign-in text-2xl"></i>
-   <span class="font-semibold">Sign In</span>
-   `;
-    //  Change the data-sign of the button to in
-    signButton.dataset.sign = "in";
-    // Hide the sign out confirmation
-    signOutConfirmation.classList.remove("show");
-    // Set the info to guest's
-    document.getElementById("username").innerText = "Guest";
-    document.getElementById("email").innerText = "";
-    document
-      .querySelectorAll(".avatar")
-      .forEach((img) => (img.src = "./imgs/no profile.png"));
-    // Show the synchronization info
-    // Hide the synchronization info
-    document.getElementById("syncInfo").classList.remove("hidden");
-    document
-      .getElementById("syncInfo")
-      .nextElementSibling.classList.remove("hidden");
-  }
-
+  });
   // Show the sign out confirmation
   document.addEventListener("click", (e) => {
     if (e.target.closest("#sign")) {
@@ -1041,5 +1054,3 @@ export {
   retrieveFromLocalStorageOrDatabase,
   storeInLocalStorageOrDatabase,
 };
-
-

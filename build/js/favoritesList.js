@@ -103,6 +103,12 @@ const displayFromFavoritesList = async (type) => {
     .classList.add("active");
 
   const ids = favoritesList[type].list;
+  const internal = setInterval(() => {
+    if (ids.size > 0) {
+      console.log(ids);
+      clearInterval(internal);
+    }
+  }, 100);
   // Disable the actions if the list is empty except the download button
   ids.size === 0
     ? [...actions.querySelectorAll("i")].forEach((i) => {
