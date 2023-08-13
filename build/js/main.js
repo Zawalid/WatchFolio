@@ -375,6 +375,7 @@ function handleCredentialResponse(response) {
 //* Automatically handle the Google One Tap sign-in when the page loads
 window.onload = function () {
   checkIfUserIsLoggedIn().catch(() => {
+    console.log(777);
     handleGoogleOneTapSignIn();
   });
 };
