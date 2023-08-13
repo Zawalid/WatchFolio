@@ -71,7 +71,7 @@
       "icons": [
         {
           "src": "/imgs/icons/user-solid.svg",
-          "sizes": "131x150"
+          "sizes": "150x150"
         }
       ]
     },
@@ -93,18 +93,7 @@
       "icons": [
         {
           "src": "/imgs/icons/clipboard-solid.svg",
-          "sizes": "113x150"
-        }
-      ]
-    },
-    {
-      "name": "Favorites",
-      "url": "/#favorites",
-      "description": "View your favorites",
-      "icons": [
-        {
-          "src": "/imgs/icons/clipboard-solid.svg",
-          "sizes": "113x150"
+          "sizes": "150x150"
         }
       ]
     }
