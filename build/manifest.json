@@ -6,7 +6,7 @@
   "background_color": "#060514",
   "theme_color": "#060514",
   "description": "WatchFolio is a simple app that allows you to track your tv shows journey.",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "icons": [
     {
       "src": "/imgs/icons/icon-48x48.png",
@@ -65,13 +65,24 @@
   ],
   "shortcuts": [
     {
+      "name": "WatchList",
+      "url": "/#watchlist",
+      "description": "View your watchlist",
+      "icons": [
+        {
+          "src": "/imgs/icons/icons8-clipboard-100.png",
+          "sizes": "100x100"
+        }
+      ]
+    },
+    {
       "name": "Account",
       "url": "/#account",
       "description": " View your account",
       "icons": [
         {
-          "src": "/imgs/icons/user-solid.svg",
-          "sizes": "150x150"
+          "src": "/imgs/icons/icons8-user-100.png",
+          "sizes": "100x100"
         }
       ]
     },
@@ -81,19 +92,8 @@
       "description": " Explore new shows",
       "icons": [
         {
-          "src": "/imgs/icons/globe-solid.svg",
-          "sizes": "150x150"
-        }
-      ]
-    },
-    {
-      "name": "WatchList",
-      "url": "/#watchlist",
-      "description": "View your watchlist",
-      "icons": [
-        {
-          "src": "/imgs/icons/clipboard-solid.svg",
-          "sizes": "150x150"
+          "src": "/imgs/icons/icons8-globe-100.png",
+          "sizes": "100x100"
         }
       ]
     }
