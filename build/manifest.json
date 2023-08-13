@@ -65,6 +65,54 @@
   ],
   "shortcuts": [
     {
+      "name": "Account",
+      "url": "/#account",
+      "description": " View your account",
+      "icons": [
+        {
+          "src": "imgs/icons/icon-48x48.png",
+          "sizes": "48x48",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Explore",
+      "url": "/#explore",
+      "description": " Explore new shows",
+      "icons": [
+        {
+          "src": "imgs/icons/icon-48x48.png",
+          "sizes": "48x48",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "WatchList",
+      "url": "/#watchlist",
+      "description": "View your watchlist",
+      "icons": [
+        {
+          "src": "imgs/icons/icon-48x48.png",
+          "sizes": "48x48",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Favorites",
+      "url": "/#favorites",
+      "description": "View your favorites",
+      "icons": [
+        {
+          "src": "imgs/icons/icon-48x48.png",
+          "sizes": "48x48",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
       "name": "Sign In",
       "url": "/authentication",
       "description": "Sign in to your account",

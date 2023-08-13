@@ -130,6 +130,26 @@ const handleConnection = () => {
 };
 handleConnection();
 
+//* Show the watchList, favoriteList,account when changing the hash
+["load", "hashchange"].forEach((event) => {
+  window.addEventListener(event, (e) => {
+    if (window.location.hash === "#watchlist") {
+      document
+        .getElementById("watchList_toggler")
+        .dispatchEvent(new Event("click"));
+    } else if (window.location.hash === "#favorites") {
+      document
+        .getElementById("favoritesList_toggler")
+        .dispatchEvent(new Event("click"));
+    } else if (window.location.hash === "#account") {
+      document
+        .getElementById("account_toggler")
+        .dispatchEvent(new Event("click"));
+    }
+  });
+});
+
+
 //* ----------------- WatchList, FavoriteList -----------------
 //* Toggle watchList, favoriteList
 const toggleList = (togglerId, container, actions, displayFunction) => {
@@ -1021,3 +1041,5 @@ export {
   retrieveFromLocalStorageOrDatabase,
   storeInLocalStorageOrDatabase,
 };
+
+
