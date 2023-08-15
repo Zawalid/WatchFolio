@@ -356,13 +356,15 @@ if ("serviceWorker" in navigator) {
 //* Keep track of user authentication
 handleUserAuth();
 //* Sign in with google one tap
-function handleGoogleOneTapSignIn() {
+async function handleGoogleOneTapSignIn() {
   google.accounts.id.initialize({
     client_id:
       "338374125620-cd7p79tha3ehscal53eonfjt8n2m5gud.apps.googleusercontent.com",
     callback: handleCredentialResponse,
   });
-  google.accounts.id.prompt();
+  const user = await checkIfUserIsLoggedIn();
+  !user && google.accounts.id.prompt();
+  !user && console.log(777);;
 }
 //* Callback function to handle the One Tap response
 function handleCredentialResponse(response) {
@@ -374,10 +376,7 @@ function handleCredentialResponse(response) {
 }
 //* Automatically handle the Google One Tap sign-in when the page loads
 window.onload = function () {
-  console.log(777);
-  checkIfUserIsLoggedIn().catch(() => {
-    handleGoogleOneTapSignIn();
-  });
+  handleGoogleOneTapSignIn();
 };
 
 //* ------------------------------ Account ------------------------------ *//
