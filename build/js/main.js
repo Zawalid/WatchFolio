@@ -357,8 +357,6 @@ if ("serviceWorker" in navigator) {
 handleUserAuth();
 
 //* Check if the user is not logged in to sign in with Google One Tap
-checkIfUserIsLoggedIn().catch(() => {
-  console.log(777);
   //* Sign in with google one tap
   function handleGoogleOneTapSignIn() {
     google.accounts.id.initialize({
@@ -366,7 +364,7 @@ checkIfUserIsLoggedIn().catch(() => {
         "338374125620-cd7p79tha3ehscal53eonfjt8n2m5gud.apps.googleusercontent.com",
       callback: handleCredentialResponse,
     });
-    google.accounts.id.prompt();
+    // google.accounts.id.prompt();
   }
   //* Callback function to handle the One Tap response
   function handleCredentialResponse(response) {
@@ -380,8 +378,6 @@ checkIfUserIsLoggedIn().catch(() => {
   window.onload = function () {
     handleGoogleOneTapSignIn();
   };
-});
-
 //* ------------------------------ Account ------------------------------ *//
 handleAccount();
 
