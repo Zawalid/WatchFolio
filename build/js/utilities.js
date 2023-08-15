@@ -641,7 +641,7 @@ const handleUserAuth = () => {
       // Sign out the user
       signOut(auth);
       // Redirect the user to the home page
-      window.location.href = "./index.html";
+      window.location.href = "/";
     }
   });
 };
