@@ -358,6 +358,7 @@ handleUserAuth();
 
 //* Check if the user is not logged in to sign in with Google One Tap
 checkIfUserIsLoggedIn().catch(() => {
+  console.log(777);
   //* Sign in with google one tap
   function handleGoogleOneTapSignIn() {
     google.accounts.id.initialize({
