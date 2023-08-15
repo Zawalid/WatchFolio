@@ -355,30 +355,31 @@ if ("serviceWorker" in navigator) {
 //* ------------------------------ Authentication ------------------------------ *//
 //* Keep track of user authentication
 handleUserAuth();
-//* Sign in with google one tap
-function handleGoogleOneTapSignIn() {
-  google.accounts.id.initialize({
-    client_id:
-      "338374125620-cd7p79tha3ehscal53eonfjt8n2m5gud.apps.googleusercontent.com",
-    callback: handleCredentialResponse,
-  });
-  google.accounts.id.prompt();
-}
-//* Callback function to handle the One Tap response
-function handleCredentialResponse(response) {
-  if (response.credential) {
-    const idToken = response.credential;
-    // Use the ID token to sign in with Firebase
-    signInWithCredential(auth, GoogleAuthProvider.credential(idToken));
+
+//* Check if the user is not logged in to sign in with Google One Tap
+checkIfUserIsLoggedIn().catch(() => {
+  //* Sign in with google one tap
+  function handleGoogleOneTapSignIn() {
+    google.accounts.id.initialize({
+      client_id:
+        "338374125620-cd7p79tha3ehscal53eonfjt8n2m5gud.apps.googleusercontent.com",
+      callback: handleCredentialResponse,
+    });
+    google.accounts.id.prompt();
   }
-}
-//* Automatically handle the Google One Tap sign-in when the page loads
-window.onload = function () {
-  checkIfUserIsLoggedIn().catch(() => {
-    console.log(777);
+  //* Callback function to handle the One Tap response
+  function handleCredentialResponse(response) {
+    if (response.credential) {
+      const idToken = response.credential;
+      // Use the ID token to sign in with Firebase
+      signInWithCredential(auth, GoogleAuthProvider.credential(idToken));
+    }
+  }
+  //* Automatically handle the Google One Tap sign-in when the page loads
+  window.onload = function () {
     handleGoogleOneTapSignIn();
-  });
-};
+  };
+});
 
 //* ------------------------------ Account ------------------------------ *//
 handleAccount();
