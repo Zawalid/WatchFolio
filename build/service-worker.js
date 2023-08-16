@@ -1,10 +1,10 @@
 "use strict";
 
 //*Static cache
-const staticCache = "static-cache-v5";
+const staticCache = "static-cache-v1";
 
 //* Dynamic cache
-const dynamicCache = "dynamic-cache-v5";
+const dynamicCache = "dynamic-cache-v1";
 
 //* Assets to cache
 const urlsToCache = [
@@ -33,7 +33,7 @@ const urlsToCache = [
   "imgs/placeHolder.png",
   "imgs/urban-line-404-1.gif",
   "imgs/Google Logo.svg",
-  "imgs/icons/favicon.ico",
+  "favicon.ico",
   "imgs/icons/favicon-16x16.png",
   "imgs/icons/favicon-32x32.png",
   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
