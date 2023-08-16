@@ -23,6 +23,7 @@ const urlsToCache = [
   "js/favoritesList.js",
   "js/download.js",
   "imgs/offline.svg",
+  "imgs/Logo.png",
   "imgs/bg.jpg",
   "imgs/undraw_no_data_re_kwbl.svg",
   "imgs/no_result.png",
