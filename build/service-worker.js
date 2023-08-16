@@ -1,10 +1,10 @@
 "use strict";
 
 //*Static cache
-const staticCache = "static-cache-v1";
+const staticCache = "static-cache-v0";
 
 //* Dynamic cache
-const dynamicCache = "dynamic-cache-v1";
+const dynamicCache = "dynamic-cache-v0";
 
 //* Assets to cache
 const urlsToCache = [
