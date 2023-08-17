@@ -1990,6 +1990,7 @@ html {
   background-color: white;
 }
 
+body::-webkit-scrollbar,
 #favoritesListButtons::-webkit-scrollbar,
 #exploreTabs::-webkit-scrollbar,
 #watchListButtons::-webkit-scrollbar {
@@ -2247,6 +2248,10 @@ html {
 }
 
 @media not all and (min-width: 768px) {
+  .max-md\:fixed {
+    position: fixed;
+  }
+
   .max-md\:left-0 {
     left: 0px;
   }

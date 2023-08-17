@@ -58,6 +58,7 @@ html {
 ::-webkit-scrollbar-thumb {
   background-color: white;
 }
+body::-webkit-scrollbar,
 #favoritesListButtons::-webkit-scrollbar,
 #exploreTabs::-webkit-scrollbar,
 #watchListButtons::-webkit-scrollbar {

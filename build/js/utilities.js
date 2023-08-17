@@ -27,6 +27,15 @@ import {
 } from "./firebaseApp.js";
 
 //* ----------------- Miscellaneous -----------------
+
+//* CLear the console when the user opens it
+(function () {
+  console.time("clear");
+  if (console.clear) {
+    console.clear();
+  }
+})();
+
 //* Show password when eye icon is clicked
 const showPassword = () => {
   document.querySelectorAll(".password_input").forEach((input) => {
@@ -140,7 +149,17 @@ handleConnection();
           return window.getComputedStyle(toggler).display === "flex";
         }
       );
-      toggler.dispatchEvent(new Event("click"));
+      // Check if the user is singed in and then wait for the watchList to be retrieved from the database and then open the watchList
+      checkIfUserIsLoggedIn()
+        .then((user) => {
+          return getDoc(doc(db, "watchList", user.uid)).then((doc) => {
+            doc.exists() && toggler.dispatchEvent(new Event("click"));
+          });
+        })
+        // If the user is not signed in, open the watchList directly
+        .catch(() => {
+          toggler.dispatchEvent(new Event("click"));
+        });
     } else if (window.location.hash === "#favorites") {
       // Get the toggler that is not hidden
       const toggler = [
@@ -175,11 +194,6 @@ const toggleList = (togglerId, container, actions, displayFunction) => {
       container.classList.toggle("show");
       // Add the active class to the toggler
       this.classList.add("active");
-      // Check if the user is on the show page and add the overflow-hidden class to the body to prevent scrolling when the watchList is open
-      !container.classList.contains("show") &&
-      window.location.pathname.includes("show.html")
-        ? document.body.classList.remove("h-screen", "overflow-hidden")
-        : document.body.classList.remove("overflow-hidden");
       // Switch the actions to the navbar if the favoriteList is open and the media query matches and  Add the active class to the toggler
       if (window.matchMedia("(max-width: 768px)").matches) {
         document.getElementById("nav").appendChild(actions);
@@ -187,12 +201,6 @@ const toggleList = (togglerId, container, actions, displayFunction) => {
       } else {
         container.appendChild(actions);
         actions.classList.remove("hidden");
-      }
-      // Scroll to the top of the page when the favoriteList is open on mobile
-      if (window.matchMedia("(max-width: 768px)").matches) {
-        window.scrollTo(0, 0);
-        container.classList.contains("show") &&
-          document.body.classList.add("h-screen", "overflow-hidden");
       }
     });
   });
@@ -670,9 +678,6 @@ const handleAccount = async () => {
           emailNotVerified.classList.replace("flex", "hidden");
         });
       });
-
-      window.scrollTo(0, 0);
-      document.body.classList.add("h-screen", "overflow-hidden");
       account.classList.add("show");
     } else {
       window.location.href = "/authentication.html";
@@ -681,9 +686,6 @@ const handleAccount = async () => {
   //* CLose the account
   account.addEventListener("click", (e) => {
     if (e.target.closest("#close_account")) {
-      window.location.href.includes("show.html")
-        ? document.body.classList.remove("h-screen", "overflow-hidden")
-        : document.body.classList.remove("overflow-hidden");
       account.classList.remove("show");
     }
   });
