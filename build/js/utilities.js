@@ -336,7 +336,7 @@ const clearList = (container, listObject, dataAttr, displayFunction) => {
 const sortList = (container) => {
   const sortFunc = (direction) => {
     const currentELements = [...container.querySelectorAll("[data-id]")];
-    const html =
+    let html =
       direction === "AZ"
         ? currentELements.toSorted((a, b) =>
             a
@@ -350,6 +350,7 @@ const sortList = (container) => {
                 .innerText.localeCompare(b.querySelector("h3").innerText)
             )
             .toReversed();
+    html = html.map((el) => el.outerHTML).join("");
     currentELements.length > 0
       ? (container.querySelector(
           `#${container.id === "watchList" ? "shows" : "favorites"}`
