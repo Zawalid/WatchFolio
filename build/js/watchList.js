@@ -58,7 +58,7 @@ for (let list in watchLists) {
           id === window.location.search.split("=")[1] &&
           document.querySelector(`#overview [data-list=${list.name}]`)
         ) {
-          document.querySelector(`#overview [data-favorite=shows]`)
+          document.querySelector(`#overview [data-favorite=shows]`);
           document.querySelector(
             `#overview [data-list=${list.name}]`
           ).innerHTML = list.activeButton;
@@ -117,7 +117,7 @@ const displayShowsFromWatchList = async (list) => {
 
   const showsIds = watchLists[list].shows;
   // Disable the actions if the list is empty except the download button
-  showsIds.size === 0
+  showsIds.size <= 1
     ? [...actions.querySelectorAll("i")].slice(1).forEach((i) => {
         i.classList.replace("text-textColor2", "text-[darkslategray]");
         i.classList.replace("cursor-pointer", "cursor-not-allowed");
@@ -126,7 +126,12 @@ const displayShowsFromWatchList = async (list) => {
         i.classList.replace("text-[darkslategray]", "text-textColor2");
         i.classList.replace("cursor-not-allowed", "cursor-pointer");
       });
-
+  // Disable the clear only if the list is empty
+  showsIds.size > 0 &&
+   (
+    actions.querySelector("#clear").classList.replace("cursor-not-allowed", "cursor-pointer"),
+    actions.querySelector("#clear").classList.replace("text-[darkslategray]", "text-textColor2")
+   )
   const emptyList = `
   <div class="flex flex-col items-center h-full justify-center ">
   <img src="./imgs/undraw_no_data_re_kwbl.svg" alt="" class="w-[120px] mb-5">

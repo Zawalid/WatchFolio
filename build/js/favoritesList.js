@@ -104,7 +104,7 @@ const displayFromFavoritesList = async (type) => {
 
   const ids = favoritesList[type].list;
   // Disable the actions if the list is empty except the download button
-  ids.size === 0
+  ids.size <= 1
     ? [...actions.querySelectorAll("i")].forEach((i) => {
         i.classList.replace("text-textColor2", "text-[darkslategray]");
         i.classList.replace("cursor-pointer", "cursor-not-allowed");
@@ -113,7 +113,12 @@ const displayFromFavoritesList = async (type) => {
         i.classList.replace("text-[darkslategray]", "text-textColor2");
         i.classList.replace("cursor-not-allowed", "cursor-pointer");
       });
-
+  // Disable the clear only if the list is empty
+  ids.size > 0 &&
+   (
+    actions.querySelector("#clear").classList.replace("cursor-not-allowed", "cursor-pointer"),
+    actions.querySelector("#clear").classList.replace("text-[darkslategray]", "text-textColor2")
+   )
   // Display the season
   const displaySeason = async (id) => {
     const res = await fetch(`https://api.tvmaze.com/seasons/${id}`);

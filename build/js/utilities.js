@@ -350,8 +350,8 @@ const sortList = (container) => {
                 .innerText.localeCompare(b.querySelector("h3").innerText)
             )
             .toReversed();
-    html = html.map((el) => el.outerHTML).join("");
-    currentELements.length > 0
+    html = html.map((el) => el.parentElement.outerHTML).join("");
+    currentELements.length > 1
       ? (container.querySelector(
           `#${container.id === "watchList" ? "shows" : "favorites"}`
         ).innerHTML = html)
@@ -390,7 +390,7 @@ const showSearchInput = (container, searchListInput, listObject, dataAttr) => {
   // Toggle the search input
   listObject[container.dataset[`current_${dataAttr}`]][
     container.id === "watchList" ? "shows" : "list"
-  ].size > 0 && searchListInput.classList.toggle("show");
+  ].size > 1 && searchListInput.classList.toggle("show");
   searchListInput.placeholder =
     container.id === "watchList"
       ? "Search for shows"
