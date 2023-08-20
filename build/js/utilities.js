@@ -28,14 +28,6 @@ import {
 
 //* ----------------- Miscellaneous -----------------
 
-//* CLear the console when the user opens it
-(function () {
-  console.time("clear");
-  if (console.clear) {
-    console.clear();
-  }
-})();
-
 //* Show password when eye icon is clicked
 const showPassword = () => {
   document.querySelectorAll(".password_input").forEach((input) => {
@@ -344,34 +336,21 @@ const clearList = (container, listObject, dataAttr, displayFunction) => {
 const sortList = (container) => {
   const sortFunc = (direction) => {
     const currentELements = [...container.querySelectorAll("[data-id]")];
-    // To store the sorted list
-    let sortedList = [];
-    // To store the sorted names of shows
-    let sortedNames;
-    // The sorted list by names based on the direction (AZ/ZA)
-    if (direction === "AZ") {
-      sortedNames = currentELements
-        .map((a) => a.querySelector("h3").textContent)
-        .toSorted();
-    } else {
-      sortedNames = currentELements
-        .map((a) => a.querySelector("h3").textContent)
-        .toSorted()
-        .toReversed();
-    }
-    const sort = () => {
-      sortedList.push(
-        currentELements.find(
-          (a) => a.querySelector("h3").textContent == sortedNames[0]
-        ).parentElement
-      );
-      sortedNames.shift();
-    };
-    // Sort the list (Fill the sortedList array)
-    currentELements.forEach((e) => sort());
-    // Insert the sorted shows
-    const html = sortedList.map((el) => el.outerHTML).join("");
-    sortedList.length > 0
+    const html =
+      direction === "AZ"
+        ? currentELements.toSorted((a, b) =>
+            a
+              .querySelector("h3")
+              .innerText.localeCompare(b.querySelector("h3").innerText)
+          )
+        : currentELements
+            .toSorted((a, b) =>
+              a
+                .querySelector("h3")
+                .innerText.localeCompare(b.querySelector("h3").innerText)
+            )
+            .toReversed();
+    currentELements.length > 0
       ? (container.querySelector(
           `#${container.id === "watchList" ? "shows" : "favorites"}`
         ).innerHTML = html)
