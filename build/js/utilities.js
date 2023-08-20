@@ -626,10 +626,8 @@ const handleUserAuth = () => {
       signOutConfirmation.classList.replace("bottom-0", "-bottom-24");
     }
     if (e.target.id === "yes") {
-      // Sign out the user
-      signOut(auth);
-      // Redirect the user to the home page
-      window.location.href = "/";
+      // Sign out the user and Redirect the user to the home page
+      signOut(auth).then(() => (window.location.href = "/"));
     }
   });
 };
